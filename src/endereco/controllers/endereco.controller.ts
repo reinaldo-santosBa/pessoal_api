@@ -6,7 +6,20 @@ export class EnderecoController{
     async create(request: Request, response: Response) {
         const enderecoService = new EnderecoService();
 
-        const { cep, bairro, cidade, complemento, estado,ibge_cidade,  ibge_estado, logradouro, numero, pessoa_id, tipo_bairro_id,tipo_logradouro_id } = request.body as EnderecoDto;
+        const {cep,
+            bairro,
+            cidade,
+            complemento,
+            estado,
+            ibge_cidade,
+            ibge_estado,
+            logradouro,
+            numero,
+            pessoa_id,
+            tipo_bairro_id,
+            tipo_logradouro_id,
+            pais,
+            regiao } = request.body as EnderecoDto;
 
         const endereco = await enderecoService.create({
             cep,
@@ -21,6 +34,8 @@ export class EnderecoController{
             pessoa_id,
             tipo_bairro_id,
             tipo_logradouro_id,
+            pais,
+            regiao,
         });
 
         return response.status(201).json(endereco);
