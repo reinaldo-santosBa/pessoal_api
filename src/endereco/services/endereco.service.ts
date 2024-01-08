@@ -1,11 +1,9 @@
 import { EnderecoDto } from "../dto/endereco.dto";
 
 export class EnderecoService {
-    async create() {
+    async create(props: EnderecoDto) {
 
-        return {
-            message: "teste"
-        };
+        return props;
     }
 
     async find() {}

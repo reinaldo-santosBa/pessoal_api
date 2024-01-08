@@ -1,11 +1,28 @@
 import {Request, Response } from "express";
 import { EnderecoService } from "../services/endereco.service";
+import { EnderecoDto } from "../dto/endereco.dto";
 
 export class EnderecoController{
     async create(request: Request, response: Response) {
         const enderecoService = new EnderecoService();
 
-        const endereco = await enderecoService.create();
+        const { cep, bairro, cidade, complemento, estado,ibge_cidade,  ibge_estado, logradouro, numero, pessoa_id, tipo_bairro_id,tipo_logradouro_id } = request.body as EnderecoDto;
+
+        const endereco = await enderecoService.create({
+            cep,
+            bairro,
+            cidade,
+            complemento,
+            estado,
+            ibge_cidade,
+            ibge_estado,
+            logradouro,
+            numero,
+            pessoa_id,
+            tipo_bairro_id,
+            tipo_logradouro_id,
+        });
+
         return response.status(201).json(endereco);
     }
 

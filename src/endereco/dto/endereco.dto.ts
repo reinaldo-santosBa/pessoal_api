@@ -1,43 +1,35 @@
-import { IsNotEmpty, IsString } from "class-validator";
 
 export class EnderecoDto {
-  @IsString()
-    @IsNotEmpty()
-      cep: string;
+    cep: string;
 
-  @IsString()
-      bairro: string;
+    bairro: string;
 
-  tipo_bairro_id: number;
+    tipo_bairro_id: number;
 
-  @IsString()
-      logradouro: string;
+    logradouro: string;
 
-  @IsString()
-      complemento: string;
+    complemento?: string;
 
-  numero: number;
+    numero: number;
 
-  pessoa_id: number;
+    pessoa_id: number;
 
-  tipo_logradouro_id: number;
+    tipo_logradouro_id: number;
 
-  created_at: Date;
+    created_at?: Date;
 
-  update_at: Date;
+    update_at?: Date;
 
-  @IsString()
-      cidade: string;
 
-  ibge_cidade: number;
+    cidade: string;
 
-  estado: number;
+    ibge_cidade: number;
 
-  ibge_estado: number;
+    estado: number;
 
-  @IsString()
-      regiao: string;
+    ibge_estado: number;
 
-  @IsString()
-      pais: string;
+    regiao?: string;
+
+    pais?: string;
 }
