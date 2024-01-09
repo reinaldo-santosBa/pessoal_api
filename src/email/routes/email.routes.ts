@@ -9,8 +9,8 @@ const emailController = new EmailController();
 
 routesEmail.post(
     "/email",
-    emailValidations(),
-    validate,
+    //emailValidations(),
+    //validate,
     emailController.create,
 );
 
