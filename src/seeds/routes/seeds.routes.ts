@@ -7,15 +7,15 @@ import { TipoEmailController } from "../controller/tipo.email.controller";
 import { TipoLogradouroController } from "../controller/tipo.logradouro.controller";
 import { TipoTelefoneController } from "../controller/tipo.telefone.controller";
 
-const routes = Router();
+const routesSeeds = Router();
 
-routes.get("/generos", new GeneroController().find);
-routes.get("/nacionalidades", new NacionalidadeController().find);
-routes.get("/tipo_bairro", new TipoBairroController().find);
-routes.get("/tipo_conta", new TipoContaController().find);
-routes.get("/tipo_email", new TipoEmailController().find);
-routes.get("/tipo_logradouro", new TipoLogradouroController().find);
-routes.get("/tipo_telefone", new TipoTelefoneController().find);
+routesSeeds.get("/generos", new GeneroController().find);
+routesSeeds.get("/nacionalidades", new NacionalidadeController().find);
+routesSeeds.get("/tipo_bairro", new TipoBairroController().find);
+routesSeeds.get("/tipo_conta", new TipoContaController().find);
+routesSeeds.get("/tipo_email", new TipoEmailController().find);
+routesSeeds.get("/tipo_logradouro", new TipoLogradouroController().find);
+routesSeeds.get("/tipo_telefone", new TipoTelefoneController().find);
 
 
-export default routes;
+export default routesSeeds;
