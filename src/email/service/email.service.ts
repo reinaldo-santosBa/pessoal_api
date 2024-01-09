@@ -1,15 +1,8 @@
-import { QueryResult } from "pg";
 import AppError from "../../application/errors/AppError";
 import conn from "../../infrastructure/db/config.db";
 import { EmailDto } from "../dto/email.dto";
 
 
-
-interface IEmail {
-  PESSOA_ID: number;
-  TIPO_EMAIL_ID: number;
-  EMAIL: string;
-}
 export default class EmailService {
     async create(props: EmailDto[]) {
         try {
@@ -33,17 +26,17 @@ export default class EmailService {
         }
     }
 
-    async findByEmails(pessoa_id: number): Promise<QueryResult<IEmail[]>> {
-        const emails: QueryResult<IEmail[]> = await
+    async findByEmails(pessoa_id: number) {
+        const emails = (await
         conn.query(`SELECT PESSOA_ID,
                   TIPO_EMAIL_ID,
-                  EMAIL FROM EMAILS WHERE PESSOA_ID = ${pessoa_id}`);
+                  EMAIL FROM EMAILS WHERE PESSOA_ID = ${pessoa_id}`)).rows;
 
         return emails;
     }
 
     async delete(id: number) {
-        const email = await conn.query(`SELECT ID FROM EMAILS WHERE ID = ${id}`);
+        const email = (await conn.query(`SELECT ID FROM EMAILS WHERE ID = ${id}`)).rows;
 
         if (!email) {
             throw new AppError("E-mail não encontrado", 404);

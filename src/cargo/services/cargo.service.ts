@@ -28,18 +28,18 @@ export class CargoService {
         return cargo;
     }
 
-    async find(): Promise<QueryResult<ICargo[]>> {
-        const cargos: QueryResult<ICargo[]> = await conn.query(
+    async find() {
+        const cargos = (await conn.query(
             "SELECT CARGO, SALARIO, COMISSAO_DIRETA, COMISSAO_INDIRETA FROM CARGOS",
-        );
+        )).rows;
 
         return cargos;
     }
 
-    async findByCargo(cargo: string): Promise<QueryResult<ICargo>> {
-        const cargoResult: QueryResult<ICargo> = await conn.query(
+    async findByCargo(cargo: string) {
+        const cargoResult = (await conn.query(
             `SELECT CARGO, SALARIO, COMISSAO_DIRETA, COMISSAO_INDIRETA FROM CARGOS WHERE CARGO = ${cargo}`,
-        );
+        )).rows;
 
         return cargoResult;
     }
