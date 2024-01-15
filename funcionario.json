@@ -1,0 +1,76 @@
+{
+  "pessoa": { "ativo": true },
+  "funcionario": {
+    "empresa_id": 1,
+    "cargo_id": 1,
+    "data_admissao": "2024-01-11T14:35:50.727Z",
+    "data_demissao": "2024-01-11T14:35:50.727Z",
+    "adiantamento": true,
+    "periculosidade": true,
+    "receber_transporte": true,
+    "contribuicao_sindical": true,
+    "jornada_trabalho_id": 2,
+    "registrado": true
+  },
+  "pessoa_fisica": {
+    "nome": "Francisca Josefa Letícia Fogaça",
+    "cpf": "730.039.775-12",
+    "rg": "29.972.412-8",
+    "orgao_emissor": "SSP",
+    "carteira_trabalho": "556898977",
+    "pis": "4121",
+    "titulo_eleitor": "7979944949",
+    "zona_titulo_eleitor": "teste",
+    "nacionalidade_id": 1,
+    "nome_mae": "Sara Marlene",
+    "nome_pai": "Erick Thales Fogaça",
+    "naturalidade_id": 1,
+    "nascimento": "01/01/1989",
+    "estado_civil_id": 1,
+    "genero_id": 1
+  },
+  "emails": [
+    {
+      "pessoa_id": 1,
+      "tipo_email_id": 1,
+      "email": "teste@teste.com"
+    },
+    {
+      "pessoa_id": 1,
+      "tipo_email_id": 1,
+      "email": "teste@teste.com"
+    }
+  ],
+  "telefones": [
+    {
+      "pessoa_id": 1,
+      "tipo_telefone_id": 1,
+      "numero": "7195855555"
+    },
+    {
+      "pessoa_id": 1,
+      "tipo_telefone_id": 1,
+      "numero": "7195855555"
+    }
+  ],
+  "enderecos": [
+    {
+      "cep": "79472374",
+      "logradouro": "rua do sapo",
+      "pessoa_id": 1,
+      "tipo_endereco_id": 1,
+      "numero": "98A",
+      "tipo_logradouro_id": 1,
+      "bairro_id": 1
+    },
+    {
+      "cep": "79472374",
+      "logradouro": "rua do sapo",
+      "pessoa_id": 1,
+      "tipo_endereco_id": 1,
+      "numero": "98A",
+      "tipo_logradouro_id": 1,
+      "bairro_id": 1
+    }
+  ]
+}

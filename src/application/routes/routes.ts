@@ -1,15 +1,14 @@
 import { Router } from "express";
-import { routesEndereco } from "../../endereco/routes/endereco.routes";
-import cargoRoutes from "../../cargo/routes/cargo.routes";
-import routesEmail from "../../email/routes/email.routes";
-import routesSeeds from "../../seeds/routes/seeds.routes";
+import routesFuncionario from "./funcionario.routes";
+import routesJornadaTrabalho from "./jornada.trabalho.routes";
+import routesEmail from "./email.routes";
+import routesCargo from "./cargo.routes";
 
 const routes = Router();
 
-routes.use(routesEndereco);
-routes.use(cargoRoutes);
+routes.use(routesFuncionario);
+routes.use(routesJornadaTrabalho);
 routes.use(routesEmail);
-routes.use(routesSeeds);
-
+routes.use(routesCargo);
 
 export default routes;
