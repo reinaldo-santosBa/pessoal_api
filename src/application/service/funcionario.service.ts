@@ -34,7 +34,7 @@ export default class FuncionarioService {
 
             return;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message,500);
         }
     }
 }

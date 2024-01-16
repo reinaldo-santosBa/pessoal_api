@@ -9,8 +9,10 @@ const Errors = (
     next: NextFunction
 ) => {
     if (error instanceof AppError) {
+        console.log(error.statusCode);
         return res.status(error.statusCode).json({
             status: "error",
+            statusCode: error.statusCode,
             message: error.message,
         });
     }

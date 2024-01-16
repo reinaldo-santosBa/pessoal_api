@@ -8,9 +8,9 @@ export default class CargoController {
     async create(request: Request, response: Response) {
         const input = request.body as CargoProps;
 
-        await this.cargoService.create(input);
+        const cargo =  await this.cargoService.create(input);
 
-        return response.status(201);
+        return response.status(201).json(cargo);
     }
 
     async getAll(request: Request, response: Response) {
@@ -19,10 +19,18 @@ export default class CargoController {
         return response.json(cargos);
     }
 
+    async update(request: Request, response: Response) {
+        const id = request.params.id;
+        const input = request.body as CargoProps;
+
+        const cargo = await this.cargoService.update(+id, input);
+        return response.json(cargo);
+    }
+
     async delete(request: Request, response: Response) {
         const id = request.params.id;
 
         await this.cargoService.delete(+id);
-        return response.status(204);
+        return response.status(204).json();
     }
 }

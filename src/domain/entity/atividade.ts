@@ -1,5 +1,4 @@
 export type AtividadeProps = {
-  cargo_id: number;
   atividade: string;
 };
 

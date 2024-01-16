@@ -1,10 +1,9 @@
-import AppError from "../../application/errors/AppError";
 import JornadaTrabalhoEntity from "../../domain/entity/jornada.trabalho";
 import { JornadaTrabalhoRepository } from "../../domain/repository/jornada.trabalho.repository";
 import conn from "../config/database.config";
 
 export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalhoRepository {
-    async insert(input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity[]> {
+    async insert(input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity> {
         try {
             await conn.query("BEGIN");
             const jornada = await conn.query(`INSERT INTO JORNADAS_TRABALHO(
@@ -27,10 +26,9 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
 
             await conn.query("COMMIT");
 
-            return jornada.rows;
+            return jornada.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
         }
     }
 
@@ -51,7 +49,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             return jornadasTrabalho.rows;
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            console.error(error);
         }
     }
 
@@ -70,11 +68,11 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            console.error(error);
         }
     }
 
-    async update(id: number, input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity[]> {
+    async update(id: number, input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity> {
         try {
             await conn.query("BEGIN");
             const jornada = await conn.query(
@@ -84,16 +82,15 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
                   UNIDADE_TEMPO = '${input.props.unidade_tempo}',
                   CARGA_SEMANAL = ${input.props.carga_semanal},
                   LIMITE_EXTRA_DIARIO = ${input.props.limite_extra_diario},
-                  LIMITE_EXTRA_SEMANL = ${input.props.limite_extra_semanl},
-                  LIMITE_EXTRA_MENSAL = ${input.props.limite_extra_mensal}
+                  LIMITE_EXTRA_SEMANL = ${input.props.limite_extra_semanl ?? null},
+                  LIMITE_EXTRA_MENSAL = ${input.props.limite_extra_mensal ?? null}
               WHERE ID = ${id} RETURNING *`,
             );
 
             await conn.query("COMMIT");
-            return jornada.rows;
+            return jornada.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
         }
     }
 }

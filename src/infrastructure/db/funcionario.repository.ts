@@ -1,6 +1,5 @@
 import { FuncionarioRepository, IInput } from "../../domain/repository/funcionario.repository";
 import conn from "../config/database.config";
-import AppError from "../../application/errors/AppError";
 
 export default class FuncionarioPostgresRepository
 implements FuncionarioRepository
@@ -80,10 +79,7 @@ implements FuncionarioRepository
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-
-            throw new AppError(
-                "Erro ao inserir funcionário no banco de dados.",
-            );
+            console.error(error);
         }
     }
 }

@@ -8,7 +8,6 @@ export type CargoProps = {
 
 
 export default class CargoEntity {
-    public readonly id: number;
     public props: CargoProps;
 
     constructor(props: CargoProps) {
