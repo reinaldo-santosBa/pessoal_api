@@ -65,7 +65,6 @@ export default class JornadaTrabalhoService {
         const jornada = await this.jornadaTrabalhoRepository.getById(id);
 
         if (!jornada) {
-            console.log("Entrou aqui");
             throw new AppError("Jornada de trabalho não encontrada", 404);
         }
 
