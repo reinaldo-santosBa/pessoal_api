@@ -8,6 +8,7 @@ import routesTelefone from "./telefone.routes";
 import routesContaBancaria from "./conta.bancaria.routes";
 import routesAfastamento from "./afastamento.routes";
 import routesAdvertencia from "./advertencia.routes";
+import routesSeeds from "./seeds.routes";
 
 const routes = Router();
 
@@ -20,5 +21,6 @@ routes.use(routesTelefone);
 routes.use(routesContaBancaria);
 routes.use(routesAfastamento);
 routes.use(routesAdvertencia);
+routes.use(routesSeeds);
 
 export default routes;
