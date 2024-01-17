@@ -45,8 +45,15 @@ export type TipoTelefoneProps = {
   tipo_telefone: string;
 };
 
+export type TipoContaProps = {
+  id: number;
+  tipo_conta: string;
+}
 
-
+export type TipoEnderecoProps = {
+  id: number;
+  tipo_endereco: string;
+}
 
 
 export interface SeedsRepository {
@@ -59,4 +66,6 @@ export interface SeedsRepository {
   findAllTipoLogradouro(): Promise<TipoLogradouroProps[]>;
   findAllNaturalidade(): Promise<NaturalidadeProps[]>;
   findAllNacionalidade(): Promise<NacionalidadeProps[]>;
+  findAllTipoConta(): Promise<TipoContaProps[]>;
+  findAllTipoEndereco(): Promise<TipoEnderecoProps[]>;
 }

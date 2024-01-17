@@ -1,8 +1,29 @@
 import AppError from "../../application/errors/AppError";
-import { EstadoCivilProps, GeneroProps, NacionalidadeProps, NaturalidadeProps, SeedsRepository, TipoBairroProps, TipoEmailProps, TipoLogradouroProps, TipoPcdProps, TipoTelefoneProps } from "../../domain/repository/seeds.repository";
+import { EstadoCivilProps, GeneroProps, NacionalidadeProps, NaturalidadeProps, SeedsRepository, TipoBairroProps, TipoContaProps, TipoEmailProps, TipoEnderecoProps, TipoLogradouroProps, TipoPcdProps, TipoTelefoneProps } from "../../domain/repository/seeds.repository";
 import conn from "../config/database.config";
 
 export default class SeedsPostgresRepository implements SeedsRepository {
+    async findAllTipoEndereco(): Promise<TipoEnderecoProps[]> {
+        try {
+            const tipoEndereco = await conn.query(
+                "SELECT ID, TIPO_ENDERECO FROM TIPOS_ENDERECO",
+            );
+            return tipoEndereco.rows;
+        } catch (error) {
+            throw new AppError(error.message);
+        }
+
+    }
+
+    async findAllTipoConta(): Promise<TipoContaProps[]> {
+        try {
+            const tipoConta = await conn.query("SELECT ID, TIPO_CONTA FROM TIPOS_CONTA");
+            return tipoConta.rows;
+        } catch (error) {
+            throw new AppError(error.message);
+        }
+    }
+
     async findAllGenero(): Promise<GeneroProps[]> {
         try {
             const generos = (await conn.query("SELECT ID, GENERO FROM GENEROS")).rows;

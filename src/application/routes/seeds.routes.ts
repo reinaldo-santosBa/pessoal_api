@@ -49,5 +49,15 @@ routesSeeds.get("/nacionalidade", (req, res) =>
 );
 
 
+routesSeeds.get("/tipo_conta", (req, res) =>
+    seedsController.findAllTipoConta(req, res),
+);
+
+
+routesSeeds.get("/tipo_endereco", (req, res) =>
+    seedsController.findAllTipoEndereco(req, res),
+);
+
+
 
 export default routesSeeds;
