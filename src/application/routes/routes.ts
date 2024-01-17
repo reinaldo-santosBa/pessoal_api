@@ -6,6 +6,7 @@ import routesCargo from "./cargo.routes";
 import routesAtividade from "./atividade.routes";
 import routesTelefone from "./telefone.routes";
 import routesContaBancaria from "./conta.bancaria.routes";
+import routesAfastamento from "./afastamento.routes";
 
 const routes = Router();
 
@@ -16,6 +17,6 @@ routes.use(routesCargo);
 routes.use(routesAtividade);
 routes.use(routesTelefone);
 routes.use(routesContaBancaria);
-
+routes.use(routesAfastamento);
 
 export default routes;

@@ -5,7 +5,7 @@ import conn from "../config/database.config";
 
 export default class EnderecoPostgresRepository implements EnderecoRepository {
 
-    async insert(pessoa_id: number, input: EnderecoEntity): Promise<EnderecoEntity> {
+    async insert(input: EnderecoEntity): Promise<EnderecoEntity> {
 
         try {
             await conn.query("BEGIN");
@@ -36,7 +36,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
         }
     }
 
-    async update(pessoa_id: number, input: EnderecoEntity): Promise<EnderecoEntity> {
+    async update(id: number, input: EnderecoEntity): Promise<EnderecoEntity> {
         try {
             await conn.query("BEGIN");
 
