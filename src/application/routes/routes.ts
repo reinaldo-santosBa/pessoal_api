@@ -13,6 +13,7 @@ import routesEndereco from "./endereco.routes";
 import routesCusta from "./custa.routes";
 import routesSolicitacaoHoraExtra from "./solicitacao.hora.extra.routes";
 import routesConvenio from "./convenio.routes";
+import routesEncargo from "./encargo.routes";
 
 const routes = Router();
 
@@ -30,5 +31,6 @@ routes.use(routesEndereco);
 routes.use(routesCusta);
 routes.use(routesSolicitacaoHoraExtra);
 routes.use(routesConvenio);
+routes.use(routesEncargo);
 
 export default routes;
