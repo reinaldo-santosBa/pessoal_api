@@ -15,6 +15,7 @@ import routesSolicitacaoHoraExtra from "./solicitacao.hora.extra.routes";
 import routesConvenio from "./convenio.routes";
 import routesEncargo from "./encargo.routes";
 import routesTipoAfastamento from "./tipo.afastamento.routes";
+import routesDiaTrabalho from "./dia.trabalho.routes";
 
 const routes = Router();
 
@@ -34,6 +35,6 @@ routes.use(routesSolicitacaoHoraExtra);
 routes.use(routesConvenio);
 routes.use(routesEncargo);
 routes.use(routesTipoAfastamento);
-
+routes.use(routesDiaTrabalho);
 
 export default routes;
