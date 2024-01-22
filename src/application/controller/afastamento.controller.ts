@@ -1,14 +1,29 @@
 import { Request, Response } from "express";
 import AfastamentoService from "../service/afastamento.service";
 import { AfastamentoProps } from "../../domain/entity/afastamento";
+import Joi from "joi";
+
+const schemaValidation = Joi.object({
+    data_afastamento: Joi.date().required(),
+    data_retorno: Joi.date().allow(null),
+    motivo_afastamento: Joi.string().required(),
+    funcionario_id: Joi.number().required(),
+    tipo_afastamento_id: Joi.number().required(),
+});
+
 
 export default class AfastamentoController {
     constructor(private readonly afastamentoService: AfastamentoService) {}
 
     async create(request: Request, response: Response) {
         const input = request.body as AfastamentoProps;
-        const newAfastamento = await this.afastamentoService.create(input);
+        const { error } = schemaValidation.validate(input);
 
+        if (error) {
+            return response.status(422).json({ error: error.details[0].message });
+        }
+
+        const newAfastamento = await this.afastamentoService.create(input);
         return response.status(201).json(newAfastamento);
     }
 

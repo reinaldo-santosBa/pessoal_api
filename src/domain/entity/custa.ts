@@ -1,6 +1,6 @@
 export type CustaProps = {
   funcionario_id: number;
-  reponsavel_id: number;
+  responsavel_id: number;
   produto_id?: number;
   servico_id?: number;
   data_custa: Date;

@@ -9,6 +9,9 @@ import routesContaBancaria from "./conta.bancaria.routes";
 import routesAfastamento from "./afastamento.routes";
 import routesAdvertencia from "./advertencia.routes";
 import routesSeeds from "./seeds.routes";
+import routesEndereco from "./endereco.routes";
+import routesCusta from "./custa.routes";
+import routesSolicitacaoHoraExtra from "./solicitacao.hora.extra.routes";
 
 const routes = Router();
 
@@ -22,5 +25,8 @@ routes.use(routesContaBancaria);
 routes.use(routesAfastamento);
 routes.use(routesAdvertencia);
 routes.use(routesSeeds);
+routes.use(routesEndereco);
+routes.use(routesCusta);
+routes.use(routesSolicitacaoHoraExtra);
 
 export default routes;

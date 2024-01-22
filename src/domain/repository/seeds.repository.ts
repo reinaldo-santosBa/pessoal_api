@@ -56,6 +56,7 @@ export type TipoEnderecoProps = {
 }
 
 
+
 export interface SeedsRepository {
   findAllGenero(): Promise<GeneroProps[]>;
   findAllTipoEmail(): Promise<TipoEmailProps[]>;

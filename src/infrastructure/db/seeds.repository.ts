@@ -1,6 +1,20 @@
 import AppError from "../../application/errors/AppError";
-import { EstadoCivilProps, GeneroProps, NacionalidadeProps, NaturalidadeProps, SeedsRepository, TipoBairroProps, TipoContaProps, TipoEmailProps, TipoEnderecoProps, TipoLogradouroProps, TipoPcdProps, TipoTelefoneProps } from "../../domain/repository/seeds.repository";
+import {
+    EstadoCivilProps,
+    GeneroProps,
+    NacionalidadeProps,
+    NaturalidadeProps,
+    SeedsRepository,
+    TipoBairroProps,
+    TipoContaProps,
+    TipoEmailProps,
+    TipoEnderecoProps,
+    TipoLogradouroProps,
+    TipoPcdProps,
+    TipoTelefoneProps
+} from "../../domain/repository/seeds.repository";
 import conn from "../config/database.config";
+
 
 export default class SeedsPostgresRepository implements SeedsRepository {
     async findAllTipoEndereco(): Promise<TipoEnderecoProps[]> {
@@ -12,12 +26,13 @@ export default class SeedsPostgresRepository implements SeedsRepository {
         } catch (error) {
             throw new AppError(error.message);
         }
-
     }
 
     async findAllTipoConta(): Promise<TipoContaProps[]> {
         try {
-            const tipoConta = await conn.query("SELECT ID, TIPO_CONTA FROM TIPOS_CONTA");
+            const tipoConta = await conn.query(
+                "SELECT ID, TIPO_CONTA FROM TIPOS_CONTA",
+            );
             return tipoConta.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -35,7 +50,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllTipoEmail(): Promise<TipoEmailProps[]> {
         try {
-            const tipoEmail = await conn.query("SELECT ID, TIPO_EMAIL FROM TIPOS_EMAIL");
+            const tipoEmail = await conn.query(
+                "SELECT ID, TIPO_EMAIL FROM TIPOS_EMAIL",
+            );
             return tipoEmail.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -44,7 +61,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllTipoBairro(): Promise<TipoBairroProps[]> {
         try {
-            const tipoBairro = await conn.query("SELECT ID, TIPO_BAIRRO FROM TIPOS_BAIRRO");
+            const tipoBairro = await conn.query(
+                "SELECT ID, TIPO_BAIRRO FROM TIPOS_BAIRRO",
+            );
             return tipoBairro.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -53,7 +72,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllTipoTelefone(): Promise<TipoTelefoneProps[]> {
         try {
-            const tipoTelefone = await conn.query("SELECT ID, TIPO_TELEFONE FROM TIPOS_TELEFONE");
+            const tipoTelefone = await conn.query(
+                "SELECT ID, TIPO_TELEFONE FROM TIPOS_TELEFONE",
+            );
             return tipoTelefone.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -62,7 +83,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllEstadoCivil(): Promise<EstadoCivilProps[]> {
         try {
-            const estadoCivil = await conn.query("SELECT ID, ESTADO_CIVIL FROM ESTADOS_CIVIS");
+            const estadoCivil = await conn.query(
+                "SELECT ID, ESTADO_CIVIL FROM ESTADOS_CIVIS",
+            );
             return estadoCivil.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -80,7 +103,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllTipoLogradouro(): Promise<TipoLogradouroProps[]> {
         try {
-            const tipoLogradouro = await conn.query("SELECT ID, SIGLA, TIPO_LOGRADOURO FROM TIPOS_LOGRADOURO");
+            const tipoLogradouro = await conn.query(
+                "SELECT ID, SIGLA, TIPO_LOGRADOURO FROM TIPOS_LOGRADOURO",
+            );
             return tipoLogradouro.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -89,7 +114,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllNaturalidade(): Promise<NaturalidadeProps[]> {
         try {
-            const naturalidades = await conn.query("SELECT ID, NATURALIDADE FROM NATURALIDADES");
+            const naturalidades = await conn.query(
+                "SELECT ID, NATURALIDADE FROM NATURALIDADES",
+            );
             return naturalidades.rows;
         } catch (error) {
             throw new AppError(error.message);
@@ -98,7 +125,9 @@ export default class SeedsPostgresRepository implements SeedsRepository {
 
     async findAllNacionalidade(): Promise<NacionalidadeProps[]> {
         try {
-            const nacionalidade = await conn.query("SELECT ID, NACIONALIDADE FROM NACIONALIDADES");
+            const nacionalidade = await conn.query(
+                "SELECT ID, NACIONALIDADE FROM NACIONALIDADES",
+            );
             return nacionalidade.rows;
         } catch (error) {
             throw new AppError(error.message);
