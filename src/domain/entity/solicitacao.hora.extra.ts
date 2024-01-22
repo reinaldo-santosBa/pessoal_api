@@ -7,6 +7,8 @@ export type SolicitacaoHoraExtraProps = {
   observacao: string;
   autorizado_por: string;
   data_autorizacao: Date;
+
+  [key: string]: string | number | Date;
 };
 
 export default class SolicitacaoHoraExtraEntity {
