@@ -12,6 +12,7 @@ import routesSeeds from "./seeds.routes";
 import routesEndereco from "./endereco.routes";
 import routesCusta from "./custa.routes";
 import routesSolicitacaoHoraExtra from "./solicitacao.hora.extra.routes";
+import routesConvenio from "./convenio.routes";
 
 const routes = Router();
 
@@ -28,5 +29,6 @@ routes.use(routesSeeds);
 routes.use(routesEndereco);
 routes.use(routesCusta);
 routes.use(routesSolicitacaoHoraExtra);
+routes.use(routesConvenio);
 
 export default routes;
