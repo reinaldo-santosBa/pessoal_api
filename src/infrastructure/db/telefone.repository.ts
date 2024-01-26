@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import TelefoneEntity from "../../domain/entity/telefones";
 import { TelefoneRepository } from "../../domain/repository/telefone.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 
 export default class TelefonePostgresRepository implements TelefoneRepository {
@@ -24,7 +25,7 @@ export default class TelefonePostgresRepository implements TelefoneRepository {
             return telefone.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -41,7 +42,7 @@ export default class TelefonePostgresRepository implements TelefoneRepository {
             return telefone.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -52,7 +53,7 @@ export default class TelefonePostgresRepository implements TelefoneRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -68,7 +69,7 @@ export default class TelefonePostgresRepository implements TelefoneRepository {
             return telefone.rows;
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 

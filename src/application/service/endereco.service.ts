@@ -7,7 +7,7 @@ import EnderecoEntity, {
 } from "../../domain/entity/endereco";
 import { EnderecoRepository } from "../../domain/repository/endereco.repository";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 
 export default class EnderecoService {
     constructor(private readonly enderecoRepository: EnderecoRepository) {}
@@ -21,7 +21,7 @@ export default class EnderecoService {
 
         for (const campo of camposObrigatorios) {
             if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, 400);
+                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
             }
         }
 
@@ -34,7 +34,7 @@ export default class EnderecoService {
     async update(id: number, input: EnderecoProps): Promise<EnderecoEntity> {
         const existingEndereco = await this.enderecoRepository.getById(id);
         if (!existingEndereco) {
-            throw new AppError("Endereco não encontrado");
+            throw new AppError("Endereco não encontrado", status.NOT_FOUND);
         }
 
         const endereco = new EnderecoEntity(input);
@@ -47,7 +47,7 @@ export default class EnderecoService {
     async delete(id: number): Promise<void> {
         const existingEndereco = await this.enderecoRepository.getById(id);
         if (!existingEndereco) {
-            throw new AppError("Endereco não encontrado");
+            throw new AppError("Endereco não encontrado", status.NOT_FOUND);
         }
         await this.enderecoRepository.delete(id);
     }
@@ -59,9 +59,6 @@ export default class EnderecoService {
 
     async getRegioes(): Promise<RigoesProps[]>{
         const regioes = await this.enderecoRepository.getRegioes();
-        if (!regioes) {
-            throw new AppError("jdsadakjlkjkj");
-        }
         return regioes;
     }
 

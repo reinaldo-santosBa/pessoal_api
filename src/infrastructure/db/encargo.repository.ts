@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import EncargoEntity from "../../domain/entity/encargos";
 import { EncargoRepository } from "../../domain/repository/encargo.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class EncargoPostgresRepository implements EncargoRepository {
     async insert(input: EncargoEntity): Promise<EncargoEntity> {
@@ -16,7 +17,7 @@ export default class EncargoPostgresRepository implements EncargoRepository {
             return encargo.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -27,7 +28,7 @@ export default class EncargoPostgresRepository implements EncargoRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -41,7 +42,7 @@ export default class EncargoPostgresRepository implements EncargoRepository {
             return encargo.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -50,7 +51,7 @@ export default class EncargoPostgresRepository implements EncargoRepository {
             const encargos = await conn.query("SELECT ID, ENCARGO FROM ENCARGOS");
             return encargos.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -59,7 +60,7 @@ export default class EncargoPostgresRepository implements EncargoRepository {
             const encargos = await conn.query(`SELECT ID FROM ENCARGOS WHERE ID = ${id}`);
             return encargos.rowCount;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

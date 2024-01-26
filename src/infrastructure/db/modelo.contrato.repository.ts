@@ -2,7 +2,7 @@ import AppError from "../../application/errors/AppError";
 import ModeloContratoEntity from "../../domain/entity/modelo.contrato";
 import { ModeloContratoRepository } from "../../domain/repository/modelo.contrato.repository";
 import conn from "../config/database.config";
-
+import * as status from "../../constraints/http.stauts";
 
 export default class ModeloContratoPostgresRepository implements ModeloContratoRepository {
     async insert(input: ModeloContratoEntity): Promise<ModeloContratoEntity> {
@@ -45,7 +45,7 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -57,7 +57,7 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -68,7 +68,7 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
 
             return modeloContrato.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -80,7 +80,7 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
 
             return modeloContrato.rowCount;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }

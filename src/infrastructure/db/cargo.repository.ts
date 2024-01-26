@@ -2,6 +2,8 @@ import AppError from "../../application/errors/AppError";
 import CargoEntity from "../../domain/entity/cargo";
 import { CargoRepository } from "../../domain/repository/cargo.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class CargoPostgresRepository implements CargoRepository {
     async insert(input: CargoEntity): Promise<CargoEntity> {
@@ -26,7 +28,7 @@ export default class CargoPostgresRepository implements CargoRepository {
             return cargo.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message,500);
+            throw new AppError(error.message,status.INTERNAL_SERVER);
         }
     }
 
@@ -45,7 +47,7 @@ export default class CargoPostgresRepository implements CargoRepository {
             return cargos.rows;
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -81,7 +83,7 @@ export default class CargoPostgresRepository implements CargoRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

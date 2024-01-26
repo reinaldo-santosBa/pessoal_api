@@ -1,6 +1,7 @@
 import { EncargoProps } from "../../domain/entity/encargos";
 import { Request, Response } from "express";
 import EncargoService from "../service/encargo.service";
+import * as status from "../../constraints/http.stauts";
 
 export default class EncargoController {
     constructor(private readonly EncargoService: EncargoService) {}
@@ -8,13 +9,13 @@ export default class EncargoController {
     async create(request: Request, response: Response) {
         const input = request.body as EncargoProps;
         const encargo = await this.EncargoService.create(input);
-        return response.json(encargo);
+        return response.status(status.CREATED).json(encargo);
     }
 
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.EncargoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 
     async update(request: Request, response: Response) {

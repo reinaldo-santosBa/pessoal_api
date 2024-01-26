@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import EmailService from "../service/email.service";
 import { EmailProps } from "../../domain/entity/email";
+import * as status from "../../constraints/http.stauts";
 
 export default class EmailController {
     constructor(private readonly emailService: EmailService) {}
@@ -8,7 +9,7 @@ export default class EmailController {
     async create(request: Request, response: Response) {
         const input = request.body as EmailProps;
         const email = await this.emailService.create(input);
-        return response.status(201).json(email);
+        return response.status(status.CREATED).json(email);
     }
 
     async getByIdPessoa(request: Request, response: Response) {
@@ -29,6 +30,6 @@ export default class EmailController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.emailService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

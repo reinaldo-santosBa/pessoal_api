@@ -1,6 +1,7 @@
 import { DescontoProps } from "../../domain/entity/desconto";
 import DescontoService from "../service/desconto.service";
 import { Request, Response } from "express";
+import * as status from "../../constraints/http.stauts";
 
 
 export default class DescontoController {
@@ -10,7 +11,7 @@ export default class DescontoController {
         const input = request.body as DescontoProps;
 
         const newDesconto = await this.descontoService.create(input);
-        return response.status(201).json(newDesconto);
+        return response.status(status.CREATED).json(newDesconto);
     }
 
     async getAll(request: Request, response: Response) {
@@ -29,6 +30,6 @@ export default class DescontoController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.descontoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

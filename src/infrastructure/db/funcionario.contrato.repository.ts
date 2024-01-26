@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import { FuncionarioContratoEntity } from "../../domain/entity/funcionario.contrato";
 import { FuncionarioContratoRepository } from "../../domain/repository/funcionario.contrato";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class FuncionarioContratoPostgresRepository implements FuncionarioContratoRepository {
 
@@ -29,7 +30,7 @@ export default class FuncionarioContratoPostgresRepository implements Funcionari
             return funcionarioContrato.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -51,7 +52,7 @@ export default class FuncionarioContratoPostgresRepository implements Funcionari
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -72,7 +73,7 @@ export default class FuncionarioContratoPostgresRepository implements Funcionari
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 

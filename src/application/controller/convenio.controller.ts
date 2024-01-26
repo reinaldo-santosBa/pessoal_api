@@ -1,6 +1,7 @@
 import { ConvenioProps } from "../../domain/entity/convenio";
 import ConvenioService from "../service/convenio.service";
 import { Request, Response } from "express";
+import * as status from "../../constraints/http.stauts";
 
 
 export default class ConvenioController {
@@ -9,13 +10,13 @@ export default class ConvenioController {
     async create(request: Request, response: Response) {
         const input = request.body as ConvenioProps;
         const convenio = await this.convenioService.create(input);
-        return response.json(convenio);
+        return response.status(status.CREATED).json(convenio);
     }
 
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.convenioService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 
     async update(request: Request, response: Response) {

@@ -3,6 +3,8 @@ export type AdvertenciaProps = {
   responsavel_id: number;
   advertencia: string;
   data: Date;
+
+  [key: string]: string | number | Date;
 };
 
 export default class AdvertenciaEntity {

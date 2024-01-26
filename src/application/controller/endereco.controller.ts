@@ -1,7 +1,7 @@
 import { EnderecoProps } from "../../domain/entity/endereco";
 import EnderecoService from "../service/endereco.service";
 import { Request, Response } from "express";
-
+import * as status from "../../constraints/http.stauts";
 import Joi from "joi";
 
 const schemaValidation = Joi.object({
@@ -24,12 +24,12 @@ export default class EnderecoController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(422).json({error: error.details[0].message});
+            return response.status(status.UNPROCESSABLE_ENTITY).json({error: error.details[0].message});
         }
 
         const newEndereco = await this.enderecoService.create(input);
 
-        return response.status(201).json(newEndereco);
+        return response.status(status.CREATED).json(newEndereco);
     }
 
 
@@ -45,7 +45,7 @@ export default class EnderecoController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.enderecoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 
 

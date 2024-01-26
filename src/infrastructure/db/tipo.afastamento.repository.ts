@@ -2,6 +2,8 @@ import AppError from "../../application/errors/AppError";
 import TipoAfastamentoEntity from "../../domain/entity/tipo.afastamento";
 import { TipoAfastamentoRepository } from "../../domain/repository/tipo.afastamento.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class TipoAfastamentoPostgresRepository implements TipoAfastamentoRepository {
 
@@ -17,7 +19,7 @@ export default class TipoAfastamentoPostgresRepository implements TipoAfastament
             return tipoAfastamento.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -28,7 +30,7 @@ export default class TipoAfastamentoPostgresRepository implements TipoAfastament
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -42,7 +44,7 @@ export default class TipoAfastamentoPostgresRepository implements TipoAfastament
             return tipoAfastamento.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -51,7 +53,7 @@ export default class TipoAfastamentoPostgresRepository implements TipoAfastament
             const tiposAfastamento = await conn.query("SELECT ID, TIPO_AFASTAMENTO FROM TIPOS_AFASTAMENTO");
             return tiposAfastamento.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -60,7 +62,7 @@ export default class TipoAfastamentoPostgresRepository implements TipoAfastament
             const tiposAfastamento = await conn.query(`SELECT ID FROM TIPOS_AFASTAMENTO WHERE ID = ${id}`);
             return tiposAfastamento.rowCount;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

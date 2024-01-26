@@ -1,13 +1,14 @@
 import AtividadeEntity, { AtividadeProps } from "../../domain/entity/atividade";
 import { AtividadeRepository } from "../../domain/repository/atividade.repository";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export default class AtividadeService {
     constructor(private readonly atividadeRepository: AtividadeRepository) {}
 
     async create(input: AtividadeProps): Promise<AtividadeEntity> {
         if (!input.atividade) {
-            throw new AppError("O campo atividade é obrigatório");
+            throw new AppError("O campo atividade é obrigatório", status.BAD_REQUEST);
         }
 
         const atividade = new AtividadeEntity(input);
@@ -25,13 +26,13 @@ export default class AtividadeService {
     async update(id: number, input: AtividadeProps): Promise<AtividadeEntity> {
 
         if (!input.atividade) {
-            throw new AppError("O campo atividade é obrigatório");
+            throw new AppError("O campo atividade é obrigatório",status.BAD_REQUEST);
         }
 
         const atividadeExisting = await this.atividadeRepository.findById(id);
 
         if (!atividadeExisting) {
-            throw new AppError("Atividade não encontrada",404);
+            throw new AppError("Atividade não encontrada",status.NOT_FOUND);
         }
 
         const atividade = new AtividadeEntity(input);
@@ -43,7 +44,7 @@ export default class AtividadeService {
         const atividadeExisting = await this.atividadeRepository.findById(id);
 
         if (!atividadeExisting) {
-            throw new AppError("Atividade não encontrada",404);
+            throw new AppError("Atividade não encontrada", status.NOT_FOUND);
         }
 
         await this.atividadeRepository.delete(id);

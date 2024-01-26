@@ -14,7 +14,7 @@ import {
     TipoTelefoneProps
 } from "../../domain/repository/seeds.repository";
 import conn from "../config/database.config";
-
+import * as status from "../../constraints/http.stauts";
 
 export default class SeedsPostgresRepository implements SeedsRepository {
     async findAllTipoEndereco(): Promise<TipoEnderecoProps[]> {
@@ -24,7 +24,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return tipoEndereco.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -35,7 +35,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return tipoConta.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -44,7 +44,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             const generos = (await conn.query("SELECT ID, GENERO FROM GENEROS")).rows;
             return generos;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -55,7 +55,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return tipoEmail.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -66,7 +66,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return tipoBairro.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -77,7 +77,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return tipoTelefone.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -88,7 +88,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return estadoCivil.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -97,7 +97,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             const tipoPcd = await conn.query("SELECT ID, PCD FROM TIPOS_PCD");
             return tipoPcd.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -108,7 +108,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return tipoLogradouro.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -119,7 +119,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return naturalidades.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -130,7 +130,7 @@ export default class SeedsPostgresRepository implements SeedsRepository {
             );
             return nacionalidade.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

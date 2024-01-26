@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import CustaService from "../service/custa.service";
 import { CustaProps } from "../../domain/entity/custa";
 import Joi from "joi";
+import * as status from "../../constraints/http.stauts";
+
 
 const schemaValidation = Joi.object({
     funcionario_id: Joi.number().required(),
@@ -20,11 +22,11 @@ export default class CustaController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(422).json({ error: error.details[0].message });
+            return response.status(status.UNPROCESSABLE_ENTITY).json({ error: error.details[0].message });
         }
 
         const newCusta = await this.custaService.create(input);
-        return response.status(201).json(newCusta);
+        return response.status(status.CREATED).json(newCusta);
     }
 
     async getAllFuncionarioId(request: Request, response: Response) {
@@ -44,6 +46,6 @@ export default class CustaController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.custaService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

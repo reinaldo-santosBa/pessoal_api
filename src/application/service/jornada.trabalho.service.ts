@@ -1,6 +1,7 @@
 import JornadaTrabalhoEntity, { JornadaTrabalhoProps } from "../../domain/entity/jornada.trabalho";
 import { JornadaTrabalhoRepository } from "../../domain/repository/jornada.trabalho.repository";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export default class JornadaTrabalhoService {
     constructor(
@@ -17,7 +18,7 @@ export default class JornadaTrabalhoService {
 
         for (const campo of camposObrigatorios) {
             if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, 400);
+                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
             }
         }
 
@@ -38,7 +39,7 @@ export default class JornadaTrabalhoService {
           await this.jornadaTrabalhoRepository.getById(id);
 
         if (!jornadaExisting) {
-            throw new AppError("Jornada de trabalho não encontrada", 404);
+            throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
         }
 
         const camposObrigatorios: string[] = [
@@ -50,7 +51,7 @@ export default class JornadaTrabalhoService {
 
         for (const campo of camposObrigatorios) {
             if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, 400);
+                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
             }
         }
 
@@ -65,7 +66,7 @@ export default class JornadaTrabalhoService {
         const jornada = await this.jornadaTrabalhoRepository.getById(id);
 
         if (!jornada) {
-            throw new AppError("Jornada de trabalho não encontrada", 404);
+            throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
         }
 
         await this.jornadaTrabalhoRepository.delete(id);

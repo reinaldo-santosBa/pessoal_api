@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import ContaBancariaService from "../service/conta.bancaria.service";
 import { ContaBancariaProps } from "../../domain/entity/conta.bancaria";
 import Joi from "joi";
+import * as status from "../../constraints/http.stauts";
+
 
 const schemaValidation = Joi.object({
     pessoa_id: Joi.number().required(),
@@ -24,12 +26,12 @@ export default class ContaBancariaController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(422).json({ error: error.details[0].message });
+            return response.status(status.UNPROCESSABLE_ENTITY).json({ error: error.details[0].message });
         }
 
 
         const contaBancaria = await this.contaBancariaService.create(input);
-        return response.status(201).json(contaBancaria);
+        return response.status(status.CREATED).json(contaBancaria);
     }
 
     async getByIdPessoa(request: Request, response: Response) {
@@ -50,6 +52,6 @@ export default class ContaBancariaController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.contaBancariaService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

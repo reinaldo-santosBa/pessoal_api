@@ -1,7 +1,7 @@
 import TipoAfastamentoEntity, { TipoAfastamentoProps } from "../../domain/entity/tipo.afastamento";
 import { TipoAfastamentoRepository } from "../../domain/repository/tipo.afastamento.repository";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 export default class TipoAfastamentoService {
     constructor(
     private readonly tipoAfastamentoRepository: TipoAfastamentoRepository,
@@ -9,7 +9,7 @@ export default class TipoAfastamentoService {
 
     async create(input: TipoAfastamentoProps): Promise<TipoAfastamentoEntity> {
         if (!input.tipo_afastamento) {
-            throw new AppError("tipo afastamento obrigatório", 400);
+            throw new AppError("tipo afastamento obrigatório", status.BAD_REQUEST);
         }
 
         const tipoAfastamento = new TipoAfastamentoEntity(input);
@@ -23,7 +23,7 @@ export default class TipoAfastamentoService {
         await this.tipoAfastamentoRepository.getById(id);
 
         if (!tipoAfastamentoExisting) {
-            throw new AppError("Tipo Afastamento não encontrado", 404);
+            throw new AppError("Tipo Afastamento não encontrado", status.NOT_FOUND);
         }
 
         await this.tipoAfastamentoRepository.delete(id);
@@ -31,13 +31,13 @@ export default class TipoAfastamentoService {
 
     async update(id: number,input: TipoAfastamentoProps): Promise<TipoAfastamentoEntity> {
         if (!input.tipo_afastamento) {
-            throw new AppError("tipo afastamento obrigatório", 400);
+            throw new AppError("tipo afastamento obrigatório", status.BAD_REQUEST);
         }
 
         const tipoAfastamentoExisting =
              await this.tipoAfastamentoRepository.getById(id);
         if (!tipoAfastamentoExisting) {
-            throw new AppError("Tipo Afastamento não encontrado", 404);
+            throw new AppError("Tipo Afastamento não encontrado", status.NOT_FOUND);
         }
 
         const tipoAfastamento = new TipoAfastamentoEntity(input);

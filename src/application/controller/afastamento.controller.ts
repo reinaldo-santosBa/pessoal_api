@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import AfastamentoService from "../service/afastamento.service";
 import { AfastamentoProps } from "../../domain/entity/afastamento";
 import Joi from "joi";
+import * as status from "../../constraints/http.stauts";
+
 
 const schemaValidation = Joi.object({
     data_afastamento: Joi.date().required(),
@@ -20,11 +22,13 @@ export default class AfastamentoController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(422).json({ error: error.details[0].message });
+            return response
+                .status(status.UNPROCESSABLE_ENTITY)
+                .json({ error: error.details[0].message });
         }
 
         const newAfastamento = await this.afastamentoService.create(input);
-        return response.status(201).json(newAfastamento);
+        return response.status(status.CREATED).json(newAfastamento);
     }
 
     async getByIdFuncionario(request: Request, response: Response) {
@@ -46,6 +50,6 @@ export default class AfastamentoController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.afastamentoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import TipoAfastamentoService from "../service/tipo.afastamento.service";
 import { TipoAfastamentoProps } from "../../domain/entity/tipo.afastamento";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class TipoAfastamentoController {
     constructor(private readonly tipoAfastamentoService: TipoAfastamentoService) {}
@@ -8,13 +10,13 @@ export default class TipoAfastamentoController {
     async create(request: Request, response: Response) {
         const input = request.body as TipoAfastamentoProps;
         const tipoAfastamento = await this.tipoAfastamentoService.create(input);
-        return response.json(tipoAfastamento);
+        return response.status(status.CREATED).json(tipoAfastamento);
     }
 
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.tipoAfastamentoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 
     async update(request: Request, response: Response) {

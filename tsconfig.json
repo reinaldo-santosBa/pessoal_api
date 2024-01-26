@@ -17,7 +17,7 @@
     "typeRoots": ["./src/@types","node_modules/@types"],
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*", "funcionario"],
+  "include": ["src/**/*", "funcionario", "src/httpStatus/.ts"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "files": true

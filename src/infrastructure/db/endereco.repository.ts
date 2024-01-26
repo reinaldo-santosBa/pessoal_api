@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import EnderecoEntity, { BairrosProps, CidadesProps, EstadoProps, RigoesProps } from "../../domain/entity/endereco";
 import { EnderecoRepository } from "../../domain/repository/endereco.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class EnderecoPostgresRepository implements EnderecoRepository {
 
@@ -13,7 +14,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
 
             return regioes.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -28,7 +29,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
                   codigo_ibge FROM ESTADOS WHERE REGIAO_ID = ${regiao_id}`);
             return estados.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -43,7 +44,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
                   FROM CIDADES WHERE ESTADO_ID = ${estado_id}`);
             return cidades.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -57,7 +58,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
                   FROM BAIRROS WHERE CIDADE_ID = ${cidade_id}`);
             return bairros.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -88,7 +89,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
             return endereco.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -112,7 +113,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -122,7 +123,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
             return enderecosCount;
         } catch (error) {
 
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -133,7 +134,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -152,7 +153,7 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
 
             return enderecos.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

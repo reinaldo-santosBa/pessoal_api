@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import ProvisaoEntity from "../../domain/entity/provisao";
 import { ProvisaoRepository } from "../../domain/repository/provisao.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class ProvisaoPostgresRepository implements ProvisaoRepository {
     async insert(input: ProvisaoEntity): Promise<ProvisaoEntity> {
@@ -17,7 +18,7 @@ export default class ProvisaoPostgresRepository implements ProvisaoRepository {
             return provisao.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -27,7 +28,7 @@ export default class ProvisaoPostgresRepository implements ProvisaoRepository {
             const provisao = await conn.query("SELECT ID, PROVISAO FROM PROVISOES");
             return provisao.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -44,7 +45,7 @@ export default class ProvisaoPostgresRepository implements ProvisaoRepository {
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -56,7 +57,7 @@ export default class ProvisaoPostgresRepository implements ProvisaoRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }

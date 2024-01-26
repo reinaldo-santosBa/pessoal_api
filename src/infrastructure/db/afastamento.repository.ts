@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import AfastamentoEntity from "../../domain/entity/afastamento";
 import { AfastamentoRepository } from "../../domain/repository/afastamento.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class AfastamentoPostgresRepository implements AfastamentoRepository {
     async insert(input: AfastamentoEntity): Promise<AfastamentoEntity> {
@@ -24,7 +25,7 @@ export default class AfastamentoPostgresRepository implements AfastamentoReposit
             return afastamento.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -43,7 +44,7 @@ export default class AfastamentoPostgresRepository implements AfastamentoReposit
             return afastamento.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -59,7 +60,7 @@ export default class AfastamentoPostgresRepository implements AfastamentoReposit
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 

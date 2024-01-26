@@ -1,6 +1,7 @@
 import { ProvisaoProps } from "../../domain/entity/provisao";
 import ProvisaoService from "../service/provisao.service";
 import { Request, Response } from "express";
+import * as status from "../../constraints/http.stauts";
 
 
 export default class ProvisaoController {
@@ -10,7 +11,7 @@ export default class ProvisaoController {
         const input = request.body as ProvisaoProps;
         const newProvisao = await this.provisaoService.create(input);
 
-        return response.status(201).json(newProvisao);
+        return response.status(status.CREATED).json(newProvisao);
     }
 
     async getAll(
@@ -31,6 +32,6 @@ export default class ProvisaoController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.provisaoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

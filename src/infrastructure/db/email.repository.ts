@@ -2,6 +2,8 @@ import AppError from "../../application/errors/AppError";
 import EmailEntity from "../../domain/entity/email";
 import { EmailRepository } from "../../domain/repository/email.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class EmailPostgresRepository implements EmailRepository {
     async insert(input: EmailEntity): Promise<EmailEntity> {
@@ -20,7 +22,7 @@ export default class EmailPostgresRepository implements EmailRepository {
             return email.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -32,7 +34,7 @@ export default class EmailPostgresRepository implements EmailRepository {
 
             return emails.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -48,7 +50,7 @@ export default class EmailPostgresRepository implements EmailRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -64,7 +66,7 @@ export default class EmailPostgresRepository implements EmailRepository {
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

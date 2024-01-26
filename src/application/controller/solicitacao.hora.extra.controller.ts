@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { SolicitacaoHoraExtraProps } from "../../domain/entity/solicitacao.hora.extra";
 import SolicitacaoHoraExtraService from "../service/solicitacao.hora.extra.service";
+import * as status from "../../constraints/http.stauts";
 
 
 export default class SolicitacaoHoraExtraController {
@@ -11,7 +12,7 @@ export default class SolicitacaoHoraExtraController {
 
         const newSolicitacaoHoraExtra = await this.solicitacaoHoraExtraService.create(input);
 
-        return response.status(201).json(newSolicitacaoHoraExtra);
+        return response.status(status.CREATED).json(newSolicitacaoHoraExtra);
     }
 
     async getAllFuncionarioId(request: Request, response: Response) {
@@ -35,6 +36,6 @@ export default class SolicitacaoHoraExtraController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.solicitacaoHoraExtraService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

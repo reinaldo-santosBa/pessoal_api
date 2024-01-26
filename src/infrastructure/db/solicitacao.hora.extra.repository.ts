@@ -2,6 +2,8 @@ import AppError from "../../application/errors/AppError";
 import SolicitacaoHoraExtraEntity from "../../domain/entity/solicitacao.hora.extra";
 import { SolicitacaoHoraExtraRepository } from "../../domain/repository/solicitacao.hora.extra";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class SolicitacaoHoraExtraPostgresRepository
 implements SolicitacaoHoraExtraRepository
@@ -35,7 +37,7 @@ implements SolicitacaoHoraExtraRepository
             return solicitacaoHoraExtra.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -48,7 +50,7 @@ implements SolicitacaoHoraExtraRepository
 
             return solicitacaoHoraExtraCount.rowCount;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -68,7 +70,7 @@ implements SolicitacaoHoraExtraRepository
 
             return solicitacaoHoraExtra.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -89,7 +91,7 @@ implements SolicitacaoHoraExtraRepository
             return solicitacaoHoraExtra.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -101,7 +103,7 @@ implements SolicitacaoHoraExtraRepository
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }

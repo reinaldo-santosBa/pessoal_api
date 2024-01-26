@@ -1,6 +1,8 @@
 import SolicitacaoHoraExtraEntity, { SolicitacaoHoraExtraProps } from "../../domain/entity/solicitacao.hora.extra";
 import { SolicitacaoHoraExtraRepository } from "../../domain/repository/solicitacao.hora.extra";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class SolicitacaoHoraExtraService {
     constructor(private readonly solicitacaoHoraExtraRepository: SolicitacaoHoraExtraRepository) {}
@@ -16,7 +18,7 @@ export default class SolicitacaoHoraExtraService {
 
         for (const campo of camposObrigatorios) {
             if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, 400);
+                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
             }
         }
 
@@ -43,13 +45,13 @@ export default class SolicitacaoHoraExtraService {
 
         for (const campo of camposObrigatorios) {
             if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, 400);
+                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
             }
         }
 
         const solicitacaoExisting = await this.solicitacaoHoraExtraRepository.getById(id);
         if (!solicitacaoExisting) {
-            throw new AppError("Solicitação não encontrado");
+            throw new AppError("Solicitação não encontrado", status.NOT_FOUND);
         }
 
         const solicitacaoHoraExtra = new SolicitacaoHoraExtraEntity(input);
@@ -64,7 +66,7 @@ export default class SolicitacaoHoraExtraService {
         const solicitacaoExisting =
         await this.solicitacaoHoraExtraRepository.getById(id);
         if (!solicitacaoExisting) {
-            throw new AppError("Solicitação não encontrado");
+            throw new AppError("Solicitação não encontrado", status.NOT_FOUND);
         }
 
         await this.solicitacaoHoraExtraRepository.delete(id);

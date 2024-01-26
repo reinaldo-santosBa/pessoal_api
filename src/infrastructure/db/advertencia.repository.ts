@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import AdvertenciaEntity from "../../domain/entity/advertencia";
 import { AdvertenciaRepository } from "../../domain/repository/advertencia.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class AdvertenciaPostgresRepository implements AdvertenciaRepository {
 
@@ -27,7 +28,7 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -47,7 +48,7 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -67,7 +68,7 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }

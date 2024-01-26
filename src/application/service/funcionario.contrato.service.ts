@@ -1,7 +1,7 @@
 import { FuncionarioContratoEntity, FuncionarioContratoProps } from "../../domain/entity/funcionario.contrato";
 import { FuncionarioContratoRepository } from "../../domain/repository/funcionario.contrato";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 export default class FuncionarioContratoService {
     constructor(
     private readonly funcionarioContratoRepository: FuncionarioContratoRepository,
@@ -20,7 +20,7 @@ export default class FuncionarioContratoService {
     async update(id: number, input: FuncionarioContratoProps): Promise<FuncionarioContratoEntity> {
         const existingContrato = await this.funcionarioContratoRepository.getById(id);
         if (!existingContrato) {
-            throw new AppError("Contrato não encontrada", 404);
+            throw new AppError("Contrato não encontrada", status.NOT_FOUND);
         }
 
         const contrato = new FuncionarioContratoEntity(input);
@@ -37,7 +37,7 @@ export default class FuncionarioContratoService {
         const existingContrato =
            await this.funcionarioContratoRepository.getById(id);
         if (!existingContrato) {
-            throw new AppError("Contrato não encontrada", 404);
+            throw new AppError("Contrato não encontrada", status.NOT_FOUND);
         }
 
         await this.funcionarioContratoRepository.delete(id);

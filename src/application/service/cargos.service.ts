@@ -1,6 +1,7 @@
 import CargoEntity, { CargoProps } from "../../domain/entity/cargo";
 import { CargoRepository } from "../../domain/repository/cargo.repository";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export default class CargosService {
     constructor(private readonly cargoRepository: CargoRepository) {}
@@ -8,7 +9,7 @@ export default class CargosService {
     async create(input: CargoProps): Promise<CargoEntity> {
 
         if (!input.cargo) {
-            throw new AppError("Cargo é obrigatório",400);
+            throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
         }
 
         const cargo = new CargoEntity(input);
@@ -22,19 +23,19 @@ export default class CargosService {
             const cargos = await this.cargoRepository.getAll();
             return cargos;
         } catch (error) {
-            throw new AppError(error.message,500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
     async update(id: number, input: CargoProps): Promise<CargoEntity> {
         if (!input.cargo) {
-            throw new AppError("Cargo é obrigatório",400);
+            throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
         }
 
         const cargoExisting = await this.cargoRepository.getById(id);
 
         if (!cargoExisting) {
-            throw new AppError("Cargo não encontrado", 404);
+            throw new AppError("Cargo não encontrado", status.NOT_FOUND);
         }
         const cargo = new CargoEntity(input);
 
@@ -47,7 +48,7 @@ export default class CargosService {
         const cargoExisting = await this.cargoRepository.getById(id);
 
         if (!cargoExisting) {
-            throw new AppError("Cargo não encontrado", 404);
+            throw new AppError("Cargo não encontrado", status.NOT_FOUND);
         }
 
         await this.cargoRepository.delete(id);

@@ -1,6 +1,7 @@
 import { AdvertenciaProps } from "../../domain/entity/advertencia";
 import AdvertenciaService from "../service/advertencia.service";
 import { Request, Response } from "express";
+import * as status from "../../constraints/http.stauts";
 
 export default class AdvertenciaController {
     constructor(private readonly advertenciaService: AdvertenciaService) {}
@@ -9,7 +10,7 @@ export default class AdvertenciaController {
         const input = request.body as AdvertenciaProps;
         const newAdvertencia = await this.advertenciaService.create(input);
 
-        return response.status(201).json(newAdvertencia);
+        return response.status(status.CREATED).json(newAdvertencia);
     }
 
     async getByIdFuncionario(request: Request, response: Response) {
@@ -29,6 +30,6 @@ export default class AdvertenciaController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.advertenciaService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

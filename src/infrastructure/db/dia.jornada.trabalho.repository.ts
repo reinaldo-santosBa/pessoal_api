@@ -2,6 +2,7 @@ import AppError from "../../application/errors/AppError";
 import DiaJornadaTrabalhoEntity from "../../domain/entity/dia.jornada.trabalho";
 import { DiaJornadaTrabalhoRepository } from "../../domain/repository/dia.jornada.trabalho.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
 
 export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoRepository {
     async insert(input: DiaJornadaTrabalhoEntity): Promise<DiaJornadaTrabalhoEntity> {
@@ -30,7 +31,7 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
             return diaJornadaTrabalho.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -48,7 +49,7 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
             );
             return diaJornadaTrabalho.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -60,7 +61,7 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -82,7 +83,7 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
             return diaJornadaTrabalho.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 

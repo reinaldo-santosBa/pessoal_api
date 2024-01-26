@@ -2,7 +2,7 @@ import AppError from "../../application/errors/AppError";
 import CustaEntity from "../../domain/entity/custa";
 import { CustaRepository } from "../../domain/repository/custa.repository";
 import conn from "../config/database.config";
-
+import * as status from "../../constraints/http.stauts";
 export default class CustaPostgresRepository implements CustaRepository {
 
     async insert(input: CustaEntity): Promise<CustaEntity> {
@@ -28,7 +28,7 @@ export default class CustaPostgresRepository implements CustaRepository {
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -45,7 +45,7 @@ export default class CustaPostgresRepository implements CustaRepository {
 
             return custas.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -65,7 +65,7 @@ export default class CustaPostgresRepository implements CustaRepository {
             return custa.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -75,7 +75,7 @@ export default class CustaPostgresRepository implements CustaRepository {
 
             return custaCount.rowCount;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -87,7 +87,7 @@ export default class CustaPostgresRepository implements CustaRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

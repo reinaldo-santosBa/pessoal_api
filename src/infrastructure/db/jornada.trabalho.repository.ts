@@ -1,6 +1,8 @@
 import JornadaTrabalhoEntity from "../../domain/entity/jornada.trabalho";
 import { JornadaTrabalhoRepository } from "../../domain/repository/jornada.trabalho.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
+import AppError from "../../application/errors/AppError";
 
 export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalhoRepository {
     async insert(input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity> {
@@ -29,6 +31,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             return jornada.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -49,7 +52,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             return jornadasTrabalho.rows;
         } catch (error) {
             await conn.query("ROLLBACK");
-            console.error(error);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -68,7 +71,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            console.error(error);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -91,6 +94,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             return jornada.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

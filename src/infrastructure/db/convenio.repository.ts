@@ -2,7 +2,7 @@ import AppError from "../../application/errors/AppError";
 import ConvenioEntity from "../../domain/entity/convenio";
 import { ConvenioRepository } from "../../domain/repository/convenio.repository";
 import conn from "../config/database.config";
-
+import * as status from "../../constraints/http.stauts";
 
 export default class ConvenioPostgresRepository implements ConvenioRepository {
     async insert(input: ConvenioEntity): Promise<ConvenioEntity> {
@@ -17,7 +17,7 @@ export default class ConvenioPostgresRepository implements ConvenioRepository {
             return convenio.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -28,7 +28,7 @@ export default class ConvenioPostgresRepository implements ConvenioRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -42,7 +42,7 @@ export default class ConvenioPostgresRepository implements ConvenioRepository {
             return convenio.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -51,7 +51,7 @@ export default class ConvenioPostgresRepository implements ConvenioRepository {
             const convenios = await conn.query("SELECT ID, CONVENIO FROM CONVENIOS");
             return convenios.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -60,7 +60,7 @@ export default class ConvenioPostgresRepository implements ConvenioRepository {
             const convenios = await conn.query(`SELECT ID FROM CONVENIOS WHERE ID = ${id}`);
             return convenios.rowCount;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

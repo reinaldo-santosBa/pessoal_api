@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import AtividadeService from "../service/atividade.service";
 import { AtividadeProps } from "../../domain/entity/atividade";
+import * as status from "../../constraints/http.stauts";
 
 export default class AtividadeController {
     constructor(private readonly atividadeService: AtividadeService) {}
@@ -10,7 +11,7 @@ export default class AtividadeController {
 
         const newAtidade = await this.atividadeService.create(input);
 
-        return response.status(201).json(newAtidade);
+        return response.status(status.CREATED).json(newAtidade);
     }
 
     async getAll(request: Request, response: Response) {
@@ -30,6 +31,6 @@ export default class AtividadeController {
         const id = request.params.id;
         await this.atividadeService.delete(+id);
 
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

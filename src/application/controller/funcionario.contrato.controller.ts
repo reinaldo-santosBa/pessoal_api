@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import FuncionarioContratoService from "../service/funcionario.contrato.service";
 import { FuncionarioContratoProps } from "../../domain/entity/funcionario.contrato";
+import * as status from "../../constraints/http.stauts";
 
 export default class FuncionarioContratoController {
     constructor(private readonly advertenciaService: FuncionarioContratoService) {}
@@ -9,7 +10,7 @@ export default class FuncionarioContratoController {
         const input = request.body as FuncionarioContratoProps;
         const newContrato = await this.advertenciaService.create(input);
 
-        return response.status(201).json(newContrato);
+        return response.status(status.CREATED).json(newContrato);
     }
 
     async getByIdFuncionario(request: Request, response: Response) {
@@ -29,6 +30,6 @@ export default class FuncionarioContratoController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.advertenciaService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

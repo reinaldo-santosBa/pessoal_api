@@ -2,6 +2,7 @@ import EmailEntity, { EmailProps } from "../../domain/entity/email";
 import { EmailRepository } from "../../domain/repository/email.repository";
 import { EmailValidator } from "../../utils/email.validator";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export default class EmailService {
     constructor(private readonly emailRepository: EmailRepository) {}
@@ -13,7 +14,7 @@ export default class EmailService {
 
         const emailValidator = new EmailValidator();
         if (!emailValidator.isValid(input.email)) {
-            throw new AppError("E-mail Inválido", 422);
+            throw new AppError("E-mail Inválido", status.UNPROCESSABLE_ENTITY);
         }
 
         const email = new EmailEntity(input);
@@ -32,7 +33,7 @@ export default class EmailService {
         const emailExisting = await this.emailRepository.getEmailById(id);
 
         if (!emailExisting) {
-            throw new AppError("E-mail não encontrado", 404);
+            throw new AppError("E-mail não encontrado", status.NOT_FOUND);
         }
         await this.emailRepository.delete(id);
     }
@@ -46,11 +47,11 @@ export default class EmailService {
         const emailExisting = await this.emailRepository.getEmailById(id);
 
         if (!emailExisting) {
-            throw new AppError("E-mail não encontrado", 404);
+            throw new AppError("E-mail não encontrado", status.NOT_FOUND);
         }
         const emailValidator = new EmailValidator();
         if (!emailValidator.isValid(input.email)) {
-            throw new AppError("E-mail Inválido", 400);
+            throw new AppError("E-mail Inválido", status.BAD_REQUEST);
         }
 
         const email = new EmailEntity(input);

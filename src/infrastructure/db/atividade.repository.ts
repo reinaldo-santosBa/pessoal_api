@@ -2,6 +2,8 @@ import AppError from "../../application/errors/AppError";
 import AtividadeEntity from "../../domain/entity/atividade";
 import { AtividadeRepository } from "../../domain/repository/atividade.repository";
 import conn from "../config/database.config";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class AtividadePostgresRepository implements AtividadeRepository {
     async insert(input: AtividadeEntity): Promise<AtividadeEntity> {
@@ -16,7 +18,7 @@ export default class AtividadePostgresRepository implements AtividadeRepository 
             return atividade.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -28,7 +30,7 @@ export default class AtividadePostgresRepository implements AtividadeRepository 
 
             return atividades.rows;
         } catch (error) {
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -49,7 +51,7 @@ export default class AtividadePostgresRepository implements AtividadeRepository 
             return atividade.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -60,7 +62,7 @@ export default class AtividadePostgresRepository implements AtividadeRepository 
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message, 500);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

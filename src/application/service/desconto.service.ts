@@ -1,13 +1,13 @@
 import DescontoEntity, { DescontoProps } from "../../domain/entity/desconto";
 import { DescontoRepository } from "../../domain/repository/desconto.repository";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 export default class DescontoService {
     constructor(private readonly descontoRepository: DescontoRepository) {}
 
     async create(input: DescontoProps) {
         if (!input.desconto) {
-            throw new AppError("Desconto Obrigatório");
+            throw new AppError("Desconto Obrigatório", status.BAD_REQUEST);
         }
 
         const desconto = new DescontoEntity(input);

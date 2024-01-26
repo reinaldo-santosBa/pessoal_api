@@ -1,7 +1,7 @@
 import AfastamentoEntity, { AfastamentoProps } from "../../domain/entity/afastamento";
 import { AfastamentoRepository } from "../../domain/repository/afastamento.repository";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 export default class AfastamentoService {
     constructor(private readonly afastamentoRepository: AfastamentoRepository) {}
 
@@ -21,7 +21,7 @@ export default class AfastamentoService {
     async update(id: number, input: AfastamentoProps): Promise<AfastamentoEntity> {
         const afastamentoExisting = await this.afastamentoRepository.getById(id);
         if (!afastamentoExisting) {
-            throw new AppError("Afastamento não encontrado");
+            throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
         }
 
         const afastamento = new AfastamentoEntity(input);

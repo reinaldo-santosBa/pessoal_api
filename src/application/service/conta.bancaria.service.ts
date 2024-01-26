@@ -1,6 +1,7 @@
 import ContaBancariaEntity, { ContaBancariaProps } from "../../domain/entity/conta.bancaria";
 import { ContaBancariaRepository } from "../../domain/repository/conta.bancaria.repository";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export default class ContaBancariaService {
     constructor(private readonly contaBancariaRepository: ContaBancariaRepository) {}
@@ -20,7 +21,7 @@ export default class ContaBancariaService {
     async delete(id: number) {
         const contaBancariaExisting = await this.contaBancariaRepository.getById(id);
         if (!contaBancariaExisting) {
-            throw new AppError("Conta Bancaria não encontrada",404);
+            throw new AppError("Conta Bancaria não encontrada",status.NOT_FOUND);
         }
 
         await this.contaBancariaRepository.delete(id);
@@ -29,7 +30,7 @@ export default class ContaBancariaService {
     async update(id: number, input: ContaBancariaProps): Promise<ContaBancariaEntity> {
         const contaBancariaExisting = await this.contaBancariaRepository.getById(id);
         if (!contaBancariaExisting) {
-            throw new AppError("Conta Bancaria não encontrada",404);
+            throw new AppError("Conta Bancaria não encontrada",status.NOT_FOUND);
         }
 
         const contaBancaria = new ContaBancariaEntity(input);

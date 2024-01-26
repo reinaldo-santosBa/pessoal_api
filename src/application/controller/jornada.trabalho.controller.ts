@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { JornadaTrabalhoProps } from "../../domain/entity/jornada.trabalho";
 import JornadaTrabalhoService from "../service/jornada.trabalho.service";
 import Joi from "joi";
+import * as status from "../../constraints/http.stauts";
+
 
 const schemaValidation = Joi.object({
     jornada_trabalho: Joi.string().required(),
@@ -25,11 +27,11 @@ export default class JornadaTrabalhoController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(422).json({ error: error.details[0].message });
+            return response.status(status.UNPROCESSABLE_ENTITY).json({ error: error.details[0].message });
         }
 
         const jornada = await this.jornadaTrabalhoService.insert(input);
-        return response.status(201).json(jornada);
+        return response.status(status.CREATED).json(jornada);
     }
 
     async getAll(request: Request, response: Response) {
@@ -52,7 +54,7 @@ export default class JornadaTrabalhoController {
         const id: string = request.params.id;
         await this.jornadaTrabalhoService.delete(+id);
 
-        return response.status(204).json({});
+        return response.status(status.NO_CONTENT).json({});
     }
 }
 

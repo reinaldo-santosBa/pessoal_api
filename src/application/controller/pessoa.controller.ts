@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import FuncionarioService, { IFuncionario } from "../service/funcionario.service";
+import * as status from "../../constraints/http.stauts";
 
 export default class PessoaController {
     constructor(
@@ -11,6 +12,6 @@ export default class PessoaController {
 
         await this.funcionarioService.create(input);
 
-        return response.status(201).json({});
+        return response.status(status.CREATED).json({});
     }
 }

@@ -2,7 +2,7 @@ import AppError from "../../application/errors/AppError";
 import DescontoEntity from "../../domain/entity/desconto";
 import { DescontoRepository } from "../../domain/repository/desconto.repository";
 import conn from "../config/database.config";
-
+import * as status from "../../constraints/http.stauts";
 export default class DescontoPostgresRepository implements DescontoRepository {
 
     async insert(input: DescontoEntity): Promise<DescontoEntity> {
@@ -20,7 +20,7 @@ export default class DescontoPostgresRepository implements DescontoRepository {
 
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -30,7 +30,7 @@ export default class DescontoPostgresRepository implements DescontoRepository {
             const desconto = await conn.query("SELECT ID, DESCONTO FROM DESCONTOS");
             return desconto.rows;
         } catch (error) {
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
 
     }
@@ -47,7 +47,7 @@ export default class DescontoPostgresRepository implements DescontoRepository {
             return desconto.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -59,7 +59,7 @@ export default class DescontoPostgresRepository implements DescontoRepository {
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

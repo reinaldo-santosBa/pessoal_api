@@ -1,7 +1,7 @@
 import DiaJornadaTrabalhoEntity, { DiaJornadaTrabalhoProps } from "../../domain/entity/dia.jornada.trabalho";
 import { DiaJornadaTrabalhoRepository } from "../../domain/repository/dia.jornada.trabalho.repository";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 export default class DiaJornadaTrabalhoService {
     constructor(
     private readonly diaJornadaTrabalhoRepository: DiaJornadaTrabalhoRepository,
@@ -24,7 +24,7 @@ export default class DiaJornadaTrabalhoService {
         const diaJornadaTrabalho =
       await this.diaJornadaTrabalhoRepository.getById(id);
         if (!diaJornadaTrabalho) {
-            throw new AppError("Dia Jornada de trabalho não encontrado");
+            throw new AppError("Dia Jornada de trabalho não encontrado", status.NOT_FOUND);
         }
         await this.diaJornadaTrabalhoRepository.delete(id);
     }
@@ -36,7 +36,7 @@ export default class DiaJornadaTrabalhoService {
         const diaJornadaTrabalhoExisting =
       await this.diaJornadaTrabalhoRepository.getById(id);
         if (!diaJornadaTrabalhoExisting) {
-            throw new AppError("Dia Jornada de trabalho não encontrado");
+            throw new AppError("Dia Jornada de trabalho não encontrado", status.NOT_FOUND);
         }
 
         const diaTrabalho = new DiaJornadaTrabalhoEntity(input);

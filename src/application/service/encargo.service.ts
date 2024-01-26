@@ -1,7 +1,7 @@
 import EncargoEntity, { EncargoProps } from "../../domain/entity/encargos";
 import { EncargoRepository } from "../../domain/repository/encargo.repository";
 import AppError from "../errors/AppError";
-
+import * as status from "../../constraints/http.stauts";
 export default class EncargoService {
     constructor(private readonly encargoRepository: EncargoRepository) {}
 
@@ -18,7 +18,7 @@ export default class EncargoService {
     async delete(id: number): Promise<void> {
         const encargoExisting = await this.encargoRepository.getById(id);
         if (!encargoExisting) {
-            throw new AppError("Encargo não encontrado",404);
+            throw new AppError("Encargo não encontrado",status.NOT_FOUND);
         }
 
         await this.encargoRepository.delete(id);
@@ -28,7 +28,7 @@ export default class EncargoService {
     async update(id: number, input: EncargoProps): Promise<EncargoEntity> {
         const encargoExisting = await this.encargoRepository.getById(id);
         if (!encargoExisting) {
-            throw new AppError("Encargo não encontrado",404);
+            throw new AppError("Encargo não encontrado",status.NOT_FOUND);
         }
 
         const encargo = new EncargoEntity(input);

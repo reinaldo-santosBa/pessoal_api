@@ -6,6 +6,7 @@ import PessoaFisicaEntity, { PessoaFisicaProps } from "../../domain/entity/pesso
 import { TelefoneProps } from "../../domain/entity/telefones";
 import { FuncionarioRepository } from "../../domain/repository/funcionario.repository";
 import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export interface IFuncionario {
   pessoa: PessoaProps;
@@ -34,7 +35,7 @@ export default class FuncionarioService {
 
             return;
         } catch (error) {
-            throw new AppError(error.message,500);
+            throw new AppError(error.message,status.INTERNAL_SERVER);
         }
     }
 }

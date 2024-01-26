@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import DiaJornadaTrabalhoService from "../service/dia.jornada.trabalho.service";
 import { DiaJornadaTrabalhoProps } from "../../domain/entity/dia.jornada.trabalho";
+import * as status from "../../constraints/http.stauts";
+
 
 export default class DiaTrabalhoController {
     constructor(private readonly diaTrabalhoService: DiaJornadaTrabalhoService) {}
@@ -8,13 +10,13 @@ export default class DiaTrabalhoController {
     async create(request: Request, response: Response) {
         const input = request.body as DiaJornadaTrabalhoProps;
         const diaTrabalho = await this.diaTrabalhoService.create(input);
-        return response.json(diaTrabalho);
+        return response.status(status.CREATED).json(diaTrabalho);
     }
 
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.diaTrabalhoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 
     async update(request: Request, response: Response) {

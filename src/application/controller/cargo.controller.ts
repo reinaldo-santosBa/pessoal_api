@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CargosService from "../service/cargos.service";
 import { CargoProps } from "../../domain/entity/cargo";
-
+import * as status from "../../constraints/http.stauts";
 import Joi from "joi";
 
 const schemaValidation = Joi.object({
@@ -20,12 +20,12 @@ export default class CargoController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(422).json({ error: error.details[0].message });
+            return response.status(status.UNPROCESSABLE_ENTITY).json({ error: error.details[0].message });
         }
 
         const cargo =  await this.cargoService.create(input);
 
-        return response.status(201).json(cargo);
+        return response.status(status.CREATED).json(cargo);
     }
 
     async getAll(request: Request, response: Response) {
@@ -46,6 +46,6 @@ export default class CargoController {
         const id = request.params.id;
 
         await this.cargoService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }

@@ -1,6 +1,7 @@
 import { TelefoneProps } from "../../domain/entity/telefones";
 import TelefoneService from "../service/telefone.service";
 import { Request, Response } from "express";
+import * as status from "../../constraints/http.stauts";
 
 export default class TelefoneController {
     constructor(private readonly telefoneService: TelefoneService) {}
@@ -9,7 +10,7 @@ export default class TelefoneController {
         const input = request.body as TelefoneProps;
         const telefoneNew = await this.telefoneService.create(input);
 
-        return response.status(201).json(telefoneNew);
+        return response.status(status.CREATED).json(telefoneNew);
     }
 
     async getByIdPessoa(request: Request, response: Response) {
@@ -30,7 +31,7 @@ export default class TelefoneController {
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.telefoneService.delete(+id);
-        return response.status(204).json();
+        return response.status(status.NO_CONTENT).json();
     }
 }
 
