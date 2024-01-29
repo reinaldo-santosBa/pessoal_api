@@ -22,7 +22,7 @@ tipoFolhaRoutes.put("/tipo_folha/:id", (req, res) =>
 );
 
 
-tipoFolhaRoutes.post("/tipo_folha/:id", (req, res) =>
+tipoFolhaRoutes.delete("/tipo_folha/:id", (req, res) =>
     tipoFolhaController.delete(req, res),
 );
 
