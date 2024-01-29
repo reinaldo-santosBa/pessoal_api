@@ -1,5 +1,6 @@
 import EnderecoEntity from "./endereco";
 
+
 describe("test entity address", () => {
     test("create address", async () => {
         const sut = new EnderecoEntity({
@@ -16,3 +17,4 @@ describe("test entity address", () => {
         expect(sut.props.cep).toBe("12345678");
     });
 });
+

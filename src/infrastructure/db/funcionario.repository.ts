@@ -1,6 +1,7 @@
 import { FuncionarioRepository, IInput } from "../../domain/repository/funcionario.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
+import AppError from "../../application/errors/AppError";
 
 export default class FuncionarioPostgresRepository
 implements FuncionarioRepository
@@ -80,7 +81,7 @@ implements FuncionarioRepository
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
-            console.error(error, status.INTERNAL_SERVER);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 }

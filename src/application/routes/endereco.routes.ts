@@ -39,6 +39,11 @@ routesEndereco.get("/bairros/:cidade_id", (req, res) =>
 );
 
 
+routesEndereco.get("/bairro/:id", (req, res) =>
+    enderecoController.getBairroById(req, res),
+);
+
+
 routesEndereco.put("/endereco/:id", (req, res) =>
     enderecoController.update(req,res)
 );

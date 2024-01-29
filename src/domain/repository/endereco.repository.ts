@@ -15,4 +15,5 @@ export interface EnderecoRepository {
   getEstados(regiao_id: number): Promise<EstadoProps[]>;
   getCidades(estado_id: number): Promise<CidadesProps[]>;
   getBairros(cidade_id: number): Promise<BairrosProps[]>;
+  getBairroById(id: number): Promise<BairrosProps>;
 }

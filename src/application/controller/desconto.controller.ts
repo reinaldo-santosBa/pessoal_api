@@ -8,9 +8,9 @@ export default class DescontoController {
     constructor(private readonly descontoService: DescontoService) {}
 
     async create(request: Request, response: Response) {
-        const input = request.body as DescontoProps;
+        const desconto = request.body as DescontoProps;
 
-        const newDesconto = await this.descontoService.create(input);
+        const newDesconto = await this.descontoService.create(desconto);
         return response.status(status.CREATED).json(newDesconto);
     }
 

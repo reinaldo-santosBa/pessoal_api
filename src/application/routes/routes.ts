@@ -19,6 +19,8 @@ import routesDiaTrabalho from "./dia.trabalho.routes";
 import routesModeloContrato from "./modelo.contrato.routes";
 import routesDesconto from "./desconto.routes";
 import routesProvisao from "./provisao.routes";
+import horaTrabalhadaRoutes from "./hora.trabalhada.routes";
+import tipoFolhaRoutes from "./tipo.folha.routes";
 
 const routes = Router();
 
@@ -42,5 +44,8 @@ routes.use(routesDiaTrabalho);
 routes.use(routesModeloContrato);
 routes.use(routesDesconto);
 routes.use(routesProvisao);
+routes.use(horaTrabalhadaRoutes);
+routes.use(tipoFolhaRoutes);
+
 
 export default routes;

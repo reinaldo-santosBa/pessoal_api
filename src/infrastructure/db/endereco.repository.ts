@@ -5,6 +5,15 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class EnderecoPostgresRepository implements EnderecoRepository {
+    async getBairroById(id: number): Promise<BairrosProps> {
+        try {
+            const bairro = await conn.query(`SELECT ID, BAIRRO FROM BAIRROS WHERE ID = ${id}`);
+
+            return bairro.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
 
     async getRegioes(): Promise<RigoesProps[]> {
         try {

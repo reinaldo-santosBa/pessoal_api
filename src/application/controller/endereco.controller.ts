@@ -24,14 +24,15 @@ export default class EnderecoController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(status.UNPROCESSABLE_ENTITY).json({error: error.details[0].message});
+            return response
+                .status(status.UNPROCESSABLE_ENTITY)
+                .json({ error: error.details[0].message });
         }
 
         const newEndereco = await this.enderecoService.create(input);
 
         return response.status(status.CREATED).json(newEndereco);
     }
-
 
     async update(request: Request, response: Response) {
         const id = request.params.id;
@@ -41,13 +42,11 @@ export default class EnderecoController {
         return response.json(updateEndereco);
     }
 
-
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.enderecoService.delete(+id);
         return response.status(status.NO_CONTENT).json();
     }
-
 
     async getByIdPessoa(request: Request, response: Response) {
         const pessoa_id = request.params.pessoa_id;
@@ -55,12 +54,10 @@ export default class EnderecoController {
         return response.json(enderecos);
     }
 
-
     async getRegioes(request: Request, response: Response) {
         const regioes = await this.enderecoService.getRegioes();
         return response.json(regioes);
     }
-
 
     async getEstados(request: Request, response: Response) {
         const regiao_id = request.params.regiao_id;
@@ -68,17 +65,21 @@ export default class EnderecoController {
         return response.json(estados);
     }
 
-
     async getCidades(request: Request, response: Response) {
         const estado_id = request.params.estado_id;
         const cidades = await this.enderecoService.getCidades(+estado_id);
         return response.json(cidades);
     }
 
-
     async getBairros(request: Request, response: Response) {
         const cidade_id = request.params.cidade_id;
         const bairros = await this.enderecoService.getBairros(+cidade_id);
+        return response.json(bairros);
+    }
+
+    async getBairroById(request: Request, response: Response) {
+        const id = request.params.id;
+        const bairros = await this.enderecoService.getBairroById(+id);
         return response.json(bairros);
     }
 }

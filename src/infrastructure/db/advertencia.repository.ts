@@ -21,7 +21,6 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
               '${input.props.advertencia}',
               '${input.props.data}'
             ) RETURNING *`);
-            console.log(advertencia);
             await conn.query("COMMIT");
 
             return advertencia.rows[0];

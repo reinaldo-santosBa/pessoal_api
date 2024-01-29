@@ -76,4 +76,9 @@ export default class EnderecoService {
         const bairros = await this.enderecoRepository.getBairros(cidade_id);
         return bairros;
     }
+
+    async getBairroById(id: number): Promise<BairrosProps> {
+        const bairro = await this.enderecoRepository.getBairroById(id);
+        return bairro;
+    }
 }
