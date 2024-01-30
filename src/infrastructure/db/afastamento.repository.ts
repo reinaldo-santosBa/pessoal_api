@@ -5,6 +5,40 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class AfastamentoPostgresRepository implements AfastamentoRepository {
+
+    async getById(id: number): Promise<AfastamentoEntity> {
+        try {
+            const afastamento = await conn.query(`SELECT
+            id,
+            data_afastamento,
+            data_retorno,
+            motivo_afastamento,
+            funcionario_id,
+            tipo_afastamento_id
+           FROM  AFASTAMENTOS WHERE id = ${id}`);
+            return afastamento.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+    async getAll(): Promise<AfastamentoEntity[]> {
+        try {
+            const afastamentos = await conn.query(`SELECT
+            id,
+            data_afastamento,
+            data_retorno,
+            motivo_afastamento,
+            funcionario_id,
+            tipo_afastamento_id
+           FROM  AFASTAMENTOS`);
+            return afastamentos.rows;
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+
     async insert(input: AfastamentoEntity): Promise<AfastamentoEntity> {
         try {
             await conn.query("BEGIN");
@@ -29,7 +63,10 @@ export default class AfastamentoPostgresRepository implements AfastamentoReposit
         }
     }
 
-    async update(id: number, input: AfastamentoEntity): Promise<AfastamentoEntity> {
+    async update(
+        id: number,
+        input: AfastamentoEntity,
+    ): Promise<AfastamentoEntity> {
         try {
             await conn.query("BEGIN");
             const afastamento = await conn.query(`UPDATE AFASTAMENTOS SET
@@ -48,8 +85,10 @@ export default class AfastamentoPostgresRepository implements AfastamentoReposit
         }
     }
 
-    async getById(id: number): Promise<number> {
-        const afastamentoCount = await conn.query(`SELECT * FROM AFASTAMENTOS WHERE ID = ${id}`);
+    async getByIdExisting(id: number): Promise<number> {
+        const afastamentoCount = await conn.query(
+            `SELECT * FROM AFASTAMENTOS WHERE ID = ${id}`,
+        );
         return afastamentoCount.rowCount;
     }
 
@@ -64,7 +103,9 @@ export default class AfastamentoPostgresRepository implements AfastamentoReposit
         }
     }
 
-    async getByIdFuncionario (funcionario_id: number): Promise<AfastamentoEntity[]> {
+    async getByIdFuncionario(
+        funcionario_id: number,
+    ): Promise<AfastamentoEntity[]> {
         const afastamentos = await conn.query(`SELECT
             id,
             data_afastamento,

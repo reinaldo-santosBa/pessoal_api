@@ -13,9 +13,18 @@ routesAfastamento.post("/afastamento", (req, res) =>
     afastamentoController.create(req, res),
 );
 
-routesAfastamento.get("/afastamento/:funcionario_id", (req, res) =>
+/*routesAfastamento.get("/afastamento/:funcionario_id", (req, res) =>
     afastamentoController.getByIdFuncionario(req, res),
+);*/
+
+routesAfastamento.get("/afastamento/:id", (req, res) =>
+    afastamentoController.getById(req, res),
 );
+
+routesAfastamento.get("/afastamento", (req, res) =>
+    afastamentoController.getAll(req, res),
+);
+
 
 routesAfastamento.put("/afastamento/:id", (req, res) =>
     afastamentoController.update(req, res),

@@ -52,4 +52,18 @@ export default class AfastamentoController {
         await this.afastamentoService.delete(+id);
         return response.status(status.NO_CONTENT).json();
     }
+
+    async getAll(request: Request, response: Response) {
+        const afastamentos = await this.afastamentoService.getAll();
+        return response.json(afastamentos);
+    }
+
+    async getById(
+        request: Request,
+        response: Response,
+    ) {
+        const id = request.params.id;
+        const afastamento = await this.afastamentoService.getById(+id);
+        return response.json(afastamento);
+    }
 }

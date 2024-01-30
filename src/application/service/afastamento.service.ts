@@ -19,7 +19,8 @@ export default class AfastamentoService {
     }
 
     async update(id: number, input: AfastamentoProps): Promise<AfastamentoEntity> {
-        const afastamentoExisting = await this.afastamentoRepository.getById(id);
+        const afastamentoExisting =
+          await this.afastamentoRepository.getByIdExisting(id);
         if (!afastamentoExisting) {
             throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
         }
@@ -31,6 +32,23 @@ export default class AfastamentoService {
     }
 
     async delete(id: number): Promise<void> {
+        const afastamentoExisting =
+          await this.afastamentoRepository.getByIdExisting(id);
+        if (!afastamentoExisting) {
+            throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
+        }
+
         await this.afastamentoRepository.delete(id);
+    }
+
+    async getAll(): Promise<AfastamentoEntity[]> {
+        const afastamentos = await this.afastamentoRepository.getAll();
+        return afastamentos;
+    }
+
+    async getById(id: number): Promise<AfastamentoEntity> {
+        const afastamento = await this.afastamentoRepository.getById(id);
+        return afastamento;
+
     }
 }
