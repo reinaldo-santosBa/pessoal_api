@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import FuncionarioService, { IInput } from "../service/funcionario.service";
+import FuncionarioService, { IInputProps } from "../service/funcionario.service";
 import * as status from "../../constraints/http.stauts";
 import Joi from "joi";
 
@@ -80,7 +80,7 @@ export default class FuncionarioController {
     constructor(private readonly funcionarioService: FuncionarioService) {}
 
     async create(request: Request, response: Response) {
-        const input = request.body as IInput;
+        const input = request.body as IInputProps;
         const { error } = schemaValidation.validate(input);
 
         if (error) {
@@ -88,9 +88,13 @@ export default class FuncionarioController {
                 .status(status.UNPROCESSABLE_ENTITY)
                 .json({ error: error.details[0].message });
         }
-        console.log(input);
 
         const funcionario = await this.funcionarioService.create(input);
         return response.status(status.CREATED).json(funcionario);
+    }
+
+    async getAll(request: Request, response: Response) {
+        const funcionarios = await this.funcionarioService.getAll();
+        return response.json(funcionarios);
     }
 }

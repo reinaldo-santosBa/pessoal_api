@@ -5,9 +5,10 @@ import FuncionarioEntity, { FuncionarioProps } from "../../domain/entity/funcion
 import PessoaEntity, { PessoaProps } from "../../domain/entity/pessoa";
 import PessoaFisicaEntity, { PessoaFisicaProps } from "../../domain/entity/pessoa.fisica";
 import TelefoneEntity, { TelefoneProps } from "../../domain/entity/telefones";
-import { FuncionarioRepository } from "../../domain/repository/funcionario.repository";
+import { FuncionarioRepository, IInput } from "../../domain/repository/funcionario.repository";
+import { AllFuncionariosOutput } from "../../infrastructure/db/funcionario.repository";
 
-export type IInput = {
+export type IInputProps = {
   pessoa: PessoaProps;
   funcionario: FuncionarioProps;
   pessoa_fisica: PessoaFisicaProps;
@@ -30,7 +31,7 @@ export default class FuncionarioService {
         emails,
         telefones,
         contas_bancarias
-    }: IInput) {
+    }: IInputProps): Promise<IInput> {
         const funcionarioResponse = await this.funcionarioRepository.insert({
             pessoa: new PessoaEntity(pessoa),
             funcionario: new FuncionarioEntity(funcionario),
@@ -50,5 +51,10 @@ export default class FuncionarioService {
         });
 
         return funcionarioResponse;
+    }
+
+    async getAll(): Promise<AllFuncionariosOutput[]> {
+        const funcionarios = await this.funcionarioRepository.getAll();
+        return funcionarios;
     }
 }

@@ -17,6 +17,10 @@ routesCusta.get("/custa/:funcionario_id", (req, res) =>
     custaController.getAllFuncionarioId(req, res)
 );
 
+routesCusta.get("/custa", (req, res) =>
+    custaController.getAll(req, res)
+);
+
 
 routesCusta.put("/custa/:id", (req, res) =>
     custaController.update(req, res)

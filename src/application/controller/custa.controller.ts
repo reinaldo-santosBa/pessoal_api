@@ -22,7 +22,9 @@ export default class CustaController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(status.UNPROCESSABLE_ENTITY).json({ error: error.details[0].message });
+            return response
+                .status(status.UNPROCESSABLE_ENTITY)
+                .json({ error: error.details[0].message });
         }
 
         const newCusta = await this.custaService.create(input);
@@ -41,6 +43,11 @@ export default class CustaController {
 
         const updateCusta = await this.custaService.update(+id, input);
         return response.json(updateCusta);
+    }
+
+    async getAll(request: Request, response: Response) {
+        const custas = await this.custaService.getAll();
+        return response.json(custas);
     }
 
     async delete(request: Request, response: Response) {

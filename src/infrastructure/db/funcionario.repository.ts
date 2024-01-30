@@ -6,6 +6,22 @@ import EmailEntity from "../../domain/entity/email";
 import TelefoneEntity from "../../domain/entity/telefones";
 import EnderecoEntity from "../../domain/entity/endereco";
 import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
+import PessoaEntity from "../../domain/entity/pessoa";
+import PessoaFisicaEntity from "../../domain/entity/pessoa.fisica";
+import FuncionarioEntity from "../../domain/entity/funcionario";
+
+export interface AllFuncionariosOutput {
+  id: number;
+  ativo: boolean;
+  nome: string;
+  cpf: string;
+  carteira_trabalho: string;
+  nascimento: Date;
+  empresa_id: number;
+  cargo: string;
+  registrado: boolean;
+}
+
 
 export default class FuncionarioPostgresRepository implements FuncionarioRepository {
     async insert({
@@ -16,7 +32,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         emails,
         enderecos,
         telefones,
-    }: IInput): Promise<any> {
+    }: IInput): Promise<IInput> {
         try {
             await conn.query("BEGIN");
 
@@ -206,12 +222,56 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         throw new Error("Method not implemented.");
     }
 
-    async getAll(): Promise<any> {
-        throw new Error("Method not implemented.");
+    async getAll(): Promise<AllFuncionariosOutput[]> {
+        try {
+            const funcionarios = await conn.query(`SELECT
+                        p.id,
+                        p.ativo,
+                        pf.nome,
+                        pf.cpf,
+                        pf.carteira_trabalho,
+                        pf.nascimento,
+                        f.empresa_id,
+                        c.cargo,
+                        f.registrado
+                      FROM
+                          pessoas AS p
+                      INNER JOIN
+                          pessoas_fisica AS pf ON p.id = pf.id
+                      INNER JOIN
+                          funcionarios AS f ON p.id = f.id
+                      inner  join
+                      cargos as c on f.cargo_id  = c.id `);
+            return funcionarios.rows;
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
     }
 
-
-    async getById(pessoa_id: number): Promise<any> {
-        throw new Error("Method not implemented.");
+    async getById(pessoa_id: number): Promise<AllFuncionariosOutput> {
+        try {
+            const funcionarios = await conn.query(`SELECT
+                        p.id,
+                        p.ativo,
+                        pf.nome,
+                        pf.cpf,
+                        pf.carteira_trabalho,
+                        pf.nascimento,
+                        f.empresa_id,
+                        c.cargo,
+                        f.registrado
+                      FROM
+                          pessoas AS p
+                      INNER JOIN
+                          pessoas_fisica AS pf ON p.id = pf.id
+                      INNER JOIN
+                          funcionarios AS f ON p.id = f.id
+                      inner  join
+                      cargos as c on f.cargo_id  = c.id
+                      WHERE p.id = ${pessoa_id}`);
+            return funcionarios.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
     }
 }

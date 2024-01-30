@@ -34,6 +34,10 @@ export default class CustaService {
         const updateCusta = await this.custaRepository.update(id, custa);
         return updateCusta;
     }
+    async getAll(): Promise<CustaEntity[]> {
+        const custas = await this.custaRepository.getAll();
+        return custas;
+    }
 
 
     async delete(id: number): Promise<void> {

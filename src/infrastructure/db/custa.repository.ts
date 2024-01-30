@@ -4,6 +4,21 @@ import { CustaRepository } from "../../domain/repository/custa.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 export default class CustaPostgresRepository implements CustaRepository {
+    async getAll(): Promise<CustaEntity[]> {
+        try {
+            const custas = await conn.query(`SELECT
+            id,
+            funcionario_id,
+            responsavel_id,
+            produto_id,
+            servico_id,
+            data_custa
+            FROM CUSTAS`);
+            return custas.rows;
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
 
     async insert(input: CustaEntity): Promise<CustaEntity> {
         try {

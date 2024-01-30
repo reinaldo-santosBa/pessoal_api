@@ -29,7 +29,7 @@ export default class HoraTrabalhadaPostgresRepository implements HoraTrabalhadaR
     async insert(input: HoraTrabalhadaEntity): Promise<HoraTrabalhadaEntity> {
         try{
             await conn.query("BEGIN");
-            console.log(input);
+
             const horasTrabalhada = await conn.query(
                 `INSERT INTO  horas_trabalhadas_funcionarios(
                                 funcionario_id,
@@ -47,7 +47,7 @@ export default class HoraTrabalhadaPostgresRepository implements HoraTrabalhadaR
                   '${input.props.hora_fim_turno_2}'
                 ) RETURNING *`,
             );
-            console.log(horasTrabalhada);
+
             await conn.query("COMMIT");
             return horasTrabalhada.rows[0];
         } catch (error) {
