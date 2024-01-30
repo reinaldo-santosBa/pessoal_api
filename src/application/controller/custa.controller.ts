@@ -50,6 +50,12 @@ export default class CustaController {
         return response.json(custas);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const custa = await this.custaService.getById(+id);
+        return response.json(custa);
+    }
+
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.custaService.delete(+id);

@@ -21,6 +21,10 @@ routesCusta.get("/custa", (req, res) =>
     custaController.getAll(req, res)
 );
 
+routesCusta.get("/custa/:id", (req, res) =>
+    custaController.getById(req, res)
+);
+
 
 routesCusta.put("/custa/:id", (req, res) =>
     custaController.update(req, res)

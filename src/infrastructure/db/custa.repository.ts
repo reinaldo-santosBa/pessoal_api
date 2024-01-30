@@ -4,6 +4,23 @@ import { CustaRepository } from "../../domain/repository/custa.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 export default class CustaPostgresRepository implements CustaRepository {
+    async getById(id: number): Promise<CustaEntity> {
+        try {
+            const custa = await conn.query(`SELECT
+            id,
+            funcionario_id,
+            responsavel_id,
+            produto_id,
+            servico_id,
+            data_custa
+            FROM CUSTAS where id = ${id}`);
+
+            return custa.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async getAll(): Promise<CustaEntity[]> {
         try {
             const custas = await conn.query(`SELECT
@@ -22,7 +39,6 @@ export default class CustaPostgresRepository implements CustaRepository {
 
     async insert(input: CustaEntity): Promise<CustaEntity> {
         try {
-
             await conn.query("BEGIN");
             const custa = await conn.query(`INSERT INTO CUSTAS (
             funcionario_id,
@@ -40,7 +56,6 @@ export default class CustaPostgresRepository implements CustaRepository {
 
             await conn.query("COMMIT");
             return custa.rows[0];
-
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
@@ -84,16 +99,17 @@ export default class CustaPostgresRepository implements CustaRepository {
         }
     }
 
-    async getById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         try {
-            const custaCount = await conn.query(`SELECT ID FROM CUSTAS WHERE ID = ${id}`);
+            const custaCount = await conn.query(
+                `SELECT ID FROM CUSTAS WHERE ID = ${id}`,
+            );
 
             return custaCount.rowCount;
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
-
 
     async delete(id: number): Promise<void> {
         try {

@@ -3,9 +3,7 @@ import { CustaRepository } from "../../domain/repository/custa.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 export default class CustaService {
-
-    constructor(private readonly custaRepository: CustaRepository) { }
-
+    constructor(private readonly custaRepository: CustaRepository) {}
 
     async create(input: CustaProps): Promise<CustaEntity> {
         if (!input.data_custa) {
@@ -16,15 +14,14 @@ export default class CustaService {
         return newCusta;
     }
 
-
     async getAllFuncionarioId(funcionario_id: number): Promise<CustaEntity[]> {
-        const custa = await this.custaRepository.getAllFuncionarioId(funcionario_id);
+        const custa =
+      await this.custaRepository.getAllFuncionarioId(funcionario_id);
         return custa;
     }
 
-
     async update(id: number, input: CustaProps): Promise<CustaEntity> {
-        const custaExisting = await this.custaRepository.getById(id);
+        const custaExisting = await this.custaRepository.getByIdExisting(id);
 
         if (!custaExisting) {
             throw new AppError("Custa não encontrado", status.NOT_FOUND);
@@ -39,9 +36,13 @@ export default class CustaService {
         return custas;
     }
 
+    async getById(id: number): Promise<CustaEntity>{
+        const custa = await this.custaRepository.getById(id);
+        return custa;
+    }
 
     async delete(id: number): Promise<void> {
-        const custaExisting = await this.custaRepository.getById(id);
+        const custaExisting = await this.custaRepository.getByIdExisting(id);
 
         if (!custaExisting) {
             throw new AppError("Custa não encontrado", status.NOT_FOUND);
