@@ -17,6 +17,10 @@ routesCargo.get("/cargo", (req, res) =>
     cargoController.getAll(req, res)
 );
 
+routesCargo.get("/cargo/:id", (req, res) =>
+    cargoController.getById(req, res)
+);
+
 routesCargo.put("/cargo/:id", (req, res) =>
     cargoController.update(req, res)
 );

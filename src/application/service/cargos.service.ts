@@ -32,7 +32,7 @@ export default class CargosService {
             throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
         }
 
-        const cargoExisting = await this.cargoRepository.getById(id);
+        const cargoExisting = await this.cargoRepository.getByIdExisting(id);
 
         if (!cargoExisting) {
             throw new AppError("Cargo não encontrado", status.NOT_FOUND);
@@ -44,8 +44,13 @@ export default class CargosService {
         return cargoUpdate;
     }
 
+    async getById(id: number): Promise<CargoEntity> {
+        const cargo = await this.cargoRepository.getById(id);
+        return cargo;
+    }
+
     async delete(id: number) {
-        const cargoExisting = await this.cargoRepository.getById(id);
+        const cargoExisting = await this.cargoRepository.getByIdExisting(id);
 
         if (!cargoExisting) {
             throw new AppError("Cargo não encontrado", status.NOT_FOUND);

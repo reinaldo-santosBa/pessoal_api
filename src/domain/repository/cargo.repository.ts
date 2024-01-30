@@ -5,5 +5,6 @@ export interface CargoRepository {
   getAll(): Promise<CargoEntity[]>;
   update(id: number, input: CargoEntity): Promise<CargoEntity>;
   delete(id: number): Promise<void>;
-  getById(id: number): Promise<number>;
+  getByIdExisting(id: number): Promise<number>;
+  getById(id: number): Promise<CargoEntity>;
 }

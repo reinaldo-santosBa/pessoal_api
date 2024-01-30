@@ -20,10 +20,12 @@ export default class CargoController {
         const { error } = schemaValidation.validate(input);
 
         if (error) {
-            return response.status(status.UNPROCESSABLE_ENTITY).json({ error: error.details[0].message });
+            return response
+                .status(status.UNPROCESSABLE_ENTITY)
+                .json({ error: error.details[0].message });
         }
 
-        const cargo =  await this.cargoService.create(input);
+        const cargo = await this.cargoService.create(input);
 
         return response.status(status.CREATED).json(cargo);
     }
@@ -39,6 +41,12 @@ export default class CargoController {
         const input = request.body as CargoProps;
 
         const cargo = await this.cargoService.update(+id, input);
+        return response.json(cargo);
+    }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const cargo = await this.cargoService.getById(+id);
         return response.json(cargo);
     }
 

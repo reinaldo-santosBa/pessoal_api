@@ -6,6 +6,22 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class CargoPostgresRepository implements CargoRepository {
+    async getById(id: number): Promise<CargoEntity> {
+        try {
+            const cargo = await conn.query(`SELECT
+            ID,
+        CARGO,
+        REMUNERACAO,
+        COMISSAO_DIRETA,
+        COMISSAO_INDIRETA,
+        JORNADA_TRABALHO_ID
+      FROM CARGOS WHERE ID = ${id}`);
+            return cargo.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async insert(input: CargoEntity): Promise<CargoEntity> {
         try {
             await conn.query("BEGIN");
@@ -28,7 +44,7 @@ export default class CargoPostgresRepository implements CargoRepository {
             return cargo.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
-            throw new AppError(error.message,status.INTERNAL_SERVER);
+            throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
 
@@ -51,8 +67,9 @@ export default class CargoPostgresRepository implements CargoRepository {
         }
     }
 
-    async getById(id: number): Promise<number> {
-        const cargo = (await conn.query(`SELECT * FROM CARGOS WHERE ID = ${id}`)).rowCount;
+    async getByIdExisting(id: number): Promise<number> {
+        const cargo = (await conn.query(`SELECT * FROM CARGOS WHERE ID = ${id}`))
+            .rowCount;
 
         return cargo;
     }
