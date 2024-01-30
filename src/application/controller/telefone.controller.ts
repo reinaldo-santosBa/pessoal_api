@@ -2,12 +2,26 @@ import { TelefoneProps } from "../../domain/entity/telefones";
 import TelefoneService from "../service/telefone.service";
 import { Request, Response } from "express";
 import * as status from "../../constraints/http.stauts";
+import Joi from "joi";
 
+const schemaValidation = Joi.object({
+    pessoa_id: Joi.number().required(),
+    numero: Joi.string().required(),
+    tipo_telefne_id: Joi.number().allow(null)
+});
 export default class TelefoneController {
     constructor(private readonly telefoneService: TelefoneService) {}
 
     async create(request: Request, response: Response) {
         const input = request.body as TelefoneProps;
+        const { error } = schemaValidation.validate(input);
+
+        if (error) {
+            return response
+                .status(status.UNPROCESSABLE_ENTITY)
+                .json({ error: error.details[0].message });
+        }
+
         const telefoneNew = await this.telefoneService.create(input);
 
         return response.status(status.CREATED).json(telefoneNew);

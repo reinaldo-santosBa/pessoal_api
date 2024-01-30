@@ -10,12 +10,4 @@ export default class PessoaEntity {
             ...props,
         };
     }
-
-    get getAtivo() {
-        return this.props.ativo;
-    }
-
-    private set setAtivo(ativo: boolean) {
-        this.props.ativo = ativo;
-    }
 }

@@ -5,6 +5,8 @@ export type HoraTrabalhadaProps = {
   hora_inicio_turno_2: Date;
   hora_fim_turno_1: Date;
   hora_fim_turno_2: Date;
+
+  [key: string]: string | number | Date;
 };
 
 export default class HoraTrabalhadaEntity {

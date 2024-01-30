@@ -1,13 +1,13 @@
 import { Router } from "express";
-import PessoaController from "../controller/pessoa.controller";
-import PessoaService from "../service/funcionario.service";
 import FuncionarioPostgresRepository from "../../infrastructure/db/funcionario.repository";
+import FuncionarioController from "../controller/funcionario.controller";
+import FuncionarioService from "../service/funcionario.service";
 
 const routesFuncionario = Router();
 
 const funcionarioRepository = new FuncionarioPostgresRepository();
-const funcionarioService = new PessoaService(funcionarioRepository);
-const funcionarioController = new PessoaController(funcionarioService);
+const funcionarioService = new FuncionarioService(funcionarioRepository);
+const funcionarioController = new FuncionarioController(funcionarioService);
 
 routesFuncionario.post("/funcionario", (req, res) =>
     funcionarioController.create(req, res),
