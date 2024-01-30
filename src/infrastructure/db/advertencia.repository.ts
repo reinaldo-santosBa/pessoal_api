@@ -6,6 +6,33 @@ import * as status from "../../constraints/http.stauts";
 
 export default class AdvertenciaPostgresRepository implements AdvertenciaRepository {
 
+    async getAll(): Promise<AdvertenciaEntity[]> {
+        try {
+            const advertencias = await conn.query(`SELECT  id, funcionario_id,
+            responsavel_id,
+            advertencia,
+            data FROM ADVERTENCIAS`);
+
+            return advertencias.rows;
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+    async getById(id: number): Promise<AdvertenciaEntity> {
+        try {
+            const advertencia = await conn.query(`SELECT  id, funcionario_id,
+            responsavel_id,
+            advertencia,
+            data FROM ADVERTENCIAS WHERE ID = ${id}`);
+
+            return advertencia.rows[0];
+        }catch(error){
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+
     async insert(input: AdvertenciaEntity): Promise<AdvertenciaEntity> {
         try {
             await conn.query("BEGIN");
@@ -17,22 +44,23 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
             data
             ) VALUES (
               ${input.props.funcionario_id},
-              ${input.props.responsavel_id },
+              ${input.props.responsavel_id},
               '${input.props.advertencia}',
               '${input.props.data}'
             ) RETURNING *`);
             await conn.query("COMMIT");
 
             return advertencia.rows[0];
-
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
-    async update(id: number, input: AdvertenciaEntity): Promise<AdvertenciaEntity> {
+    async update(
+        id: number,
+        input: AdvertenciaEntity,
+    ): Promise<AdvertenciaEntity> {
         try {
             await conn.query("BEGIN");
             const updateAdvertencia = await conn.query(`UPDATE ADVERTENCIAS
@@ -44,15 +72,13 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
 
             await conn.query("COMMIT");
             return updateAdvertencia.rows[0];
-
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
-    async getById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         const countAdvertencia = await conn.query(
             `SELECT * FROM ADVERTENCIAS WHERE ID = ${id}`,
         );
@@ -69,10 +95,11 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
-    async  getByIdFuncionario(funcionario_id: number): Promise<AdvertenciaEntity[]> {
+    async getByIdFuncionario(
+        funcionario_id: number,
+    ): Promise<AdvertenciaEntity[]> {
         const advertencias = await conn.query(`SELECT
             id,
             funcionario_id,
@@ -84,5 +111,4 @@ export default class AdvertenciaPostgresRepository implements AdvertenciaReposit
 
         return advertencias.rows;
     }
-
 }

@@ -15,7 +15,8 @@ export default class AdvertenciaController {
 
     async getByIdFuncionario(request: Request, response: Response) {
         const funcionario_id = request.params.funcionario_id;
-        const advertencias = await this.advertenciaService.getByIdFuncionario(+funcionario_id);
+        const advertencias =
+      await this.advertenciaService.getByIdFuncionario(+funcionario_id);
         return response.json(advertencias);
     }
 
@@ -25,6 +26,17 @@ export default class AdvertenciaController {
 
         const updateAdvertencia = await this.advertenciaService.update(+id, input);
         return response.json(updateAdvertencia);
+    }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const advertencias = await this.advertenciaService.getById(+id);
+        return response.json(advertencias);
+    }
+
+    async getAll(request: Request, response: Response) {
+        const advertencias = await this.advertenciaService.getAll();
+        return response.json(advertencias);
     }
 
     async delete(request: Request, response: Response) {

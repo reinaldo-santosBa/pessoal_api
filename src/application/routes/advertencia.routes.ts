@@ -13,9 +13,18 @@ routesAdvertencia.post("/advertencia", (req, res) =>
     advertenciaController.create(req, res),
 );
 
-routesAdvertencia.get("/advertencia/:funcionario_id", (req, res) =>
+/*routesAdvertencia.get("/advertencia/:funcionario_id", (req, res) =>
     advertenciaController.getByIdFuncionario(req, res),
+);*/
+
+routesAdvertencia.get("/advertencia/:id", (req, res) =>
+    advertenciaController.getById(req, res),
 );
+
+routesAdvertencia.get("/advertencia", (req, res) =>
+    advertenciaController.getAll(req, res),
+);
+
 
 routesAdvertencia.put("/advertencia/:id", (req, res) =>
     advertenciaController.update(req, res),

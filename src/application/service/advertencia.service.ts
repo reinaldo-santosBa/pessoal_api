@@ -11,7 +11,7 @@ export default class AdvertenciaService {
             "funcionario_id",
             "responsavel_id",
             "advertencia",
-            "data"
+            "data",
         ];
 
         for (const campo of camposObrigatorios) {
@@ -25,20 +25,38 @@ export default class AdvertenciaService {
         return newAdvertencia;
     }
 
-    async update(id: number, input: AdvertenciaProps): Promise<AdvertenciaEntity> {
-        const existingAdvertencia = await this.advertenciaRepository.getById(id);
+    async update(
+        id: number,
+        input: AdvertenciaProps,
+    ): Promise<AdvertenciaEntity> {
+        const existingAdvertencia =
+      await this.advertenciaRepository.getByIdExisting(id);
         if (!existingAdvertencia) {
             throw new AppError("Advertencia não encontrada", status.NOT_FOUND);
         }
 
         const advertencia = new AdvertenciaEntity(input);
 
-        const updateAdvertencia = await this.advertenciaRepository.update(id, advertencia);
+        const updateAdvertencia = await this.advertenciaRepository.update(
+            id,
+            advertencia,
+        );
         return updateAdvertencia;
     }
 
+    async getAll(): Promise<AdvertenciaEntity[]> {
+        const advertencias = await this.advertenciaRepository.getAll();
+        return advertencias;
+    }
+
+    async getById(id: number): Promise<AdvertenciaEntity> {
+        const advertencia = await this.advertenciaRepository.getById(id);
+        return advertencia;
+    }
+
     async delete(id: number): Promise<void> {
-        const existingAdvertencia = await this.advertenciaRepository.getById(id);
+        const existingAdvertencia =
+      await this.advertenciaRepository.getByIdExisting(id);
         if (!existingAdvertencia) {
             throw new AppError("Advertencia não encontrada", status.NOT_FOUND);
         }
@@ -46,8 +64,11 @@ export default class AdvertenciaService {
         await this.advertenciaRepository.delete(id);
     }
 
-    async getByIdFuncionario(funcionario_id: number): Promise<AdvertenciaEntity[]> {
-        const advertencias = await this.advertenciaRepository.getByIdFuncionario(funcionario_id);
+    async getByIdFuncionario(
+        funcionario_id: number,
+    ): Promise<AdvertenciaEntity[]> {
+        const advertencias =
+      await this.advertenciaRepository.getByIdFuncionario(funcionario_id);
         return advertencias;
     }
 }

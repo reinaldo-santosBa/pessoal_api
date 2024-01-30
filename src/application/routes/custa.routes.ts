@@ -13,9 +13,9 @@ routesCusta.post("/custa", (req, res) =>
     custaController.create(req, res)
 );
 
-routesCusta.get("/custa/:funcionario_id", (req, res) =>
+/*routesCusta.get("/custa/:funcionario_id", (req, res) =>
     custaController.getAllFuncionarioId(req, res)
-);
+);*/
 
 routesCusta.get("/custa", (req, res) =>
     custaController.getAll(req, res)
