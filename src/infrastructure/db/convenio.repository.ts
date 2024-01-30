@@ -55,9 +55,22 @@ export default class ConvenioPostgresRepository implements ConvenioRepository {
         }
     }
 
-    async getById(id: number): Promise<number> {
+    async getById(id: number): Promise<ConvenioEntity> {
         try {
-            const convenios = await conn.query(`SELECT ID FROM CONVENIOS WHERE ID = ${id}`);
+            const convenios = await conn.query(
+                `SELECT ID,CONVENIO FROM CONVENIOS WHERE ID = ${id}`,
+            );
+            return convenios.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+    async getByIdVerifyExisting(id: number): Promise<number> {
+        try {
+            const convenios = await conn.query(
+                `SELECT ID FROM CONVENIOS WHERE ID = ${id}`,
+            );
             return convenios.rowCount;
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);

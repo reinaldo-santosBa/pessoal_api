@@ -18,6 +18,10 @@ routesConvenio.get("/convenio", (req, res) =>
     convenioController.getAll(req, res)
 );
 
+routesConvenio.get("/convenio/:id", (req, res) =>
+    convenioController.getById(req, res),
+);
+
 routesConvenio.put("/convenio/:id", (req, res) =>
     convenioController.update(req, res)
 );

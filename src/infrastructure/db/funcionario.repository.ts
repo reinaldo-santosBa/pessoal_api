@@ -8,14 +8,21 @@ import EnderecoEntity from "../../domain/entity/endereco";
 import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
 
 export default class FuncionarioPostgresRepository implements FuncionarioRepository {
-    async insert({funcionario, pessoa, pessoa_fisica, contas_bancarias, emails, enderecos, telefones}: IInput): Promise<any> {
+    async insert({
+        funcionario,
+        pessoa,
+        pessoa_fisica,
+        contas_bancarias,
+        emails,
+        enderecos,
+        telefones,
+    }: IInput): Promise<any> {
         try {
             await conn.query("BEGIN");
 
             const newPessoa = await conn.query(
                 `INSERT INTO PESSOAS(ATIVO) VALUES(${pessoa.props.ativo}) RETURNING *`,
             );
-
 
             const newPessoa_fisica = await conn.query(`INSERT INTO PESSOAS_FISICA(
           ID,
@@ -55,8 +62,6 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${pessoa_fisica.props.pcd_id ?? null}
         ) RETURNING * `);
 
-
-
             const newFuncionario = await conn.query(`INSERT INTO FUNCIONARIOS(
               ID,
               EMPRESA_ID,
@@ -83,30 +88,22 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${funcionario.props.registrado}
             ) RETURNING * `);
 
-
             const emailsOutput: EmailEntity[] = [];
             const telefonesOutput: TelefoneEntity[] = [];
             const enderecoOutput: EnderecoEntity[] = [];
             const contasBancariasOutput: ContaBancariaEntity[] = [];
 
             for await (const email of emails) {
-
                 const emailResult = await conn.query(
                     "INSERT INTO EMAILS (PESSOA_ID, TIPO_EMAIL_ID, EMAIL) VALUES ($1, $2, $3) RETURNING *",
-                    [
-                        newPessoa.rows[0].id,
-                        email.props.tipo_email_id,
-                        email.props.email,
-                    ],
+                    [newPessoa.rows[0].id, email.props.tipo_email_id, email.props.email],
                 );
                 emailsOutput.push(emailResult.rows[0]);
-
             }
 
-
             for await (const telefone of telefones) {
-
-                const telefoneResult = await conn.query(`INSERT INTO TELEFONES(
+                const telefoneResult = await conn.query(
+                    `INSERT INTO TELEFONES(
                                             PESSOA_ID,
                                             NUMERO,
                                             TIPO_TELEFNE_ID
@@ -114,17 +111,16 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                                               $1,
                                               $2,
                                               $3
-                                          ) RETURNING *`, [
-                    newPessoa.rows[0].id,
-                    telefone.props.numero,
-                    telefone.props.tipo_telefne_id
-                ]);
+                                          ) RETURNING *`,
+                    [
+                        newPessoa.rows[0].id,
+                        telefone.props.numero,
+                        telefone.props.tipo_telefne_id,
+                    ],
+                );
 
                 telefonesOutput.push(telefoneResult.rows[0]);
             }
-
-
-
 
             for await (const conta_bancaria of contas_bancarias) {
                 const contaBancariaResult = await conn.query(`
@@ -153,12 +149,9 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 contasBancariasOutput.push(contaBancariaResult.rows[0]);
             }
 
-
-
-
             for await (const endereco of enderecos) {
-
-                const enderecoResult =  await conn.query(`INSERT INTO ENDERECOS (
+                const enderecoResult = await conn.query(
+                    `INSERT INTO ENDERECOS (
                 cep,
                 logradouro,
                 pessoa_id,
@@ -176,16 +169,18 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             $6,
             $7,
             $8
-          ) RETURNING *`, [
-                    endereco.props.cep,
-                    endereco.props.logradouro,
-                    newPessoa.rows[0].id,
-                    endereco.props.tipo_endereco_id ?? null,
-                    endereco.props.complemento ?? null,
-                    endereco.props.numero ?? null,
-                    endereco.props.tipo_logradouro_id ?? null,
-                    endereco.props.bairro_id ?? null
-                ]);
+          ) RETURNING *`,
+                    [
+                        endereco.props.cep,
+                        endereco.props.logradouro,
+                        newPessoa.rows[0].id,
+                        endereco.props.tipo_endereco_id ?? null,
+                        endereco.props.complemento ?? null,
+                        endereco.props.numero ?? null,
+                        endereco.props.tipo_logradouro_id ?? null,
+                        endereco.props.bairro_id ?? null,
+                    ],
+                );
 
                 enderecoOutput.push(enderecoResult.rows[0]);
             }
@@ -199,7 +194,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 emails: emailsOutput,
                 enderecos: enderecoOutput,
                 telefones: telefonesOutput,
-                contas_bancarias: contasBancariasOutput
+                contas_bancarias: contasBancariasOutput,
             };
         } catch (error) {
             await conn.query("ROLLBACK");
@@ -207,7 +202,16 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         }
     }
 
-    delete(id: number): Promise<void> {
+    async delete(id: number): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+
+    async getAll(): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
+
+    async getById(pessoa_id: number): Promise<any> {
         throw new Error("Method not implemented.");
     }
 }

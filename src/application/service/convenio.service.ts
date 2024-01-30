@@ -8,7 +8,7 @@ export default class ConvenioService {
 
     async create(input: ConvenioProps): Promise<ConvenioEntity> {
         if (!input.convenio) {
-            throw new AppError("convenio obrigatório",status.BAD_REQUEST);
+            throw new AppError("convenio obrigatório", status.BAD_REQUEST);
         }
 
         const convenio = new ConvenioEntity(input);
@@ -18,9 +18,9 @@ export default class ConvenioService {
 
     async delete(id: number): Promise<void> {
         const convenioExisting =
-                  await this.convenioRepository.getById(id);
+      await this.convenioRepository.getByIdVerifyExisting(id);
         if (!convenioExisting) {
-            throw new AppError("Convenio não encontrado",status.NOT_FOUND);
+            throw new AppError("Convenio não encontrado", status.NOT_FOUND);
         }
 
         await this.convenioRepository.delete(id);
@@ -31,14 +31,25 @@ export default class ConvenioService {
             throw new AppError("convenio obrigatório", status.BAD_REQUEST);
         }
 
-        const convenioExisting = await this.convenioRepository.getById(id);
+        const convenioExisting = await this.convenioRepository.getByIdVerifyExisting(id);
         if (!convenioExisting) {
-            throw new AppError("Convenio não encontrado",status.NOT_FOUND);
+            throw new AppError("Convenio não encontrado", status.NOT_FOUND);
         }
 
         const convenio = new ConvenioEntity(input);
         const updateConvenio = this.convenioRepository.update(id, convenio);
         return updateConvenio;
+    }
+
+    async getById(id: number): Promise<ConvenioEntity> {
+        const convenioExisting =
+                await this.convenioRepository.getByIdVerifyExisting(id);
+        if (!convenioExisting) {
+            throw new AppError("Convenio não encontrado", status.NOT_FOUND);
+        }
+
+        const convenio = await this.convenioRepository.getById(id);
+        return convenio;
     }
 
     async getAll(): Promise<ConvenioEntity[]> {

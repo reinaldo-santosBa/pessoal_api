@@ -31,4 +31,10 @@ export default class ConvenioController {
         const convenios = await this.convenioService.getAll();
         return response.json(convenios);
     }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const convenio = await this.convenioService.getById(+id);
+        return response.json(convenio);
+    }
 }

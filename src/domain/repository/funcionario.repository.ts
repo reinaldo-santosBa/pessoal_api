@@ -21,4 +21,6 @@ export type IInput = {
 export interface FuncionarioRepository {
   insert(input: IInput): Promise<IInput>;
   delete(id: number): Promise<void>;
+  getAll(): Promise<any>;
+  getById(pessoa_id: number): Promise<any>;
 }

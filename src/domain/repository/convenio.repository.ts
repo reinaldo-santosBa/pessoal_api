@@ -5,5 +5,6 @@ export interface ConvenioRepository {
   delete(id: number): Promise<void>;
   update(id: number, input: ConvenioEntity): Promise<ConvenioEntity>;
   getAll(): Promise<ConvenioEntity[]>;
-  getById(id: number): Promise<number>
+  getById(id: number): Promise<ConvenioEntity>;
+  getByIdVerifyExisting(id: number): Promise<number>;
 }
