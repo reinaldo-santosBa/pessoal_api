@@ -21,7 +21,7 @@ export interface AllFuncionariosOutput {
 }
 
 
-export interface ByIdFuncionarioOutput {
+export interface FuncionarioOutput {
   id: string;
   ativo: boolean;
   created_at: string;

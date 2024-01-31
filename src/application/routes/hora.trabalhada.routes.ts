@@ -14,9 +14,9 @@ horaTrabalhadaRoutes.post("/hora_trabalhada", (req, res) =>
     horaTrabalhadaController.create(req, res)
 );
 
-/* horaTrabalhadaRoutes.get("/hora_trabalhada/:funcionario_id", (req, res) =>
+horaTrabalhadaRoutes.get("/hora_trabalhada/:funcionario_id", (req, res) =>
     horaTrabalhadaController.getAllByFuncionario(req, res),
-); */
+);
 
 horaTrabalhadaRoutes.get("/hora_trabalhada/:id", (req, res) =>
     horaTrabalhadaController.getById(req, res),
