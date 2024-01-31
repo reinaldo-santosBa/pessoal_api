@@ -30,4 +30,10 @@ export default class ModeloContratoController {
         const modelosContrato = await this.modeloContratoService.getAll();
         return response.json(modelosContrato);
     }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const modeloContrato = await this.modeloContratoService.getById(+id);
+        return response.json(modeloContrato);
+    }
 }

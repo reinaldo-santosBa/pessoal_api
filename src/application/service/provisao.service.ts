@@ -33,4 +33,9 @@ export default class ProvisaoService {
     async delete(id: number): Promise<void> {
         return await this.provisaoRepository.delete(id);
     }
+
+    async getById(id: number): Promise<ProvisaoEntity> {
+        const provisao = await this.provisaoRepository.getById(id);
+        return provisao;
+    }
 }

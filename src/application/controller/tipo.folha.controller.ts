@@ -20,6 +20,11 @@ export default class TipoFolhaController {
         return response.json(tiposFolha);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const tipoFolha = await this.tipoFolhaService.getById(+id);
+        return response.json(tipoFolha);
+    }
     async update(request: Request, response: Response) {
         const { tipo_folha } = request.body as TipoFolhaProps;
         const id = request.params.id;

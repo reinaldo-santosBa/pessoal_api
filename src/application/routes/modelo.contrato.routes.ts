@@ -23,6 +23,11 @@ routesModeloContrato.put("/modelo_contrato/:id", (req, res) =>
 );
 
 
+routesModeloContrato.get("/modelo_contrato/:id", (req, res) =>
+    modeloContratoController.getById(req, res),
+);
+
+
 routesModeloContrato.delete("/modelo_contrato/:id", (req, res) =>
     modeloContratoController.delete(req, res),
 );

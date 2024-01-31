@@ -17,6 +17,10 @@ routesAtividade.get("/atividade", (req, res) =>
     atividadeController.getAll(req, res)
 );
 
+routesAtividade.get("/atividade/:id", (req, res) =>
+    atividadeController.getById(req, res),
+);
+
 routesAtividade.put("/atividade/:id", (req, res) =>
     atividadeController.update(req, res)
 );

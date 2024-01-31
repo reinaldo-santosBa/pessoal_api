@@ -19,6 +19,10 @@ routesDesconto.get("/desconto", (req, res) =>
     descontoController.getAll(req, res),
 );
 
+routesDesconto.get("/desconto/:id", (req, res) =>
+    descontoController.getById(req, res),
+);
+
 routesDesconto.put("/desconto/:id", (req, res) =>
     descontoController.update(req, res),
 );

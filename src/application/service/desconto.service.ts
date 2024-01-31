@@ -17,6 +17,11 @@ export default class DescontoService {
         return newDesconto;
     }
 
+    async getById(id: number): Promise<DescontoEntity> {
+        const desconto = await this.descontoRepository.getById(id);
+        return desconto;
+    }
+
     async getAll(): Promise<DescontoEntity[]> {
         const descontos = await this.descontoRepository.getAll();
         return descontos;

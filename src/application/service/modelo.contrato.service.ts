@@ -28,7 +28,8 @@ export default class ModeloContratoService {
             throw new AppError("Cargo Obrigatório", status.BAD_REQUEST);
         }
 
-        const modeloExisting = await this.modeloContratoRepository.getById(id);
+        const modeloExisting =
+          await this.modeloContratoRepository.getByIdExisting(id);
         if (!modeloExisting) {
             throw new AppError("Modelo de contrato não encontrado",status.NOT_FOUND);
         }
@@ -41,11 +42,17 @@ export default class ModeloContratoService {
 
 
     async delete(id: number): Promise<void> {
-        const modeloExisting = await this.modeloContratoRepository.getById(id);
+        const modeloExisting =
+          await this.modeloContratoRepository.getByIdExisting(id);
         if (!modeloExisting) {
             throw new AppError("Modelo de contrato não encontrado",status.NOT_FOUND);
         }
         await this.modeloContratoRepository.delete(id);
+    }
+
+    async getById(id: number): Promise<ModeloContratoEntity> {
+        const modeloContrato = await this.modeloContratoRepository.getById(id);
+        return modeloContrato;
     }
 
     async getAll(): Promise<ModeloContratoEntity[]>{

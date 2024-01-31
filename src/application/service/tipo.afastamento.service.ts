@@ -20,7 +20,7 @@ export default class TipoAfastamentoService {
 
     async delete(id: number): Promise<void> {
         const tipoAfastamentoExisting =
-        await this.tipoAfastamentoRepository.getById(id);
+          await this.tipoAfastamentoRepository.getByIdExisting(id);
 
         if (!tipoAfastamentoExisting) {
             throw new AppError("Tipo Afastamento não encontrado", status.NOT_FOUND);
@@ -35,7 +35,7 @@ export default class TipoAfastamentoService {
         }
 
         const tipoAfastamentoExisting =
-             await this.tipoAfastamentoRepository.getById(id);
+          await this.tipoAfastamentoRepository.getByIdExisting(id);
         if (!tipoAfastamentoExisting) {
             throw new AppError("Tipo Afastamento não encontrado", status.NOT_FOUND);
         }
@@ -50,6 +50,12 @@ export default class TipoAfastamentoService {
 
     async getAll(): Promise<TipoAfastamentoEntity[]> {
         const tipoAfastamento = await this.tipoAfastamentoRepository.getAll();
+        return tipoAfastamento;
+    }
+
+
+    async getById(id: number): Promise<TipoAfastamentoEntity> {
+        const tipoAfastamento = await this.tipoAfastamentoRepository.getById(id);
         return tipoAfastamento;
     }
 }

@@ -6,6 +6,20 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class AtividadePostgresRepository implements AtividadeRepository {
+
+    async getById(id: number): Promise<AtividadeEntity> {
+        try {
+            const atividades = await conn.query(
+                `SELECT ID, ATIVIDADE FROM ATIVIDADES WHERE ID = ${id}`,
+            );
+
+            return atividades.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+
     async insert(input: AtividadeEntity): Promise<AtividadeEntity> {
         try {
             await conn.query("BEGIN");
@@ -34,7 +48,7 @@ export default class AtividadePostgresRepository implements AtividadeRepository 
         }
     }
 
-    async findById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         const cargo = (await conn.query(`SELECT * FROM ATIVIDADES WHERE ID = ${id}`)).rowCount;
         return cargo;
     }

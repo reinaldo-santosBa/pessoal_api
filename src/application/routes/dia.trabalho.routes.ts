@@ -18,6 +18,10 @@ routesDiaTrabalho.get("/dia_trabalho", (req, res) =>
     diaJornadaTrabalhoController.getAll(req, res),
 );
 
+routesDiaTrabalho.get("/dia_trabalho/:id", (req, res) =>
+    diaJornadaTrabalhoController.getById(req, res),
+);
+
 
 routesDiaTrabalho.put("/dia_trabalho/:id", (req, res) =>
     diaJornadaTrabalhoController.update(req, res),

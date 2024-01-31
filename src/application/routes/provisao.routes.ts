@@ -21,6 +21,12 @@ routesProvisao.put("/provisao/:id", (req, res) =>
     provisaoController.update(req, res),
 );
 
+
+routesProvisao.get("/provisao/:id", (req, res) =>
+    provisaoController.getById(req, res),
+);
+
+
 routesProvisao.delete("/provisao/:id", (req, res) =>
     provisaoController.delete(req, res),
 );

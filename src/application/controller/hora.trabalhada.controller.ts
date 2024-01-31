@@ -14,10 +14,10 @@ export default class HoraTrabalhadaController {
             hora_inicio_turno_1,
             hora_inicio_turno_2,
             hora_fim_turno_1,
-            hora_fim_turno_2
+            hora_fim_turno_2,
         } = request.body as HoraTrabalhadaProps;
 
-        const newtipoFolha = await this.horaTrabalhadaService.create({
+        const newHoraTrabalhada = await this.horaTrabalhadaService.create({
             data_trabalho,
             funcionario_id,
             hora_fim_turno_1,
@@ -26,13 +26,20 @@ export default class HoraTrabalhadaController {
             hora_inicio_turno_2,
         });
 
-        return response.status(status.CREATED).json(newtipoFolha);
+        return response.status(status.CREATED).json(newHoraTrabalhada);
     }
 
     async getAllByFuncionario(request: Request, response: Response) {
         const funcionario_id = request.params.funcionario_id;
-        const tiposFolha = await this.horaTrabalhadaService.getAllByFuncionario(+funcionario_id);
-        return response.json(tiposFolha);
+        const hora_trabalhada =
+      await this.horaTrabalhadaService.getAllByFuncionario(+funcionario_id);
+        return response.json(hora_trabalhada);
+    }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const hora_trabalhada = await this.horaTrabalhadaService.getById(+id);
+        return response.json(hora_trabalhada);
     }
 
     async update(request: Request, response: Response) {
@@ -46,7 +53,7 @@ export default class HoraTrabalhadaController {
         } = request.body as HoraTrabalhadaProps;
 
         const id = request.params.id;
-        const updateTipoFolha = await this.horaTrabalhadaService.update(+id, {
+        const updateHoraTrabalhada = await this.horaTrabalhadaService.update(+id, {
             funcionario_id,
             data_trabalho,
             hora_inicio_turno_1,
@@ -55,7 +62,7 @@ export default class HoraTrabalhadaController {
             hora_fim_turno_2,
         });
 
-        return response.json(updateTipoFolha);
+        return response.json(updateHoraTrabalhada);
     }
 
     async delete(request: Request, response: Response) {

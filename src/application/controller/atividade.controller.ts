@@ -27,6 +27,13 @@ export default class AtividadeController {
         return response.json(atividade);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+
+        const atividade = await this.atividadeService.getById(+id);
+        return response.json(atividade);
+    }
+
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         await this.atividadeService.delete(+id);

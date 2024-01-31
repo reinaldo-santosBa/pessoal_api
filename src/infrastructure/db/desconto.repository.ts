@@ -5,6 +5,15 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 export default class DescontoPostgresRepository implements DescontoRepository {
 
+    async getById(id: number): Promise<DescontoEntity> {
+        try {
+            const desconto = await conn.query(`SELECT ID, DESCONTO FROM DESCONTOS WHERE ID = ${id}`);
+            return desconto.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async insert(input: DescontoEntity): Promise<DescontoEntity> {
         try {
 
@@ -32,7 +41,6 @@ export default class DescontoPostgresRepository implements DescontoRepository {
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
 

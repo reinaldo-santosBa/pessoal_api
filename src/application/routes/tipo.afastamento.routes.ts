@@ -21,6 +21,12 @@ routesTipoAfastamento.put("/tipo_afastamento/:id", (req, res) =>
     tipoAfastamentoController.update(req, res),
 );
 
+
+routesTipoAfastamento.get("/tipo_afastamento/:id", (req, res) =>
+    tipoAfastamentoController.getById(req, res),
+);
+
+
 routesTipoAfastamento.delete("/tipo_afastamento/:id", (req, res) =>
     tipoAfastamentoController.delete(req, res),
 );

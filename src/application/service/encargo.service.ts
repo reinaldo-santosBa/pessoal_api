@@ -16,7 +16,8 @@ export default class EncargoService {
     }
 
     async delete(id: number): Promise<void> {
-        const encargoExisting = await this.encargoRepository.getById(id);
+        const encargoExisting =
+          await this.encargoRepository.getByIdExisting(id);
         if (!encargoExisting) {
             throw new AppError("Encargo não encontrado",status.NOT_FOUND);
         }
@@ -24,9 +25,14 @@ export default class EncargoService {
         await this.encargoRepository.delete(id);
     }
 
+    async getById(id: number): Promise<EncargoEntity> {
+        const encargo = await this.encargoRepository.getById(id);
+        return encargo;
+    }
 
     async update(id: number, input: EncargoProps): Promise<EncargoEntity> {
-        const encargoExisting = await this.encargoRepository.getById(id);
+        const encargoExisting =
+          await this.encargoRepository.getByIdExisting(id);
         if (!encargoExisting) {
             throw new AppError("Encargo não encontrado",status.NOT_FOUND);
         }

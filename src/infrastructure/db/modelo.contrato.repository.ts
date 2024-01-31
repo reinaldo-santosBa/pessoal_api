@@ -5,6 +5,18 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class ModeloContratoPostgresRepository implements ModeloContratoRepository {
+    async getById(id: number): Promise<ModeloContratoEntity> {
+        try {
+            const modeloContrato = await conn.query(
+                `SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO WHERE ID = ${id}`,
+            );
+
+            return modeloContrato.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async insert(input: ModeloContratoEntity): Promise<ModeloContratoEntity> {
         try {
             await conn.query("BEGIN");
@@ -17,7 +29,8 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
               ${input.props.cargo_id},
               '${input.props.modelo}',
               ${input.props.numero_modelo}
-            ) RETURNING *`);
+            ) RETURNING *`,
+            );
 
             await conn.query("COMMIT");
 
@@ -26,10 +39,12 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
             await conn.query("ROLLBACK");
             throw new AppError(error.message);
         }
-
     }
 
-    async update(id: number, input: ModeloContratoEntity): Promise<ModeloContratoEntity> {
+    async update(
+        id: number,
+        input: ModeloContratoEntity,
+    ): Promise<ModeloContratoEntity> {
         try {
             await conn.query("BEGIN");
 
@@ -42,12 +57,10 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
 
             await conn.query("COMMIT");
             return modeloContrato.rows[0];
-
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
     async delete(id: number): Promise<void> {
@@ -59,12 +72,13 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
     async getAll(): Promise<ModeloContratoEntity[]> {
         try {
-            const modeloContrato = await conn.query("SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO");
+            const modeloContrato = await conn.query(
+                "SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO",
+            );
 
             return modeloContrato.rows;
         } catch (error) {
@@ -72,7 +86,7 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
         }
     }
 
-    async getById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         try {
             const modeloContrato = await conn.query(
                 `SELECT ID FROM MODELOS_CONTRATO WHERE ID = ${id}`,
@@ -82,6 +96,5 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 }

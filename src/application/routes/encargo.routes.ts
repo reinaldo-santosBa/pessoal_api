@@ -13,8 +13,13 @@ routesEncargo.post("/encargo", (req, res) =>
     encargoController.create(req, res),
 );
 
-routesEncargo.get("/encargo", (req, res) => encargoController.getAll(req, res));
+routesEncargo.get("/encargo", (req, res) =>
+    encargoController.getAll(req, res)
+);
 
+routesEncargo.get("/encargo/:id", (req, res) =>
+    encargoController.getById(req, res),
+);
 routesEncargo.put("/encargo/:id", (req, res) =>
     encargoController.update(req, res),
 );

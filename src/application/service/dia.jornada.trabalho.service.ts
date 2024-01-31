@@ -11,7 +11,8 @@ export default class DiaJornadaTrabalhoService {
         input: DiaJornadaTrabalhoProps,
     ): Promise<DiaJornadaTrabalhoEntity> {
         const diaTrabalho = new DiaJornadaTrabalhoEntity(input);
-        const newDiaTrabalho = await this.diaJornadaTrabalhoRepository.insert(diaTrabalho);
+        const newDiaTrabalho =
+      await this.diaJornadaTrabalhoRepository.insert(diaTrabalho);
         return newDiaTrabalho;
     }
 
@@ -20,11 +21,20 @@ export default class DiaJornadaTrabalhoService {
         return diaJornadaTrabalho;
     }
 
+    async getById(id: number): Promise<DiaJornadaTrabalhoEntity> {
+        const diaJornadaTrabalho = await this.diaJornadaTrabalhoRepository.getById(id);
+        return diaJornadaTrabalho;
+    }
+
+
     async delete(id: number): Promise<void> {
         const diaJornadaTrabalho =
-      await this.diaJornadaTrabalhoRepository.getById(id);
+          await this.diaJornadaTrabalhoRepository.getByIdExisting(id);
         if (!diaJornadaTrabalho) {
-            throw new AppError("Dia Jornada de trabalho não encontrado", status.NOT_FOUND);
+            throw new AppError(
+                "Dia Jornada de trabalho não encontrado",
+                status.NOT_FOUND,
+            );
         }
         await this.diaJornadaTrabalhoRepository.delete(id);
     }
@@ -34,14 +44,18 @@ export default class DiaJornadaTrabalhoService {
         input: DiaJornadaTrabalhoProps,
     ): Promise<DiaJornadaTrabalhoEntity> {
         const diaJornadaTrabalhoExisting =
-      await this.diaJornadaTrabalhoRepository.getById(id);
+          await this.diaJornadaTrabalhoRepository.getByIdExisting(id);
         if (!diaJornadaTrabalhoExisting) {
-            throw new AppError("Dia Jornada de trabalho não encontrado", status.NOT_FOUND);
+            throw new AppError(
+                "Dia Jornada de trabalho não encontrado",
+                status.NOT_FOUND,
+            );
         }
 
         const diaTrabalho = new DiaJornadaTrabalhoEntity(input);
 
-        const updateDiaJornadaTrabalho = await this.diaJornadaTrabalhoRepository.update(id, diaTrabalho);
+        const updateDiaJornadaTrabalho =
+      await this.diaJornadaTrabalhoRepository.update(id, diaTrabalho);
         return updateDiaJornadaTrabalho;
     }
 }

@@ -24,18 +24,41 @@ export default class TipoFolhaService {
         return tiposFolha;
     }
 
-    async update(id: number, { tipo_folha }: TipoFolhaProps): Promise<TipoFolhaEntity> {
+    async getById(id: number): Promise<TipoFolhaEntity> {
+        const tiposFolha = await this.tipoFolhaRepository.getById(id);
+        return tiposFolha;
+    }
+
+    async update(
+        id: number,
+        { tipo_folha }: TipoFolhaProps,
+    ): Promise<TipoFolhaEntity> {
         if (!tipo_folha) {
             throw new AppError("tipo_folha Obrigatório", status.BAD_REQUEST);
         }
 
+        const tipoFolhaExisting =
+      await this.tipoFolhaRepository.getByIdExisting(id);
+        if (!tipoFolhaExisting) {
+            throw new AppError("Tipo Folha não encontrado", status.NOT_FOUND);
+        }
+
         const tipoFolhaEntity = new TipoFolhaEntity({ tipo_folha });
 
-        const updateTipoFolha = await this.tipoFolhaRepository.update(id, tipoFolhaEntity);
+        const updateTipoFolha = await this.tipoFolhaRepository.update(
+            id,
+            tipoFolhaEntity,
+        );
         return updateTipoFolha;
     }
 
     async delete(id: number): Promise<void> {
+        const tipoFolhaExisting =
+      await this.tipoFolhaRepository.getByIdExisting(id);
+        if (!tipoFolhaExisting) {
+            throw new AppError("Tipo Folha não encontrado", status.NOT_FOUND);
+        }
+
         await this.tipoFolhaRepository.delete(id);
     }
 }

@@ -20,6 +20,11 @@ routesJornadaTrabalho.get(
     (req, res) =>
         jornadaTrabalhoController.getAll(req, res),
 );
+
+routesJornadaTrabalho.get("/jornada_trabalho/:id", (req, res) =>
+    jornadaTrabalhoController.getById(req, res),
+);
+
 routesJornadaTrabalho.delete(
     "/jornada_trabalho/:id",
     (req, res) =>

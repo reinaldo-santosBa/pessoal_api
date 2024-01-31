@@ -97,4 +97,10 @@ export default class FuncionarioController {
         const funcionarios = await this.funcionarioService.getAll();
         return response.json(funcionarios);
     }
+
+    async getById(request: Request, response: Response) {
+        const pessoa_id = request.params.pessoa_id;
+        const funcionario = await this.funcionarioService.getById(+pessoa_id);
+        return response.json(funcionario);
+    }
 }

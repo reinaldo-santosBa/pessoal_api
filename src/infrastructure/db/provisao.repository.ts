@@ -5,6 +5,17 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class ProvisaoPostgresRepository implements ProvisaoRepository {
+    async getById(id: number): Promise<ProvisaoEntity> {
+        try {
+            const provisao = await conn.query(
+                `SELECT ID, PROVISAO FROM PROVISOES WHERE ID = ${id}`,
+            );
+            return provisao.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async insert(input: ProvisaoEntity): Promise<ProvisaoEntity> {
         try {
             await conn.query("BEGIN");

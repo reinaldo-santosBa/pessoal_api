@@ -5,6 +5,27 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class TipoFolhaPostgresRepository implements TipoFolhaRepository {
+    async getById(id: number): Promise<TipoFolhaEntity> {
+        try {
+            const tipos_folha = await conn.query(
+                `SELECT ID, TIPO_FOLHA FROM tipos_folha WHERE ID = ${id}`,
+            );
+            return tipos_folha.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+    async getByIdExisting(id: number): Promise<number> {
+        try {
+            const tipos_folha = await conn.query(
+                `SELECT ID FROM tipos_folha WHERE ID = ${id}`,
+            );
+            return tipos_folha.rowCount;
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
 
     async insert(input: TipoFolhaEntity): Promise<TipoFolhaEntity> {
         try {

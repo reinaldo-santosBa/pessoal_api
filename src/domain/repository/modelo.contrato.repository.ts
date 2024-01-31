@@ -5,5 +5,6 @@ export interface ModeloContratoRepository {
   update(id: number, input: ModeloContratoEntity): Promise<ModeloContratoEntity>;
   delete(id: number): Promise<void>;
   getAll(): Promise<ModeloContratoEntity[]>;
-  getById(id: number): Promise<number>;
+  getByIdExisting(id: number): Promise<number>;
+  getById(id: number): Promise<ModeloContratoEntity>;
 }

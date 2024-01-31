@@ -19,6 +19,11 @@ export default class DescontoController {
         return response.json(desconto);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const desconto = await this.descontoService.getById(+id);
+        return response.json(desconto);
+    }
     async update(request: Request, response: Response) {
         const id = request.params.id;
         const input = request.body as DescontoProps;

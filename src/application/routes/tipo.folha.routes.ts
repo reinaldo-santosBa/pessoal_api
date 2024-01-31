@@ -21,6 +21,9 @@ tipoFolhaRoutes.put("/tipo_folha/:id", (req, res) =>
     tipoFolhaController.update(req, res),
 );
 
+tipoFolhaRoutes.get("/tipo_folha/:id", (req, res) =>
+    tipoFolhaController.getById(req, res),
+);
 
 tipoFolhaRoutes.delete("/tipo_folha/:id", (req, res) =>
     tipoFolhaController.delete(req, res),

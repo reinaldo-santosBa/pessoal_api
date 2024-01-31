@@ -6,7 +6,7 @@ import PessoaEntity, { PessoaProps } from "../../domain/entity/pessoa";
 import PessoaFisicaEntity, { PessoaFisicaProps } from "../../domain/entity/pessoa.fisica";
 import TelefoneEntity, { TelefoneProps } from "../../domain/entity/telefones";
 import { FuncionarioRepository, IInput } from "../../domain/repository/funcionario.repository";
-import { AllFuncionariosOutput } from "../../infrastructure/db/funcionario.repository";
+import { AllFuncionariosOutput, ByIdFuncionarioOutput } from "../../infrastructure/db/funcionario.repository";
 
 export type IInputProps = {
   pessoa: PessoaProps;
@@ -30,24 +30,18 @@ export default class FuncionarioService {
         funcionario,
         emails,
         telefones,
-        contas_bancarias
+        contas_bancarias,
     }: IInputProps): Promise<IInput> {
         const funcionarioResponse = await this.funcionarioRepository.insert({
             pessoa: new PessoaEntity(pessoa),
             funcionario: new FuncionarioEntity(funcionario),
             pessoa_fisica: new PessoaFisicaEntity(pessoa_fisica),
-            enderecos: enderecos.map(
-                endereco => new EnderecoEntity(endereco),
-            ),
-            emails: emails.map(
-                email => new EmailEntity(email)
-            ),
-            telefones: telefones.map(
-                telefone => new TelefoneEntity(telefone),
-            ),
+            enderecos: enderecos.map(endereco => new EnderecoEntity(endereco)),
+            emails: emails.map(email => new EmailEntity(email)),
+            telefones: telefones.map(telefone => new TelefoneEntity(telefone)),
             contas_bancarias: contas_bancarias.map(
-                conta_bancaria => new ContaBancariaEntity(conta_bancaria)
-            )
+                conta_bancaria => new ContaBancariaEntity(conta_bancaria),
+            ),
         });
 
         return funcionarioResponse;
@@ -56,5 +50,10 @@ export default class FuncionarioService {
     async getAll(): Promise<AllFuncionariosOutput[]> {
         const funcionarios = await this.funcionarioRepository.getAll();
         return funcionarios;
+    }
+
+    async getById(pessoa_id: number): Promise<ByIdFuncionarioOutput> {
+        const funcionario = await this.funcionarioRepository.getById(pessoa_id);
+        return funcionario;
     }
 }

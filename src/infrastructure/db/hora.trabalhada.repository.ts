@@ -5,6 +5,23 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class HoraTrabalhadaPostgresRepository implements HoraTrabalhadaRepository {
+    async getById(id: number): Promise<HoraTrabalhadaEntity> {
+        try {
+            const hora_trabalhada = await conn.query(`SELECT id,
+                                funcionario_id,
+                                data_trabalho,
+                                hora_inicio_turno_1,
+                                hora_fim_turno_1,
+                                hora_inicio_turno_2,
+                                hora_fim_turno_2
+                          FROM horas_trabalhadas_funcionarios
+                          WHERE id = ${id}`);
+            return hora_trabalhada.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+
+    }
 
     async getAllByFuncionario(funcionario_id: number): Promise<HoraTrabalhadaEntity[]> {
         try {

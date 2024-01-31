@@ -1,3 +1,4 @@
+import { AllFuncionariosOutput } from "../../infrastructure/db/funcionario.repository";
 import ContaBancariaEntity from "../entity/conta.bancaria";
 import EmailEntity from "../entity/email";
 import EnderecoEntity from "../entity/endereco";
@@ -21,6 +22,7 @@ export type IInput = {
 export interface FuncionarioRepository {
   insert(input: IInput): Promise<IInput>;
   delete(id: number): Promise<void>;
-  getAll(): Promise<any>;
+  update(id: number, input: any): Promise<any>;
+  getAll(): Promise<AllFuncionariosOutput[]>;
   getById(pessoa_id: number): Promise<any>;
 }

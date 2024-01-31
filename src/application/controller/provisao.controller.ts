@@ -34,4 +34,11 @@ export default class ProvisaoController {
         await this.provisaoService.delete(+id);
         return response.status(status.NO_CONTENT).json();
     }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+
+        const provisao = await this.provisaoService.getById(+id);
+        return response.json(provisao);
+    }
 }

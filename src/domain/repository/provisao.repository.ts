@@ -5,4 +5,5 @@ export interface ProvisaoRepository {
   getAll(): Promise<ProvisaoEntity[]>;
   update(id: number, input: ProvisaoEntity): Promise<ProvisaoEntity>;
   delete(id: number): Promise<void>;
+  getById(id: number): Promise<ProvisaoEntity>;
 }

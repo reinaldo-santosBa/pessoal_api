@@ -5,7 +5,9 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class TipoAfastamentoController {
-    constructor(private readonly tipoAfastamentoService: TipoAfastamentoService) {}
+    constructor(
+    private readonly tipoAfastamentoService: TipoAfastamentoService,
+    ) {}
 
     async create(request: Request, response: Response) {
         const input = request.body as TipoAfastamentoProps;
@@ -33,6 +35,12 @@ export default class TipoAfastamentoController {
 
     async getAll(request: Request, response: Response) {
         const tipoAfastamento = await this.tipoAfastamentoService.getAll();
+        return response.json(tipoAfastamento);
+    }
+
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const tipoAfastamento = await this.tipoAfastamentoService.getById(+id);
         return response.json(tipoAfastamento);
     }
 }

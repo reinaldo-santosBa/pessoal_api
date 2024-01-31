@@ -26,6 +26,12 @@ export default class EncargoController {
         return response.json(encargo);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const encargo = await this.EncargoService.getById(+id);
+        return response.json(encargo);
+    }
+
     async getAll(request: Request, response: Response) {
         const encargos = await this.EncargoService.getAll();
         return response.json(encargos);

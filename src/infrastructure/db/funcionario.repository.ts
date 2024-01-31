@@ -6,9 +6,7 @@ import EmailEntity from "../../domain/entity/email";
 import TelefoneEntity from "../../domain/entity/telefones";
 import EnderecoEntity from "../../domain/entity/endereco";
 import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
-import PessoaEntity from "../../domain/entity/pessoa";
-import PessoaFisicaEntity from "../../domain/entity/pessoa.fisica";
-import FuncionarioEntity from "../../domain/entity/funcionario";
+
 
 export interface AllFuncionariosOutput {
   id: number;
@@ -20,6 +18,44 @@ export interface AllFuncionariosOutput {
   empresa_id: number;
   cargo: string;
   registrado: boolean;
+}
+
+
+export interface ByIdFuncionarioOutput {
+  id: string;
+  ativo: boolean;
+  created_at: string;
+  updated_at: string;
+  nome: string;
+  cpf: string;
+  rg: string;
+  orgao_expeditor: string;
+  nacionalidade_id: number;
+  nome_mae: string;
+  nome_pai: string;
+  naturalidade_id: number;
+  carteira_trabalho: string;
+  titulo_eleitor: string;
+  zona_titulo_eleitor: string;
+  nascimento: string;
+  estado_civil_id: number;
+  genero_id: number;
+  pis: string;
+  pcd_id: number;
+  empresa_id: string;
+  cargo_id: string;
+  data_admissao: string;
+  data_demissao: string;
+  adiantamento: boolean;
+  periculosidade: boolean;
+  receber_transporte: boolean;
+  contribuicao_sindical: boolean;
+  jornada_trabalho_id: string;
+  registrado: boolean;
+  cargo: string;
+  remuneracao: string;
+  comissao_direta: string;
+  comissao_indireta: string;
 }
 
 
@@ -218,8 +254,26 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         }
     }
 
+    async update(id: number, input: any): Promise<any> {
+        try {
+            await conn.query("BEGIN");
+
+            await conn.query("COMMIT");
+        } catch (error) {
+            await conn.query("ROLLBACK");
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async delete(id: number): Promise<void> {
-        throw new Error("Method not implemented.");
+        try {
+            await conn.query("BEGIN");
+
+            await conn.query("COMMIT");
+        } catch (error) {
+            await conn.query("ROLLBACK");
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
     }
 
     async getAll(): Promise<AllFuncionariosOutput[]> {
@@ -248,18 +302,10 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         }
     }
 
-    async getById(pessoa_id: number): Promise<AllFuncionariosOutput> {
+    async getById(pessoa_id: number): Promise<ByIdFuncionarioOutput> {
         try {
             const funcionarios = await conn.query(`SELECT
-                        p.id,
-                        p.ativo,
-                        pf.nome,
-                        pf.cpf,
-                        pf.carteira_trabalho,
-                        pf.nascimento,
-                        f.empresa_id,
-                        c.cargo,
-                        f.registrado
+                      *
                       FROM
                           pessoas AS p
                       INNER JOIN

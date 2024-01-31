@@ -4,8 +4,10 @@ export interface DiaJornadaTrabalhoRepository {
   insert(input: DiaJornadaTrabalhoEntity): Promise<DiaJornadaTrabalhoEntity>;
   getAll(): Promise<DiaJornadaTrabalhoEntity[]>;
   delete(id: number): Promise<void>;
-  update(id: number,
+  update(
+    id: number,
     input: DiaJornadaTrabalhoEntity,
   ): Promise<DiaJornadaTrabalhoEntity>;
-  getById(id: number): Promise<number>;
+  getById(id: number): Promise<DiaJornadaTrabalhoEntity>;
+  getByIdExisting(id: number): Promise<number>;
 }

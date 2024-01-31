@@ -5,6 +5,16 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class EncargoPostgresRepository implements EncargoRepository {
+
+    async getById(id: number): Promise<EncargoEntity> {
+        try {
+            const encargo = await conn.query(`SELECT ID, ENCARGO FROM ENCARGOS WHERE ID = ${id}`);
+            return encargo.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async insert(input: EncargoEntity): Promise<EncargoEntity> {
         try {
             await conn.query("BEGIN");
@@ -55,9 +65,11 @@ export default class EncargoPostgresRepository implements EncargoRepository {
         }
     }
 
-    async getById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         try {
-            const encargos = await conn.query(`SELECT ID FROM ENCARGOS WHERE ID = ${id}`);
+            const encargos = await conn.query(
+                `SELECT ID FROM ENCARGOS WHERE ID = ${id}`,
+            );
             return encargos.rowCount;
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);

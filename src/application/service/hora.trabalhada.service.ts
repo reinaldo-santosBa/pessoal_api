@@ -24,10 +24,10 @@ export default class HoraTrabalhadaService {
             }
         }
 
-
         const horaTrabalhadaEntity = new HoraTrabalhadaEntity(input);
 
-        const newHoraTrabalhada = await this.horaTrabalhadaRepository.insert(horaTrabalhadaEntity);
+        const newHoraTrabalhada =
+      await this.horaTrabalhadaRepository.insert(horaTrabalhadaEntity);
         return newHoraTrabalhada;
     }
 
@@ -36,6 +36,14 @@ export default class HoraTrabalhadaService {
     ): Promise<HoraTrabalhadaEntity[]> {
         const horaTrabalhada =
       await this.horaTrabalhadaRepository.getAllByFuncionario(funcionario_id);
+        return horaTrabalhada;
+    }
+
+    async getById(
+        id: number,
+    ): Promise<HoraTrabalhadaEntity> {
+        const horaTrabalhada =
+      await this.horaTrabalhadaRepository.getById(id);
         return horaTrabalhada;
     }
 

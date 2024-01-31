@@ -36,7 +36,7 @@ export default class JornadaTrabalhoService {
     async update(id: number, input: JornadaTrabalhoProps): Promise<JornadaTrabalhoEntity> {
 
         const jornadaExisting =
-          await this.jornadaTrabalhoRepository.getById(id);
+          await this.jornadaTrabalhoRepository.getByIdExisting(id);
 
         if (!jornadaExisting) {
             throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
@@ -62,8 +62,14 @@ export default class JornadaTrabalhoService {
 
     }
 
+    async getById(id: number): Promise<JornadaTrabalhoEntity> {
+        const jornada_trabalho = await this.jornadaTrabalhoRepository.getById(id);
+        return jornada_trabalho;
+    }
+
     async delete(id: number): Promise<void> {
-        const jornada = await this.jornadaTrabalhoRepository.getById(id);
+        const jornada =
+          await this.jornadaTrabalhoRepository.getByIdExisting(id);
 
         if (!jornada) {
             throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);

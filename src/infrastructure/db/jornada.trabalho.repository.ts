@@ -5,6 +5,23 @@ import * as status from "../../constraints/http.stauts";
 import AppError from "../../application/errors/AppError";
 
 export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalhoRepository {
+
+    async getById(id: number): Promise<JornadaTrabalhoEntity> {
+        try {
+            const jornada_trabalho = await conn.query(`SELECT ID,
+            JORNADA_TRABALHO,
+            CARGA_DIARIA,
+            UNIDADE_TEMPO,
+            CARGA_SEMANAL,
+            LIMITE_EXTRA_DIARIO,
+            LIMITE_EXTRA_SEMANL,
+            LIMITE_EXTRA_MENSAL FROM JORNADAS_TRABALHO WHERE ID = ${id}`);
+            return jornada_trabalho.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
     async insert(input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity> {
         try {
             await conn.query("BEGIN");
@@ -56,7 +73,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
         }
     }
 
-    async getById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         const jornada = await conn.query(
             `SELECT * FROM JORNADAS_TRABALHO WHERE ID = ${id}`,
         );
@@ -75,7 +92,10 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
         }
     }
 
-    async update(id: number, input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity> {
+    async update(
+        id: number,
+        input: JornadaTrabalhoEntity,
+    ): Promise<JornadaTrabalhoEntity> {
         try {
             await conn.query("BEGIN");
             const jornada = await conn.query(

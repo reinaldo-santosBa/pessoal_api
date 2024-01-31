@@ -17,6 +17,11 @@ export default class AtividadeService {
         return newAtividade;
     }
 
+    async getById(id: number): Promise<AtividadeEntity> {
+        const atividade = await this.atividadeRepository.getById(id);
+        return atividade;
+    }
+
     async getAll(): Promise<AtividadeEntity[]> {
         const atividades = await this.atividadeRepository.getAll();
 
@@ -29,7 +34,8 @@ export default class AtividadeService {
             throw new AppError("O campo atividade é obrigatório",status.BAD_REQUEST);
         }
 
-        const atividadeExisting = await this.atividadeRepository.findById(id);
+        const atividadeExisting =
+          await this.atividadeRepository.getByIdExisting(id);
 
         if (!atividadeExisting) {
             throw new AppError("Atividade não encontrada",status.NOT_FOUND);
@@ -41,7 +47,8 @@ export default class AtividadeService {
     }
 
     async delete(id: number): Promise<void> {
-        const atividadeExisting = await this.atividadeRepository.findById(id);
+        const atividadeExisting =
+          await this.atividadeRepository.getByIdExisting(id);
 
         if (!atividadeExisting) {
             throw new AppError("Atividade não encontrada", status.NOT_FOUND);

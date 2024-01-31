@@ -27,6 +27,12 @@ export default class DiaTrabalhoController {
         return response.json(diaTrabalho);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const diaTrabalho = await this.diaTrabalhoService.getById(+id);
+        return response.json(diaTrabalho);
+    }
+
     async getAll(request: Request, response: Response) {
         const diaTrabalho = await this.diaTrabalhoService.getAll();
         return response.json(diaTrabalho);

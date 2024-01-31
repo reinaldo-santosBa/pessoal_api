@@ -50,6 +50,11 @@ export default class JornadaTrabalhoController {
         return response.json(jornadaTrabalho);
     }
 
+    async getById(request: Request, response: Response) {
+        const id = request.params.id;
+        const jornada_trabalho = await this.jornadaTrabalhoService.getById(+id);
+        return response.json(jornada_trabalho);
+    }
     async delete(request: Request, response: Response) {
         const id: string = request.params.id;
         await this.jornadaTrabalhoService.delete(+id);

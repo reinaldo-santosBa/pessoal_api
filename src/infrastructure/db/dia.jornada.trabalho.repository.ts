@@ -5,7 +5,27 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoRepository {
-    async insert(input: DiaJornadaTrabalhoEntity): Promise<DiaJornadaTrabalhoEntity> {
+
+    async getById(id: number): Promise<DiaJornadaTrabalhoEntity> {
+        try {
+            const diaJornadaTrabalho = await conn.query(`SELECT
+                          id,
+                          dia,
+                          hora_inicio_turno_1,
+                          hora_fim_turno_1,
+                          hora_inicio_turno_2,
+                          hora_fim_turno_2,
+                          jornada_trabalho_id
+                  FROM dias_jornada_trabalho WHERE ID = ${id}`);
+            return diaJornadaTrabalho.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+    async insert(
+        input: DiaJornadaTrabalhoEntity,
+    ): Promise<DiaJornadaTrabalhoEntity> {
         try {
             await conn.query("BEGIN");
 
@@ -45,14 +65,12 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
                           hora_inicio_turno_2,
                           hora_fim_turno_2,
                           jornada_trabalho_id
-                  FROM dias_jornada_trabalho`
-            );
+                  FROM dias_jornada_trabalho`);
             return diaJornadaTrabalho.rows;
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
     }
-
 
     async delete(id: number): Promise<void> {
         try {
@@ -65,7 +83,10 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
         }
     }
 
-    async update(id: number, input: DiaJornadaTrabalhoEntity): Promise<DiaJornadaTrabalhoEntity> {
+    async update(
+        id: number,
+        input: DiaJornadaTrabalhoEntity,
+    ): Promise<DiaJornadaTrabalhoEntity> {
         try {
             await conn.query("BEGIN");
             const diaJornadaTrabalho = await conn.query(
@@ -87,8 +108,7 @@ export default class DiaJornadaPostgresRepository implements DiaJornadaTrabalhoR
         }
     }
 
-
-    async getById(id: number): Promise<number> {
+    async getByIdExisting(id: number): Promise<number> {
         const diaJornadaTrabalho = await conn.query(
             `SELECT ID FROM dias_jornada_trabalho WHERE ID = ${id}`,
         );
