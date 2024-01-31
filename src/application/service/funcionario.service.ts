@@ -6,7 +6,7 @@ import PessoaEntity, { PessoaProps } from "../../domain/entity/pessoa";
 import PessoaFisicaEntity, { PessoaFisicaProps } from "../../domain/entity/pessoa.fisica";
 import TelefoneEntity, { TelefoneProps } from "../../domain/entity/telefones";
 import { FuncionarioRepository, IInput } from "../../domain/repository/funcionario.repository";
-import { AllFuncionariosOutput, ByIdFuncionarioOutput } from "../../infrastructure/db/funcionario.repository";
+import { AllFuncionariosOutput, FuncionarioOutput } from "../../infrastructure/db/funcionario.repository";
 
 export type IInputProps = {
   pessoa: PessoaProps;
@@ -52,7 +52,7 @@ export default class FuncionarioService {
         return funcionarios;
     }
 
-    async getById(pessoa_id: number): Promise<ByIdFuncionarioOutput> {
+    async getById(pessoa_id: number): Promise<FuncionarioOutput> {
         const funcionario = await this.funcionarioRepository.getById(pessoa_id);
         return funcionario;
     }

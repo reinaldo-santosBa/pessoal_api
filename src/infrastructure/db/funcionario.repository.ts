@@ -302,7 +302,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         }
     }
 
-    async getById(pessoa_id: number): Promise<ByIdFuncionarioOutput> {
+    async getById(pessoa_id: number): Promise<FuncionarioOutput> {
         try {
             const funcionarios = await conn.query(`SELECT
                       *
