@@ -16,6 +16,7 @@ export type IInputProps = {
   enderecos?: EnderecoProps[];
   telefones?: TelefoneProps[];
   contas_bancarias?: ContaBancariaProps[];
+  centro_resultado_id: number;
 };
 
 
@@ -31,6 +32,7 @@ export default class FuncionarioService {
         emails,
         telefones,
         contas_bancarias,
+        centro_resultado_id
     }: IInputProps): Promise<IInput> {
         const funcionarioResponse = await this.funcionarioRepository.insert({
             pessoa: new PessoaEntity(pessoa),
@@ -42,6 +44,7 @@ export default class FuncionarioService {
             contas_bancarias: contas_bancarias.map(
                 conta_bancaria => new ContaBancariaEntity(conta_bancaria),
             ),
+            centro_resultado_id
         });
 
         return funcionarioResponse;

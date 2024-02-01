@@ -7,6 +7,9 @@ import PessoaEntity from "../entity/pessoa";
 import PessoaFisicaEntity from "../entity/pessoa.fisica";
 import TelefoneEntity from "../entity/telefones";
 
+// centro_resultado_id -> acrescentar na entidade funcionario ou outro lugar
+
+
 export type IInput = {
   pessoa: PessoaEntity;
   funcionario: FuncionarioEntity;
@@ -15,12 +18,16 @@ export type IInput = {
   enderecos?: EnderecoEntity[];
   telefones?: TelefoneEntity[];
   contas_bancarias?: ContaBancariaEntity[];
-
+  //atividades_funcionarios: [];
+  //dependentes: Dependentes[];
+  //funcionarioConvenios: FuncionariosConvenios[];
+  //rateios: Rateios[];
+  centro_resultado_id: number;
 };
 
 
 export interface FuncionarioRepository {
-  insert(input: IInput): Promise<IInput>;
+  insert(input: IInput): Promise<any>;
   delete(id: number): Promise<void>;
   update(id: number, input: any): Promise<any>;
   getAll(): Promise<AllFuncionariosOutput[]>;

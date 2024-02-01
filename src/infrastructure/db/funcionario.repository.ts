@@ -68,7 +68,8 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         emails,
         enderecos,
         telefones,
-    }: IInput): Promise<IInput> {
+        centro_resultado_id
+    }: IInput): Promise<any> {
         try {
             await conn.query("BEGIN");
 
@@ -139,6 +140,18 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${funcionario.props.jornada_trabalho_id},
             ${funcionario.props.registrado}
             ) RETURNING * `);
+            console.log(centro_resultado_id);
+            const funcionarios_centros_resultado = await conn.query(
+                `INSERT INTO funcionarios_centros_resultado(
+                    funcionario_id,
+                    centro_resultado_id,
+                    data_inicio_trabalho
+                )VALUES (
+                  ${newPessoa.rows[0].id},
+                  ${centro_resultado_id},
+                  '${funcionario.props.data_admissao}'
+                ) RETURNING *`,
+            );
 
             const emailsOutput: EmailEntity[] = [];
             const telefonesOutput: TelefoneEntity[] = [];
@@ -247,8 +260,10 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 enderecos: enderecoOutput,
                 telefones: telefonesOutput,
                 contas_bancarias: contasBancariasOutput,
+                funcionarios_centros_resultado: funcionarios_centros_resultado.rows[0],
             };
         } catch (error) {
+            console.error(error);
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }

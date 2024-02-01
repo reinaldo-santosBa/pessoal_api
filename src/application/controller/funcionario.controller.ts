@@ -73,6 +73,7 @@ const schemaValidation = Joi.object({
     emails: Joi.array().items(emailSchema),
     telefones: Joi.array().items(telefoneSchema),
     contas_bancarias: Joi.array().items(contasBancariasSchema),
+    centro_resultado_id: Joi.number().required()
 });
 
 

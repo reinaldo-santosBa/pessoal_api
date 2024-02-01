@@ -22,6 +22,7 @@ import routesProvisao from "./provisao.routes";
 import horaTrabalhadaRoutes from "./hora.trabalhada.routes";
 import tipoFolhaRoutes from "./tipo.folha.routes";
 import routesTipoRemuneracao from "./tipo.remuneracao.routes";
+import funcionarioCentroResultadoRoutes from "./funcionario.centro.resultado.routes";
 
 const routes = Router();
 
@@ -48,5 +49,6 @@ routes.use(routesProvisao);
 routes.use(horaTrabalhadaRoutes);
 routes.use(tipoFolhaRoutes);
 routes.use(routesTipoRemuneracao);
+routes.use(funcionarioCentroResultadoRoutes);
 
 export default routes;
