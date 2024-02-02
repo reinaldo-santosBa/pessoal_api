@@ -9,13 +9,11 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
     async getById(id: number): Promise<JornadaTrabalhoEntity> {
         try {
             const jornada_trabalho = await conn.query(`SELECT ID,
-            JORNADA_TRABALHO,
-            CARGA_DIARIA,
-            UNIDADE_TEMPO,
-            CARGA_SEMANAL,
-            LIMITE_EXTRA_DIARIO,
-            LIMITE_EXTRA_SEMANL,
-            LIMITE_EXTRA_MENSAL FROM JORNADAS_TRABALHO WHERE ID = ${id}`);
+                JORNADA_TRABALHO,
+                CARGA_DIARIA,
+                UNIDADE_TEMPO,
+                CARGA_SEMANAL
+            FROM JORNADAS_TRABALHO WHERE ID = ${id}`);
             return jornada_trabalho.rows[0];
         } catch (error) {
             throw new AppError(error.message, status.INTERNAL_SERVER);
@@ -29,18 +27,12 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             JORNADA_TRABALHO,
             CARGA_DIARIA,
             UNIDADE_TEMPO,
-            CARGA_SEMANAL,
-            LIMITE_EXTRA_DIARIO,
-            LIMITE_EXTRA_SEMANL,
-            LIMITE_EXTRA_MENSAL
+            CARGA_SEMANAL
         )VALUES(
           '${input.props.jornada_trabalho}',
           ${input.props.carga_diaria},
           '${input.props.unidade_tempo ?? null}',
-          ${input.props.carga_semanal},
-          ${input.props.limite_extra_diario},
-          ${input.props.limite_extra_mensal ?? null},
-          ${input.props.limite_extra_semanl ?? null}
+          ${input.props.carga_semanal}
         ) RETURNING *`);
 
             await conn.query("COMMIT");
@@ -57,13 +49,11 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             await conn.query("BEGIN");
             const jornadasTrabalho = await conn.query(
                 `SELECT ID,
-            JORNADA_TRABALHO,
-            CARGA_DIARIA,
-            UNIDADE_TEMPO,
-            CARGA_SEMANAL,
-            LIMITE_EXTRA_DIARIO,
-            LIMITE_EXTRA_SEMANL,
-            LIMITE_EXTRA_MENSAL FROM JORNADAS_TRABALHO`,
+                        JORNADA_TRABALHO,
+                        CARGA_DIARIA,
+                        UNIDADE_TEMPO,
+                        CARGA_SEMANAL
+                FROM JORNADAS_TRABALHO`,
             );
             await conn.query("COMMIT");
             return jornadasTrabalho.rows;
@@ -103,10 +93,7 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
                   JORNADA_TRABALHO = '${input.props.jornada_trabalho}',
                   CARGA_DIARIA = ${input.props.carga_diaria},
                   UNIDADE_TEMPO = '${input.props.unidade_tempo}',
-                  CARGA_SEMANAL = ${input.props.carga_semanal},
-                  LIMITE_EXTRA_DIARIO = ${input.props.limite_extra_diario},
-                  LIMITE_EXTRA_SEMANL = ${input.props.limite_extra_semanl ?? null},
-                  LIMITE_EXTRA_MENSAL = ${input.props.limite_extra_mensal ?? null}
+                  CARGA_SEMANAL = ${input.props.carga_semanal}
               WHERE ID = ${id} RETURNING *`,
             );
 

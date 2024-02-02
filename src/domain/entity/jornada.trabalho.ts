@@ -3,9 +3,6 @@ export type JornadaTrabalhoProps = {
   carga_diaria: number;
   unidade_tempo: string;
   carga_semanal: number;
-  limite_extra_diario: number;
-  limite_extra_semanl: number;
-  limite_extra_mensal: number;
 
   [key: string]: string | number;
 };
