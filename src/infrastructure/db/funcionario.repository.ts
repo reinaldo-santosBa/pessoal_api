@@ -6,6 +6,7 @@ import EmailEntity from "../../domain/entity/email";
 import TelefoneEntity from "../../domain/entity/telefones";
 import EnderecoEntity from "../../domain/entity/endereco";
 import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
+import RateioCentroResultadoEntity from "../../domain/entity/rateio.centro.resultado";
 
 
 export interface AllFuncionariosOutput {
@@ -68,6 +69,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         emails,
         enderecos,
         telefones,
+        rateios,
         centro_resultado_id
     }: IInput): Promise<any> {
         try {
@@ -140,7 +142,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${funcionario.props.jornada_trabalho_id},
             ${funcionario.props.registrado}
             ) RETURNING * `);
-            console.log(centro_resultado_id);
+
             const funcionarios_centros_resultado = await conn.query(
                 `INSERT INTO funcionarios_centros_resultado(
                     funcionario_id,
@@ -152,6 +154,27 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                   '${funcionario.props.data_admissao}'
                 ) RETURNING *`,
             );
+
+            const newRateio = await conn.query(`INSERT INTO RATEIOS (funcionario_id) VALUES (${newPessoa.rows[0].id}) RETURNING *`);
+
+            const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] = [];
+            for await (const rateio of rateios) {
+                const rateioResult =
+                await conn.query(`INSERT INTO rateios_centros_resultado (
+                  rateio_id,
+                  centro_resultado_id,
+                  centro_resultado,
+                  percentual
+                ) VALUES(
+                  ${newRateio.rows[0].id},
+                  ${rateio.props.centro_resultado_id},
+                  '${rateio.props.centro_resultado}',
+                  ${rateio.props.percentual}
+              ) RETURNING *`);
+
+                rateioCentroResultadoOutput.push(rateioResult.rows[0]);
+            }
+
 
             const emailsOutput: EmailEntity[] = [];
             const telefonesOutput: TelefoneEntity[] = [];
@@ -260,10 +283,12 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 enderecos: enderecoOutput,
                 telefones: telefonesOutput,
                 contas_bancarias: contasBancariasOutput,
-                funcionarios_centros_resultado: funcionarios_centros_resultado.rows[0],
+                funcionarios_centros_resultado:
+                funcionarios_centros_resultado.rows[0],
+                rateios: rateioCentroResultadoOutput,
             };
+
         } catch (error) {
-            console.error(error);
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }

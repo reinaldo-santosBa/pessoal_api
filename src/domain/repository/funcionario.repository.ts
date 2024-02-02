@@ -5,9 +5,9 @@ import EnderecoEntity from "../entity/endereco";
 import FuncionarioEntity from "../entity/funcionario";
 import PessoaEntity from "../entity/pessoa";
 import PessoaFisicaEntity from "../entity/pessoa.fisica";
+import RateioCentroResultadoEntity from "../entity/rateio.centro.resultado";
 import TelefoneEntity from "../entity/telefones";
 
-// centro_resultado_id -> acrescentar na entidade funcionario ou outro lugar
 
 
 export type IInput = {
@@ -21,7 +21,7 @@ export type IInput = {
   //atividades_funcionarios: [];
   //dependentes: Dependentes[];
   //funcionarioConvenios: FuncionariosConvenios[];
-  //rateios: Rateios[];
+  rateios: RateioCentroResultadoEntity[];
   centro_resultado_id: number;
 };
 

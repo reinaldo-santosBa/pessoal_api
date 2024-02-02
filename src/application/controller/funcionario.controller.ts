@@ -35,6 +35,13 @@ const contasBancariasSchema = Joi.object({
     banco: Joi.string().required(),
 });
 
+const rateiosSchema = Joi.object({
+    rateio_id: Joi.number().required(),
+    centro_resultado_id: Joi.number().required(),
+    centro_resultado: Joi.string().required(),
+    percentual: Joi.number().required(),
+});
+
 const schemaValidation = Joi.object({
     pessoa: {
         ativo: Joi.boolean().required(),
@@ -73,6 +80,7 @@ const schemaValidation = Joi.object({
     emails: Joi.array().items(emailSchema),
     telefones: Joi.array().items(telefoneSchema),
     contas_bancarias: Joi.array().items(contasBancariasSchema),
+    rateios: Joi.array().items(rateiosSchema).required(),
     centro_resultado_id: Joi.number().required()
 });
 
