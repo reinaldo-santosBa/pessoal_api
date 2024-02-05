@@ -1,10 +1,10 @@
 export type HoraTrabalhadaProps = {
   funcionario_id: number;
   data_trabalho: Date;
-  hora_inicio_turno_1: Date;
-  hora_inicio_turno_2: Date;
-  hora_fim_turno_1: Date;
-  hora_fim_turno_2: Date;
+  hora_inicio_turno_1: string;
+  hora_inicio_turno_2: string;
+  hora_fim_turno_1: string;
+  hora_fim_turno_2: string;
 
   [key: string]: string | number | Date;
 };

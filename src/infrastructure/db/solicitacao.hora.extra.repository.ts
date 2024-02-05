@@ -1,6 +1,6 @@
 import AppError from "../../application/errors/AppError";
 import SolicitacaoHoraExtraEntity from "../../domain/entity/solicitacao.hora.extra";
-import { SolicitacaoHoraExtraRepository } from "../../domain/repository/solicitacao.hora.extra";
+import { SolicitacaoHoraExtraRepository, StatusOutput } from "../../domain/repository/solicitacao.hora.extra";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
@@ -8,7 +8,27 @@ import * as status from "../../constraints/http.stauts";
 export default class SolicitacaoHoraExtraPostgresRepository
 implements SolicitacaoHoraExtraRepository
 {
-    async insert(input: SolicitacaoHoraExtraEntity): Promise<SolicitacaoHoraExtraEntity> {
+    async getStatusSolicitacao(funcionario_id: number, data_extra: Date): Promise<StatusOutput> {
+        try {
+            const statusSolicitacao = await conn.query(
+                `select  ss.status_solicitacao,
+		she.horas_extras,
+		she.data_extra
+from status_solicitacoes ss
+inner join solicitacoes_horas_extras she
+on ss.id = she.status_solicitacao_id
+where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Aprovado' and she.data_extra = '${data_extra}'`,
+            );
+
+            return statusSolicitacao.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+    async insert(
+        input: SolicitacaoHoraExtraEntity,
+    ): Promise<SolicitacaoHoraExtraEntity> {
         try {
             await conn.query("BEGIN");
             const solicitacaoHoraExtra = await conn.query(
@@ -20,7 +40,8 @@ implements SolicitacaoHoraExtraRepository
                         horas_extras,
                         observacao,
                         autorizado_por,
-                        data_autorizacao
+                        data_autorizacao,
+                        status_solicitacao_id
                 ) VALUES (
                   ${input.props.funcionario_id},
                   ${input.props.solicitante_id},
@@ -29,7 +50,8 @@ implements SolicitacaoHoraExtraRepository
                   ${input.props.horas_extras},
                   '${input.props.observacao}',
                   ${input.props.autorizado_por},
-                  '${input.props.data_autorizacao}'
+                  '${input.props.data_autorizacao}',
+                  ${input.props.status_solicitacao_id}
                 ) RETURNING *`,
             );
 
@@ -39,7 +61,6 @@ implements SolicitacaoHoraExtraRepository
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
     async getById(id: number): Promise<number> {
@@ -54,7 +75,9 @@ implements SolicitacaoHoraExtraRepository
         }
     }
 
-    async getAllFuncionarioId(funcionario_id: number): Promise<SolicitacaoHoraExtraEntity[]> {
+    async getAllFuncionarioId(
+        funcionario_id: number,
+    ): Promise<SolicitacaoHoraExtraEntity[]> {
         try {
             const solicitacaoHoraExtra = await conn.query(`SELECT
                           id,
@@ -74,7 +97,10 @@ implements SolicitacaoHoraExtraRepository
         }
     }
 
-    async update(id: number,input: SolicitacaoHoraExtraEntity): Promise<SolicitacaoHoraExtraEntity> {
+    async update(
+        id: number,
+        input: SolicitacaoHoraExtraEntity,
+    ): Promise<SolicitacaoHoraExtraEntity> {
         try {
             await conn.query("BEGIN");
             const solicitacaoHoraExtra = await conn.query(
@@ -86,25 +112,26 @@ implements SolicitacaoHoraExtraRepository
                       observacao = '${input.props.observacao}',
                       autorizado_por = ${input.props.autorizado_por},
                       data_autorizacao = '${input.props.data_autorizacao}'
-            RETURNING *`);
+            RETURNING *`,
+            );
             await conn.query("COMMIT");
             return solicitacaoHoraExtra.rows[0];
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 
     async delete(id: number): Promise<void> {
         try {
             await conn.query("BEGIN");
-            await conn.query(`DELETE FROM solicitacoes_horas_extras WHERE ID = ${id}`);
+            await conn.query(
+                `DELETE FROM solicitacoes_horas_extras WHERE ID = ${id}`,
+            );
             await conn.query("COMMIT");
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);
         }
-
     }
 }

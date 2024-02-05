@@ -5,7 +5,7 @@ export type SolicitacaoHoraExtraProps = {
   data_extra: Date;
   horas_extras: Date;
   observacao: string;
-  autorizado_por: string;
+  autorizado_por: number;
   data_autorizacao: Date;
   status_solicitacao_id: number;
 

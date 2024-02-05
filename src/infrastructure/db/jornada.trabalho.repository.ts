@@ -1,10 +1,22 @@
 import JornadaTrabalhoEntity from "../../domain/entity/jornada.trabalho";
-import { JornadaTrabalhoRepository } from "../../domain/repository/jornada.trabalho.repository";
+import { CargaDiariaOutput, JornadaTrabalhoRepository } from "../../domain/repository/jornada.trabalho.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 import AppError from "../../application/errors/AppError";
 
 export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalhoRepository {
+    async getByFuncionarioId(funcionario_id: number): Promise<CargaDiariaOutput> {
+        try {
+            const jornada_trabalho = await conn.query(`SELECT
+                jt.CARGA_DIARIA
+            FROM jornadas_trabalho jt  inner join funcionarios f on jt.id  = f.jornada_trabalho_id
+            where f.id = ${funcionario_id}`);
+
+            return jornada_trabalho.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
 
     async getById(id: number): Promise<JornadaTrabalhoEntity> {
         try {

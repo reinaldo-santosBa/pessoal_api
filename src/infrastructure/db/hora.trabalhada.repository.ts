@@ -1,10 +1,26 @@
 import AppError from "../../application/errors/AppError";
 import HoraTrabalhadaEntity from "../../domain/entity/hora.trabalhada";
-import { HoraTrabalhadaRepository } from "../../domain/repository/hora.trabalhada.repository";
+import { HoraTrabalhadaRepository, LimiteHorasOutput } from "../../domain/repository/hora.trabalhada.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class HoraTrabalhadaPostgresRepository implements HoraTrabalhadaRepository {
+
+    async getLimiteHoras(funcionario_id: number): Promise<LimiteHorasOutput> {
+        try {
+            const limiteHoras = await
+            conn.query(`select p.limite_hora_extra_diario , p.limite_hora_extra_mensal
+from parametros as p
+inner join funcionarios_centros_resultado as fcr
+on p.centro_resultado  = fcr.centro_resultado_id
+where fcr.funcionario_id  = ${funcionario_id} and fcr.data_fim_trabalho  is null`);
+            return limiteHoras.rows[0];
+        } catch (error) {
+            throw new AppError(error.message, status.INTERNAL_SERVER);
+        }
+    }
+
+
     async getById(id: number): Promise<HoraTrabalhadaEntity> {
         try {
             const hora_trabalhada = await conn.query(`SELECT id,

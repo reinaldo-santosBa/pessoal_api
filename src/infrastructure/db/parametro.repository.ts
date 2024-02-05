@@ -6,6 +6,7 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class ParametroPostgresRepository implements ParametroRepository {
+
     async insert(input: ParametroEntity): Promise<ParametroEntity> {
         try {
             await conn.query("BEGIN");
