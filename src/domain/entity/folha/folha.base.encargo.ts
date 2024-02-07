@@ -1,8 +1,9 @@
 export type FolhaBaseEncargoProps = {
-  encargo_id: number;
-  folha_base_id: number;
-  percentual: number;
-}
+    encargo_id: number;
+    folha_base_id?: number;
+    percentual_empresa: number;
+    percentual_funcionario: number;
+};
 
 export default class FolhaBaseEncargoEntity {
     public props: FolhaBaseEncargoProps;

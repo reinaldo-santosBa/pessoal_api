@@ -42,6 +42,15 @@ const rateiosSchema = Joi.object({
     percentual: Joi.number().required(),
 });
 
+const atividadesSchema = Joi.object({
+    atividade_id: Joi.number().required()
+});
+
+/*const funcionarioConveniosSchema = Joi.object({
+    convenio_id: Joi.number().required(),
+    valor: Joi.number().required(),
+});*/
+
 const schemaValidation = Joi.object({
     pessoa: {
         ativo: Joi.boolean().required(),
@@ -81,7 +90,9 @@ const schemaValidation = Joi.object({
     telefones: Joi.array().items(telefoneSchema),
     contas_bancarias: Joi.array().items(contasBancariasSchema),
     rateios: Joi.array().items(rateiosSchema).required(),
-    centro_resultado_id: Joi.number().required()
+    centro_resultado_id: Joi.number().required(),
+    atividades_funcionarios: Joi.array().items(atividadesSchema),
+    //funcionarioConvenios: Joi.array().items(funcionarioConveniosSchema),
 });
 
 

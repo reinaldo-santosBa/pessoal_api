@@ -96,6 +96,60 @@ export default class HoraTrabalhadaService {
             hora_inicio_turno_2,
         }: HoraTrabalhadaProps,
     ): Promise<HoraTrabalhadaEntity> {
+
+        if (hora_inicio_turno_2 && hora_fim_turno_2) {
+            const diariaTotal =
+             calculateDifferenceTime(
+                 hora_inicio_turno_1,
+                 hora_fim_turno_1,
+             ) +
+             calculateDifferenceTime(
+                 hora_inicio_turno_2,
+                 hora_fim_turno_2,
+             );
+
+            const cargaTrabalho =
+             await this.jornadaTrabalhoRepository.getByFuncionarioId(
+                 funcionario_id,
+             );
+
+            if (diariaTotal > cargaTrabalho.carga_diaria) {
+                const horasExtra: number =
+               diariaTotal - cargaTrabalho.carga_diaria;
+
+                const limite = await this.horaTrabalhadaRepository.getLimiteHoras(
+                    funcionario_id,
+                );
+                if (horasExtra > limite.limite_hora_extra_diario) {
+                    throw new AppError(
+                        "Horas Extras excedem o limite de hora extra diario",
+                        status.BAD_REQUEST,
+                    );
+                }
+
+                const statusResult =
+               await this.solicitacaoHoraExtraRepository.getStatusSolicitacao(
+                   funcionario_id,
+                   data_trabalho,
+               );
+
+                if (!statusResult) {
+                    throw new AppError(
+                        "Não existe solicitacao aprovada para o funcionario",
+                        status.BAD_REQUEST,
+                    );
+                }
+
+                if (horasExtra > statusResult.horas_extras) {
+                    throw new AppError(
+                        "Quantidade de Horas extras não aprovada",
+                        status.BAD_REQUEST,
+                    );
+                }
+            }
+        }
+        
+        
         const tipoFolhaEntity = new HoraTrabalhadaEntity({
             data_trabalho,
             funcionario_id,

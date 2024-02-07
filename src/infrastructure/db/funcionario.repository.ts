@@ -7,6 +7,8 @@ import TelefoneEntity from "../../domain/entity/telefones";
 import EnderecoEntity from "../../domain/entity/endereco";
 import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
 import RateioCentroResultadoEntity from "../../domain/entity/rateio.centro.resultado";
+import AtividadeFuncionarioEntity from "../../domain/entity/atividade.funcionario";
+import FuncionarioConvenioEntity from "../../domain/entity/funcionario.convenio";
 
 
 export interface AllFuncionariosOutput {
@@ -69,6 +71,8 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         emails,
         enderecos,
         telefones,
+        atividades_funcionarios,
+        //funcionarioConvenios,
         rateios,
         centro_resultado_id
     }: IInput): Promise<any> {
@@ -180,18 +184,54 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             const telefonesOutput: TelefoneEntity[] = [];
             const enderecoOutput: EnderecoEntity[] = [];
             const contasBancariasOutput: ContaBancariaEntity[] = [];
+            const atividadesOutput: AtividadeFuncionarioEntity[] = [];
+            // const funcionarioConveniosOutput: FuncionarioConvenioEntity[] = [];
 
-            for await (const email of emails) {
-                const emailResult = await conn.query(
-                    "INSERT INTO EMAILS (PESSOA_ID, TIPO_EMAIL_ID, EMAIL) VALUES ($1, $2, $3) RETURNING *",
-                    [newPessoa.rows[0].id, email.props.tipo_email_id, email.props.email],
+            /*  for await (const convenio of funcionarioConvenios) {
+                const convenioResult =
+                await conn.query(`INSERT INTO FUNCIONARIOS_CONVENIOS (
+                  FUNCIONARIO_ID,
+                  CONVENIO_ID,
+                  VALOR
+                ) VALUES (
+                   ${newPessoa.rows[0].id},
+                   ${convenio.props.convenio_id},
+                   ${convenio.props.valor}
+                )`);
+                funcionarioConveniosOutput.push(convenioResult.rows[0]);
+            }
+*/
+
+            /*          for await (const atividade of atividades_funcionarios) {
+                console.log(newPessoa.rows[0].id);
+                const atividadeResult = await conn.query(
+                    `INSERT INTO atividades_funcionarios (
+                      funcionario_id,
+                        atividade_id
+                  ) VALUES (
+                        $1,
+                        $2
+                  ) RETURNING *`,
+                    [newPessoa.rows[0].id, atividade.props.atividade_id],
                 );
-                emailsOutput.push(emailResult.rows[0]);
+                atividadesOutput.push(atividadeResult.rows[0]);
+            }*/
+            if (emails) {
+
+                for await (const email of emails) {
+                    const emailResult = await conn.query(
+                        "INSERT INTO EMAILS (PESSOA_ID, TIPO_EMAIL_ID, EMAIL) VALUES ($1, $2, $3) RETURNING *",
+                        [newPessoa.rows[0].id, email.props.tipo_email_id, email.props.email],
+                    );
+                    emailsOutput.push(emailResult.rows[0]);
+                }
             }
 
-            for await (const telefone of telefones) {
-                const telefoneResult = await conn.query(
-                    `INSERT INTO TELEFONES(
+
+            if (telefones) {
+                for await (const telefone of telefones) {
+                    const telefoneResult = await conn.query(
+                        `INSERT INTO TELEFONES(
                                             PESSOA_ID,
                                             NUMERO,
                                             TIPO_TELEFNE_ID
@@ -200,18 +240,20 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                                               $2,
                                               $3
                                           ) RETURNING *`,
-                    [
-                        newPessoa.rows[0].id,
-                        telefone.props.numero,
-                        telefone.props.tipo_telefne_id,
-                    ],
-                );
+                        [
+                            newPessoa.rows[0].id,
+                            telefone.props.numero,
+                            telefone.props.tipo_telefne_id,
+                        ],
+                    );
 
-                telefonesOutput.push(telefoneResult.rows[0]);
+                    telefonesOutput.push(telefoneResult.rows[0]);
+                }
             }
 
-            for await (const conta_bancaria of contas_bancarias) {
-                const contaBancariaResult = await conn.query(`
+            if (contas_bancarias) {
+                for await (const conta_bancaria of contas_bancarias) {
+                    const contaBancariaResult = await conn.query(`
                 INSERT INTO CONTAS_BANCARIAS (
                     pessoa_id,
                     conta,
@@ -234,12 +276,15 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                     '${conta_bancaria.props.banco}'
                 ) RETURNING *`);
 
-                contasBancariasOutput.push(contaBancariaResult.rows[0]);
+                    contasBancariasOutput.push(contaBancariaResult.rows[0]);
+                }
             }
 
-            for await (const endereco of enderecos) {
-                const enderecoResult = await conn.query(
-                    `INSERT INTO ENDERECOS (
+
+            if (enderecos) {
+                for await (const endereco of enderecos) {
+                    const enderecoResult = await conn.query(
+                        `INSERT INTO ENDERECOS (
                 cep,
                 logradouro,
                 pessoa_id,
@@ -258,19 +303,20 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             $7,
             $8
           ) RETURNING *`,
-                    [
-                        endereco.props.cep,
-                        endereco.props.logradouro,
-                        newPessoa.rows[0].id,
-                        endereco.props.tipo_endereco_id ?? null,
-                        endereco.props.complemento ?? null,
-                        endereco.props.numero ?? null,
-                        endereco.props.tipo_logradouro_id ?? null,
-                        endereco.props.bairro_id ?? null,
-                    ],
-                );
+                        [
+                            endereco.props.cep,
+                            endereco.props.logradouro,
+                            newPessoa.rows[0].id,
+                            endereco.props.tipo_endereco_id ?? null,
+                            endereco.props.complemento ?? null,
+                            endereco.props.numero ?? null,
+                            endereco.props.tipo_logradouro_id ?? null,
+                            endereco.props.bairro_id ?? null,
+                        ],
+                    );
 
-                enderecoOutput.push(enderecoResult.rows[0]);
+                    enderecoOutput.push(enderecoResult.rows[0]);
+                }
             }
 
             await conn.query("COMMIT");
@@ -283,8 +329,9 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 enderecos: enderecoOutput,
                 telefones: telefonesOutput,
                 contas_bancarias: contasBancariasOutput,
-                funcionarios_centros_resultado:
-                funcionarios_centros_resultado.rows[0],
+                funcionarios_centros_resultado: funcionarios_centros_resultado.rows[0],
+                atividadesOutput,
+                // funcionarioConveniosOutput,
                 rateios: rateioCentroResultadoOutput,
             };
 

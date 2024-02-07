@@ -1,5 +1,5 @@
 export type FolhaBaseProvisaoProps = {
-  folha_base_id: number;
+  folha_base_id?: number;
   provisao_id: number;
   percentual: number
 };

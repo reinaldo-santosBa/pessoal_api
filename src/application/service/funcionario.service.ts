@@ -1,3 +1,4 @@
+import AtividadeFuncionarioEntity, { AtividadeFuncionarioProps } from "./../../domain/entity/atividade.funcionario";
 import ContaBancariaEntity, { ContaBancariaProps } from "../../domain/entity/conta.bancaria";
 import EmailEntity, { EmailProps } from "../../domain/entity/email";
 import EnderecoEntity, { EnderecoProps } from "../../domain/entity/endereco";
@@ -10,6 +11,7 @@ import { FuncionarioRepository, IInput } from "../../domain/repository/funcionar
 import { AllFuncionariosOutput, FuncionarioOutput } from "../../infrastructure/db/funcionario.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
+import FuncionarioConvenioEntity from "../../domain/entity/funcionario.convenio";
 
 export type IInputProps = {
   pessoa: PessoaProps;
@@ -20,7 +22,9 @@ export type IInputProps = {
   telefones?: TelefoneProps[];
   contas_bancarias?: ContaBancariaProps[];
   centro_resultado_id: number;
-  rateios: RateioCentroResultadoProps[]
+  rateios: RateioCentroResultadoProps[];
+  atividades_funcionarios?: AtividadeFuncionarioProps[];
+  //funcionarioConvenios?: FuncionarioConvenioProps[];
 };
 
 
@@ -38,7 +42,9 @@ export default class FuncionarioService {
         telefones,
         contas_bancarias,
         rateios,
-        centro_resultado_id
+        centro_resultado_id,
+        atividades_funcionarios,
+        //   funcionarioConvenios
     }: IInputProps): Promise<IInput> {
 
         let totalPercentual: number = 0;
@@ -56,12 +62,22 @@ export default class FuncionarioService {
             pessoa_fisica: new PessoaFisicaEntity(pessoa_fisica),
             enderecos: enderecos.map(endereco => new EnderecoEntity(endereco)),
             emails: emails.map(email => new EmailEntity(email)),
-            telefones: telefones.map(telefone => new TelefoneEntity(telefone)),
+            telefones: telefones.map(
+                telefone => new TelefoneEntity(telefone),
+            ),
             contas_bancarias: contas_bancarias.map(
                 conta_bancaria => new ContaBancariaEntity(conta_bancaria),
             ),
-            rateios: rateios.map(rateio => new RateioCentroResultadoEntity(rateio)),
-            centro_resultado_id
+            rateios: rateios.map(
+                rateio => new RateioCentroResultadoEntity(rateio),
+            ),
+            centro_resultado_id,
+            atividades_funcionarios: atividades_funcionarios ? atividades_funcionarios.map(
+                atividade => new AtividadeFuncionarioEntity(atividade),
+            ) : null,
+            /* funcionarioConvenios: funcionarioConvenios.map(
+                convenio => new FuncionarioConvenioEntity(convenio),
+            ),*/
         });
 
         return funcionarioResponse;

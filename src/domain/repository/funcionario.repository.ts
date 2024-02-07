@@ -1,8 +1,10 @@
 import { AllFuncionariosOutput } from "../../infrastructure/db/funcionario.repository";
+import AtividadeFuncionarioEntity from "../entity/atividade.funcionario";
 import ContaBancariaEntity from "../entity/conta.bancaria";
 import EmailEntity from "../entity/email";
 import EnderecoEntity from "../entity/endereco";
 import FuncionarioEntity from "../entity/funcionario";
+import FuncionarioConvenioEntity from "../entity/funcionario.convenio";
 import PessoaEntity from "../entity/pessoa";
 import PessoaFisicaEntity from "../entity/pessoa.fisica";
 import RateioCentroResultadoEntity from "../entity/rateio.centro.resultado";
@@ -18,9 +20,9 @@ export type IInput = {
   enderecos?: EnderecoEntity[];
   telefones?: TelefoneEntity[];
   contas_bancarias?: ContaBancariaEntity[];
-  //atividades_funcionarios: [];
+  atividades_funcionarios: AtividadeFuncionarioEntity[];
   //dependentes: Dependentes[];
-  //funcionarioConvenios: FuncionariosConvenios[];
+  //funcionarioConvenios: FuncionarioConvenioEntity[];
   rateios: RateioCentroResultadoEntity[];
   centro_resultado_id: number;
 };

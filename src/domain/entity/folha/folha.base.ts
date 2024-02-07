@@ -1,7 +1,8 @@
 export type FolhaBaseProps = {
-  empresa_id: number;
-  adiantamento: number;
-  ativo: boolean
+    id?: number;
+    empresa_id: number;
+    adiantamento: number;
+    ativo: boolean
 };
 
 
