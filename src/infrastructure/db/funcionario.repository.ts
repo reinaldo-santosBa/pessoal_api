@@ -8,8 +8,7 @@ import EnderecoEntity from "../../domain/entity/endereco";
 import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
 import RateioCentroResultadoEntity from "../../domain/entity/rateio.centro.resultado";
 import AtividadeFuncionarioEntity from "../../domain/entity/atividade.funcionario";
-import FuncionarioConvenioEntity from "../../domain/entity/funcionario.convenio";
-
+import ConvenioCidadeFuncionarioEntity from "../../domain/entity/convenio.cidade.funcionario";
 
 export interface AllFuncionariosOutput {
   id: number;
@@ -72,18 +71,26 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         enderecos,
         telefones,
         atividades_funcionarios,
-        //funcionarioConvenios,
         rateios,
-        centro_resultado_id
+        centro_resultado_id,
+        convenios_cidades_funcionarios
     }: IInput): Promise<any> {
         try {
             await conn.query("BEGIN");
+            const emailsOutput: EmailEntity[] = [];
+            const telefonesOutput: TelefoneEntity[] = [];
+            const enderecoOutput: EnderecoEntity[] = [];
+            const contasBancariasOutput: ContaBancariaEntity[] = [];
+            const atividadesOutput: AtividadeFuncionarioEntity[] = [];
+            const convenioCidadeFuncionarioOutput: ConvenioCidadeFuncionarioEntity[] =
+                [];
 
             const newPessoa = await conn.query(
                 `INSERT INTO PESSOAS(ATIVO) VALUES(${pessoa.props.ativo}) RETURNING *`,
             );
 
-            const newPessoa_fisica = await conn.query(`INSERT INTO PESSOAS_FISICA(
+            const newPessoa_fisica =
+                await conn.query(`INSERT INTO PESSOAS_FISICA(
           ID,
           NOME,
           CPF,
@@ -153,18 +160,21 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                     centro_resultado_id,
                     data_inicio_trabalho
                 )VALUES (
-                  ${newPessoa.rows[0].id},
+                  ${newFuncionario.rows[0].id},
                   ${centro_resultado_id},
                   '${funcionario.props.data_admissao}'
                 ) RETURNING *`,
             );
 
-            const newRateio = await conn.query(`INSERT INTO RATEIOS (funcionario_id) VALUES (${newPessoa.rows[0].id}) RETURNING *`);
+            const newRateio = await conn.query(
+                `INSERT INTO RATEIOS (funcionario_id) VALUES (${newPessoa.rows[0].id}) RETURNING *`,
+            );
 
-            const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] = [];
+            const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] =
+                [];
             for await (const rateio of rateios) {
                 const rateioResult =
-                await conn.query(`INSERT INTO rateios_centros_resultado (
+                    await conn.query(`INSERT INTO rateios_centros_resultado (
                   rateio_id,
                   centro_resultado_id,
                   centro_resultado,
@@ -179,54 +189,19 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 rateioCentroResultadoOutput.push(rateioResult.rows[0]);
             }
 
-
-            const emailsOutput: EmailEntity[] = [];
-            const telefonesOutput: TelefoneEntity[] = [];
-            const enderecoOutput: EnderecoEntity[] = [];
-            const contasBancariasOutput: ContaBancariaEntity[] = [];
-            const atividadesOutput: AtividadeFuncionarioEntity[] = [];
-            // const funcionarioConveniosOutput: FuncionarioConvenioEntity[] = [];
-
-            /*  for await (const convenio of funcionarioConvenios) {
-                const convenioResult =
-                await conn.query(`INSERT INTO FUNCIONARIOS_CONVENIOS (
-                  FUNCIONARIO_ID,
-                  CONVENIO_ID,
-                  VALOR
-                ) VALUES (
-                   ${newPessoa.rows[0].id},
-                   ${convenio.props.convenio_id},
-                   ${convenio.props.valor}
-                )`);
-                funcionarioConveniosOutput.push(convenioResult.rows[0]);
-            }
-*/
-
-            /*          for await (const atividade of atividades_funcionarios) {
-                console.log(newPessoa.rows[0].id);
-                const atividadeResult = await conn.query(
-                    `INSERT INTO atividades_funcionarios (
-                      funcionario_id,
-                        atividade_id
-                  ) VALUES (
-                        $1,
-                        $2
-                  ) RETURNING *`,
-                    [newPessoa.rows[0].id, atividade.props.atividade_id],
-                );
-                atividadesOutput.push(atividadeResult.rows[0]);
-            }*/
             if (emails) {
-
                 for await (const email of emails) {
                     const emailResult = await conn.query(
                         "INSERT INTO EMAILS (PESSOA_ID, TIPO_EMAIL_ID, EMAIL) VALUES ($1, $2, $3) RETURNING *",
-                        [newPessoa.rows[0].id, email.props.tipo_email_id, email.props.email],
+                        [
+                            newPessoa.rows[0].id,
+                            email.props.tipo_email_id,
+                            email.props.email,
+                        ],
                     );
                     emailsOutput.push(emailResult.rows[0]);
                 }
             }
-
 
             if (telefones) {
                 for await (const telefone of telefones) {
@@ -280,7 +255,6 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 }
             }
 
-
             if (enderecos) {
                 for await (const endereco of enderecos) {
                     const enderecoResult = await conn.query(
@@ -319,6 +293,50 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 }
             }
 
+            if (convenios_cidades_funcionarios) {
+                for await (const convenioCidade of convenios_cidades_funcionarios) {
+                    const convenioCidadeFuncionarioResult =
+                              await conn.query(
+                                  `INSERT INTO convenios_cidades_funcionarios (
+                        funcionario_id,
+                        convenio_cidade_id
+                    ) VALUES (
+                          $1,
+                          $2
+                    ) RETURNING *`,
+                                  [
+                                      newFuncionario.rows[0].id,
+                                      convenioCidade.props.convenio_cidade_id,
+                                  ],
+                              );
+                    convenioCidadeFuncionarioOutput.push(
+                        convenioCidadeFuncionarioResult.rows[0],
+                    );
+                }
+            }
+
+
+
+            if (atividades_funcionarios) {
+                for await (const atividade of atividades_funcionarios) {
+
+                    const atividadeResult = await conn.query(
+                        `INSERT INTO atividades_funcionarios (
+                      funcionario_id,
+                        atividade_id
+                  ) VALUES (
+                        $1,
+                        $2
+                  ) RETURNING *`,
+                        [
+                            newFuncionario.rows[0].id,
+                            atividade.props.atividade_id,
+                        ],
+                    );
+                    atividadesOutput.push(atividadeResult.rows[0]);
+                }
+            }
+
             await conn.query("COMMIT");
 
             return {
@@ -329,12 +347,12 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                 enderecos: enderecoOutput,
                 telefones: telefonesOutput,
                 contas_bancarias: contasBancariasOutput,
-                funcionarios_centros_resultado: funcionarios_centros_resultado.rows[0],
+                funcionarios_centros_resultado:
+                funcionarios_centros_resultado.rows[0],
                 atividadesOutput,
-                // funcionarioConveniosOutput,
+                convenioCidadeFuncionarioOutput,
                 rateios: rateioCentroResultadoOutput,
             };
-
         } catch (error) {
             await conn.query("ROLLBACK");
             throw new AppError(error.message, status.INTERNAL_SERVER);

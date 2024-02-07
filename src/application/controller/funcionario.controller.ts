@@ -46,10 +46,9 @@ const atividadesSchema = Joi.object({
     atividade_id: Joi.number().required()
 });
 
-/*const funcionarioConveniosSchema = Joi.object({
-    convenio_id: Joi.number().required(),
-    valor: Joi.number().required(),
-});*/
+const convenios_cidades_funcionarios = Joi.object({
+    convenio_cidade_id: Joi.number().required(),
+});
 
 const schemaValidation = Joi.object({
     pessoa: {
@@ -92,7 +91,9 @@ const schemaValidation = Joi.object({
     rateios: Joi.array().items(rateiosSchema).required(),
     centro_resultado_id: Joi.number().required(),
     atividades_funcionarios: Joi.array().items(atividadesSchema),
-    //funcionarioConvenios: Joi.array().items(funcionarioConveniosSchema),
+    convenios_cidades_funcionarios: Joi.array().items(
+        convenios_cidades_funcionarios,
+    ),
 });
 
 
@@ -101,6 +102,7 @@ export default class FuncionarioController {
 
     async create(request: Request, response: Response) {
         const input = request.body as IInputProps;
+
         const { error } = schemaValidation.validate(input);
 
         if (error) {

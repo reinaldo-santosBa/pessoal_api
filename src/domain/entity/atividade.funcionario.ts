@@ -1,5 +1,5 @@
 export type AtividadeFuncionarioProps = {
-  funcionario_id: number;
+  funcionario_id?: number;
   atividade_id: number;
 }
 

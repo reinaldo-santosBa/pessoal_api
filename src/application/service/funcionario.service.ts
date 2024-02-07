@@ -11,20 +11,20 @@ import { FuncionarioRepository, IInput } from "../../domain/repository/funcionar
 import { AllFuncionariosOutput, FuncionarioOutput } from "../../infrastructure/db/funcionario.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
-import FuncionarioConvenioEntity from "../../domain/entity/funcionario.convenio";
+import ConvenioCidadeFuncionarioEntity, { ConvenioCidadeFuncionarioProps } from "../../domain/entity/convenio.cidade.funcionario";
 
 export type IInputProps = {
-  pessoa: PessoaProps;
-  funcionario: FuncionarioProps;
-  pessoa_fisica: PessoaFisicaProps;
-  emails?: EmailProps[];
-  enderecos?: EnderecoProps[];
-  telefones?: TelefoneProps[];
-  contas_bancarias?: ContaBancariaProps[];
-  centro_resultado_id: number;
-  rateios: RateioCentroResultadoProps[];
-  atividades_funcionarios?: AtividadeFuncionarioProps[];
-  //funcionarioConvenios?: FuncionarioConvenioProps[];
+    pessoa: PessoaProps;
+    funcionario: FuncionarioProps;
+    pessoa_fisica: PessoaFisicaProps;
+    emails?: EmailProps[];
+    enderecos?: EnderecoProps[];
+    telefones?: TelefoneProps[];
+    contas_bancarias?: ContaBancariaProps[];
+    centro_resultado_id: number;
+    rateios: RateioCentroResultadoProps[];
+    atividades_funcionarios?: AtividadeFuncionarioProps[];
+    convenios_cidades_funcionarios?: ConvenioCidadeFuncionarioProps[]
 };
 
 
@@ -44,7 +44,7 @@ export default class FuncionarioService {
         rateios,
         centro_resultado_id,
         atividades_funcionarios,
-        //   funcionarioConvenios
+        convenios_cidades_funcionarios
     }: IInputProps): Promise<IInput> {
 
         let totalPercentual: number = 0;
@@ -62,9 +62,7 @@ export default class FuncionarioService {
             pessoa_fisica: new PessoaFisicaEntity(pessoa_fisica),
             enderecos: enderecos.map(endereco => new EnderecoEntity(endereco)),
             emails: emails.map(email => new EmailEntity(email)),
-            telefones: telefones.map(
-                telefone => new TelefoneEntity(telefone),
-            ),
+            telefones: telefones.map(telefone => new TelefoneEntity(telefone)),
             contas_bancarias: contas_bancarias.map(
                 conta_bancaria => new ContaBancariaEntity(conta_bancaria),
             ),
@@ -72,12 +70,13 @@ export default class FuncionarioService {
                 rateio => new RateioCentroResultadoEntity(rateio),
             ),
             centro_resultado_id,
-            atividades_funcionarios: atividades_funcionarios ? atividades_funcionarios.map(
+            atividades_funcionarios: atividades_funcionarios.map(
                 atividade => new AtividadeFuncionarioEntity(atividade),
-            ) : null,
-            /* funcionarioConvenios: funcionarioConvenios.map(
-                convenio => new FuncionarioConvenioEntity(convenio),
-            ),*/
+            ),
+            convenios_cidades_funcionarios: convenios_cidades_funcionarios.map(
+                convenio_cidade =>
+                    new ConvenioCidadeFuncionarioEntity(convenio_cidade),
+            ),
         });
 
         return funcionarioResponse;
