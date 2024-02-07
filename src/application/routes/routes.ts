@@ -25,6 +25,7 @@ import routesTipoRemuneracao from "./tipo.remuneracao.routes";
 import funcionarioCentroResultadoRoutes from "./funcionario.centro.resultado.routes";
 import routesParametro from "./parametro.routes";
 import routesFolhaBase from "./folha.base.routes";
+import routesProcessarPagamento from "./processar.folha.pagamento.routes";
 
 const routes = Router();
 
@@ -54,5 +55,6 @@ routes.use(routesTipoRemuneracao);
 routes.use(funcionarioCentroResultadoRoutes);
 routes.use(routesParametro);
 routes.use(routesFolhaBase);
+routes.use(routesProcessarPagamento);
 
 export default routes;
