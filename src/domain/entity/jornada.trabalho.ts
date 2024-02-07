@@ -3,8 +3,9 @@ export type JornadaTrabalhoProps = {
   carga_diaria: number;
   unidade_tempo: string;
   carga_semanal: number;
+  turno: number;
 
-  [key: string]: string | number;
+    [key: string]: string | number;
 };
 
 export default class JornadaTrabalhoEntity {

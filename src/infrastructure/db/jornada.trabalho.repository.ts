@@ -39,12 +39,14 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
             JORNADA_TRABALHO,
             CARGA_DIARIA,
             UNIDADE_TEMPO,
-            CARGA_SEMANAL
+            CARGA_SEMANAL,
+            TURNOS
         )VALUES(
           '${input.props.jornada_trabalho}',
           ${input.props.carga_diaria},
           '${input.props.unidade_tempo ?? null}',
-          ${input.props.carga_semanal}
+          ${input.props.carga_semanal},
+          ${input.props.turno}
         ) RETURNING *`);
 
             await conn.query("COMMIT");
@@ -105,7 +107,8 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
                   JORNADA_TRABALHO = '${input.props.jornada_trabalho}',
                   CARGA_DIARIA = ${input.props.carga_diaria},
                   UNIDADE_TEMPO = '${input.props.unidade_tempo}',
-                  CARGA_SEMANAL = ${input.props.carga_semanal}
+                  CARGA_SEMANAL = ${input.props.carga_semanal},
+                  TURNOS = ${input.props.turno}
               WHERE ID = ${id} RETURNING *`,
             );
 

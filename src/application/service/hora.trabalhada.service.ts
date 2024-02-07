@@ -27,8 +27,6 @@ export default class HoraTrabalhadaService {
             }
         }
 
-
-
         if (input.hora_inicio_turno_2 && input.hora_fim_turno_2) {
             const diariaTotal =
             calculateDifferenceTime(
@@ -49,6 +47,11 @@ export default class HoraTrabalhadaService {
                 const horasExtra: number = diariaTotal - cargaTrabalho.carga_diaria;
 
                 const limite = await this.horaTrabalhadaRepository.getLimiteHoras(input.funcionario_id);
+
+                if (!limite) {
+                    throw new AppError("Limites de horas não encontrado", status.BAD_REQUEST);
+                }
+
                 if (horasExtra > limite.limite_hora_extra_diario) {
                     throw new AppError("Horas Extras excedem o limite de hora extra diario", status.BAD_REQUEST);
                 }
@@ -56,7 +59,7 @@ export default class HoraTrabalhadaService {
                 const statusResult = await this.solicitacaoHoraExtraRepository.getStatusSolicitacao(input.funcionario_id, input.data_trabalho);
 
                 if (!statusResult) {
-                    throw new AppError("Não existe solicitacao aprovada para o funcionario", status.BAD_REQUEST);
+                    throw new AppError("Não existe solicitacao de horas extras aprovada para o funcionario", status.BAD_REQUEST);
                 }
 
                 if (horasExtra > statusResult.horas_extras) {
@@ -148,8 +151,8 @@ export default class HoraTrabalhadaService {
                 }
             }
         }
-        
-        
+
+
         const tipoFolhaEntity = new HoraTrabalhadaEntity({
             data_trabalho,
             funcionario_id,

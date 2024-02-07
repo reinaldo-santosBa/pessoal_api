@@ -17,7 +17,7 @@ pf.nome,
 pf.cpf,
 fcr.centro_resultado_id as centro_resultado_folha_id,
 fcr.centro_resultado as centro_resultado_folha,
-c.remuneracao as salario_base,
+(c.remuneracao * rcr.percentual) / 100 as salario_base,
 /*horas extras*/
 e.encargo as encargo_nome,
 (fbe.percentual_empresa * rcr.percentual) / 100 as percentual_empresa,

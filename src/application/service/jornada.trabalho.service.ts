@@ -14,6 +14,7 @@ export default class JornadaTrabalhoService {
             "carga_diaria",
             "carga_semanal",
             "limite_extra_diario",
+            "turnos"
         ];
 
         for (const campo of camposObrigatorios) {
@@ -47,6 +48,7 @@ export default class JornadaTrabalhoService {
             "carga_diaria",
             "carga_semanal",
             "limite_extra_diario",
+            "turnos"
         ];
 
         for (const campo of camposObrigatorios) {
