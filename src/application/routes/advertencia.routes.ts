@@ -10,7 +10,7 @@ const advertenciaService = new AdvertenciaService(advertenciaRepository);
 const advertenciaController = new AdvertenciaController(advertenciaService);
 
 routesAdvertencia.post("/advertencia", (req, res) =>
-    advertenciaController.create(req, res),
+  advertenciaController.create(req, res),
 );
 
 /*routesAdvertencia.get("/advertencia/:funcionario_id", (req, res) =>
@@ -18,20 +18,20 @@ routesAdvertencia.post("/advertencia", (req, res) =>
 );*/
 
 routesAdvertencia.get("/advertencia/:id", (req, res) =>
-    advertenciaController.getById(req, res),
+  advertenciaController.getById(req, res),
 );
 
 routesAdvertencia.get("/advertencia", (req, res) =>
-    advertenciaController.getAll(req, res),
+  advertenciaController.getAll(req, res),
 );
 
 
 routesAdvertencia.put("/advertencia/:id", (req, res) =>
-    advertenciaController.update(req, res),
+  advertenciaController.update(req, res),
 );
 
 routesAdvertencia.delete("/advertencia/:id", (req, res) =>
-    advertenciaController.delete(req, res),
+  advertenciaController.delete(req, res),
 );
 
 

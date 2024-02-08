@@ -4,11 +4,11 @@ export type ProvisaoProps = {
 
 
 export default class ProvisaoEntity {
-    public props: ProvisaoProps;
+  public props: ProvisaoProps;
 
-    constructor(props: ProvisaoProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: ProvisaoProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

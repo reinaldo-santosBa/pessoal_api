@@ -3,11 +3,11 @@ export type EncargoProps = {
 };
 
 export default class EncargoEntity {
-    public props: EncargoProps;
+  public props: EncargoProps;
 
-    constructor(props: EncargoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: EncargoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

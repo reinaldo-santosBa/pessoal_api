@@ -6,11 +6,11 @@ export type ModeloContratoProps = {
 
 
 export default class ModeloContratoEntity {
-    public props: ModeloContratoProps;
+  public props: ModeloContratoProps;
 
-    constructor(props: ModeloContratoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: ModeloContratoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

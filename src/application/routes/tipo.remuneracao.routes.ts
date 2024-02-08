@@ -11,25 +11,25 @@ const tipoRemuneracaoService = new TipoRemuneracaoService(tipoRemuneracaoReposit
 const tipoRemuneracaoController = new TipoRemuneracaoController(tipoRemuneracaoService);
 
 routesTipoRemuneracao.post("/tipo_remuneracao", (req, res) =>
-    tipoRemuneracaoController.create(req, res),
+  tipoRemuneracaoController.create(req, res),
 );
 
 routesTipoRemuneracao.get("/tipo_remuneracao", (req, res) =>
-    tipoRemuneracaoController.getAll(req, res),
+  tipoRemuneracaoController.getAll(req, res),
 );
 
 
 routesTipoRemuneracao.get("/tipo_remuneracao/:id", (req, res) =>
-    tipoRemuneracaoController.getById(req, res),
+  tipoRemuneracaoController.getById(req, res),
 );
 
 
 routesTipoRemuneracao.put("/tipo_remuneracao/:id", (req, res) =>
-    tipoRemuneracaoController.update(req, res),
+  tipoRemuneracaoController.update(req, res),
 );
 
 routesTipoRemuneracao.delete("/tipo_remuneracao/:id", (req, res) =>
-    tipoRemuneracaoController.delete(req, res),
+  tipoRemuneracaoController.delete(req, res),
 );
 
 export default routesTipoRemuneracao;

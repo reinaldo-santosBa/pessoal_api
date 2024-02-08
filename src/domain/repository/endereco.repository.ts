@@ -1,8 +1,8 @@
 import EnderecoEntity, {
-    BairrosProps,
-    CidadesProps,
-    EstadoProps,
-    RigoesProps
+  BairrosProps,
+  CidadesProps,
+  EstadoProps,
+  RigoesProps
 } from "../entity/endereco";
 
 export interface EnderecoRepository {

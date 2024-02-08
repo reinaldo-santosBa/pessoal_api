@@ -11,19 +11,19 @@ const solicitacaoHoraExtraController = new SolicitacaoHoraExtraController(solici
 
 
 routesSolicitacaoHoraExtra.post("/solicitacao_hora_extra", (req, res) =>
-    solicitacaoHoraExtraController.create(req, res)
+  solicitacaoHoraExtraController.create(req, res)
 );
 
 routesSolicitacaoHoraExtra.get("/solicitacao_hora_extra/:funcionario_id", (req, res) =>
-    solicitacaoHoraExtraController.getAllFuncionarioId(req, res),
+  solicitacaoHoraExtraController.getAllFuncionarioId(req, res),
 );
 
 routesSolicitacaoHoraExtra.put("/solicitacao_hora_extra/:id", (req, res) =>
-    solicitacaoHoraExtraController.create(req, res),
+  solicitacaoHoraExtraController.create(req, res),
 );
 
 routesSolicitacaoHoraExtra.delete("/solicitacao_hora_extra/:id", (req, res) =>
-    solicitacaoHoraExtraController.delete(req, res),
+  solicitacaoHoraExtraController.delete(req, res),
 );
 
 

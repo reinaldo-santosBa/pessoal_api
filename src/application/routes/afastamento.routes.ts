@@ -10,7 +10,7 @@ const afastamentoService = new AfastamentoService(afastamentoRepository);
 const afastamentoController = new AfastamentoController(afastamentoService);
 
 routesAfastamento.post("/afastamento", (req, res) =>
-    afastamentoController.create(req, res),
+  afastamentoController.create(req, res),
 );
 
 /*routesAfastamento.get("/afastamento/:funcionario_id", (req, res) =>
@@ -18,20 +18,20 @@ routesAfastamento.post("/afastamento", (req, res) =>
 );*/
 
 routesAfastamento.get("/afastamento/:id", (req, res) =>
-    afastamentoController.getById(req, res),
+  afastamentoController.getById(req, res),
 );
 
 routesAfastamento.get("/afastamento", (req, res) =>
-    afastamentoController.getAll(req, res),
+  afastamentoController.getAll(req, res),
 );
 
 
 routesAfastamento.put("/afastamento/:id", (req, res) =>
-    afastamentoController.update(req, res),
+  afastamentoController.update(req, res),
 );
 
 routesAfastamento.delete("/afastamento/:id", (req, res) =>
-    afastamentoController.delete(req, res),
+  afastamentoController.delete(req, res),
 );
 
 export default routesAfastamento;

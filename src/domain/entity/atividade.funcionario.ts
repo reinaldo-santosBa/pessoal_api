@@ -4,11 +4,11 @@ export type AtividadeFuncionarioProps = {
 }
 
 export default class AtividadeFuncionarioEntity {
-    public props: AtividadeFuncionarioProps;
+  public props: AtividadeFuncionarioProps;
 
-    constructor(props: AtividadeFuncionarioProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: AtividadeFuncionarioProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

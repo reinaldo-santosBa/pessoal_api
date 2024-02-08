@@ -16,11 +16,11 @@ const horaTrabalhadaController = new HoraTrabalhadaController(horaTrabalhadaServ
 
 
 horaTrabalhadaRoutes.post("/hora_trabalhada", (req, res) =>
-    horaTrabalhadaController.create(req, res)
+  horaTrabalhadaController.create(req, res)
 );
 
 horaTrabalhadaRoutes.get("/hora_trabalhada/:funcionario_id", (req, res) =>
-    horaTrabalhadaController.getAllByFuncionario(req, res),
+  horaTrabalhadaController.getAllByFuncionario(req, res),
 );
 
 /*horaTrabalhadaRoutes.get("/hora_trabalhada/:id", (req, res) =>
@@ -28,11 +28,11 @@ horaTrabalhadaRoutes.get("/hora_trabalhada/:funcionario_id", (req, res) =>
 );
 */
 horaTrabalhadaRoutes.put("/hora_trabalhada/:id", (req, res) =>
-    horaTrabalhadaController.update(req, res),
+  horaTrabalhadaController.update(req, res),
 );
 
 horaTrabalhadaRoutes.delete("/hora_trabalhada/:id", (req, res) =>
-    horaTrabalhadaController.delete(req, res),
+  horaTrabalhadaController.delete(req, res),
 );
 
 

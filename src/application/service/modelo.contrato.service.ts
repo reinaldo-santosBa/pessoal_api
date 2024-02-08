@@ -4,59 +4,59 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 
 export default class ModeloContratoService {
-    constructor(private readonly modeloContratoRepository: ModeloContratoRepository) {}
+  constructor(private readonly modeloContratoRepository: ModeloContratoRepository) {}
 
-    async create(input: ModeloContratoProps): Promise<ModeloContratoEntity> {
-        if (!input.modelo) {
-            throw new AppError("modelo Obrigatório", status.BAD_REQUEST);
-        }
-        if (!input.cargo_id) {
-            throw new AppError("Cargo Obrigatório", status.BAD_REQUEST);
-        }
-
-        const modeloContrato = new ModeloContratoEntity(input);
-        const newModeloContrato = this.modeloContratoRepository.insert(modeloContrato);
-        return newModeloContrato;
+  async create(input: ModeloContratoProps): Promise<ModeloContratoEntity> {
+    if (!input.modelo) {
+      throw new AppError("modelo Obrigatório", status.BAD_REQUEST);
+    }
+    if (!input.cargo_id) {
+      throw new AppError("Cargo Obrigatório", status.BAD_REQUEST);
     }
 
-    async update(id: number, input: ModeloContratoProps): Promise<ModeloContratoEntity> {
+    const modeloContrato = new ModeloContratoEntity(input);
+    const newModeloContrato = this.modeloContratoRepository.insert(modeloContrato);
+    return newModeloContrato;
+  }
 
-        if (!input.modelo) {
-            throw new AppError("modelo Obrigatório", status.BAD_REQUEST);
-        }
-        if (!input.cargo_id) {
-            throw new AppError("Cargo Obrigatório", status.BAD_REQUEST);
-        }
+  async update(id: number, input: ModeloContratoProps): Promise<ModeloContratoEntity> {
 
-        const modeloExisting =
+    if (!input.modelo) {
+      throw new AppError("modelo Obrigatório", status.BAD_REQUEST);
+    }
+    if (!input.cargo_id) {
+      throw new AppError("Cargo Obrigatório", status.BAD_REQUEST);
+    }
+
+    const modeloExisting =
           await this.modeloContratoRepository.getByIdExisting(id);
-        if (!modeloExisting) {
-            throw new AppError("Modelo de contrato não encontrado",status.NOT_FOUND);
-        }
-
-        const modeloContrato = new ModeloContratoEntity(input);
-        const updateModeloContrato = this.modeloContratoRepository.update(id, modeloContrato);
-
-        return updateModeloContrato;
+    if (!modeloExisting) {
+      throw new AppError("Modelo de contrato não encontrado",status.NOT_FOUND);
     }
 
+    const modeloContrato = new ModeloContratoEntity(input);
+    const updateModeloContrato = this.modeloContratoRepository.update(id, modeloContrato);
 
-    async delete(id: number): Promise<void> {
-        const modeloExisting =
+    return updateModeloContrato;
+  }
+
+
+  async delete(id: number): Promise<void> {
+    const modeloExisting =
           await this.modeloContratoRepository.getByIdExisting(id);
-        if (!modeloExisting) {
-            throw new AppError("Modelo de contrato não encontrado",status.NOT_FOUND);
-        }
-        await this.modeloContratoRepository.delete(id);
+    if (!modeloExisting) {
+      throw new AppError("Modelo de contrato não encontrado",status.NOT_FOUND);
     }
+    await this.modeloContratoRepository.delete(id);
+  }
 
-    async getById(id: number): Promise<ModeloContratoEntity> {
-        const modeloContrato = await this.modeloContratoRepository.getById(id);
-        return modeloContrato;
-    }
+  async getById(id: number): Promise<ModeloContratoEntity> {
+    const modeloContrato = await this.modeloContratoRepository.getById(id);
+    return modeloContrato;
+  }
 
-    async getAll(): Promise<ModeloContratoEntity[]>{
-        const modelosContrato = await this.modeloContratoRepository.getAll();
-        return modelosContrato;
-    }
+  async getAll(): Promise<ModeloContratoEntity[]>{
+    const modelosContrato = await this.modeloContratoRepository.getAll();
+    return modelosContrato;
+  }
 }

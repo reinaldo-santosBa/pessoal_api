@@ -14,11 +14,11 @@ export type FuncionarioProps = {
 };
 
 export default class FuncionarioEntity {
-    public readonly id: number;
-    public props: FuncionarioProps;
-    constructor(props: FuncionarioProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  public readonly id: number;
+  public props: FuncionarioProps;
+  constructor(props: FuncionarioProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

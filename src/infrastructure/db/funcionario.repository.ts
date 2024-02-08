@@ -62,34 +62,34 @@ export interface FuncionarioOutput {
 
 
 export default class FuncionarioPostgresRepository implements FuncionarioRepository {
-    async insert({
-        funcionario,
-        pessoa,
-        pessoa_fisica,
-        contas_bancarias,
-        emails,
-        enderecos,
-        telefones,
-        atividades_funcionarios,
-        rateios,
-        centro_resultado_id,
-        convenios_cidades_funcionarios
-    }: IInput): Promise<any> {
-        try {
-            await conn.query("BEGIN");
-            const emailsOutput: EmailEntity[] = [];
-            const telefonesOutput: TelefoneEntity[] = [];
-            const enderecoOutput: EnderecoEntity[] = [];
-            const contasBancariasOutput: ContaBancariaEntity[] = [];
-            const atividadesOutput: AtividadeFuncionarioEntity[] = [];
-            const convenioCidadeFuncionarioOutput: ConvenioCidadeFuncionarioEntity[] =
+  async insert({
+    funcionario,
+    pessoa,
+    pessoa_fisica,
+    contas_bancarias,
+    emails,
+    enderecos,
+    telefones,
+    atividades_funcionarios,
+    rateios,
+    centro_resultado_id,
+    convenios_cidades_funcionarios
+  }: IInput): Promise<any> {
+    try {
+      await conn.query("BEGIN");
+      const emailsOutput: EmailEntity[] = [];
+      const telefonesOutput: TelefoneEntity[] = [];
+      const enderecoOutput: EnderecoEntity[] = [];
+      const contasBancariasOutput: ContaBancariaEntity[] = [];
+      const atividadesOutput: AtividadeFuncionarioEntity[] = [];
+      const convenioCidadeFuncionarioOutput: ConvenioCidadeFuncionarioEntity[] =
                 [];
 
-            const newPessoa = await conn.query(
-                `INSERT INTO PESSOAS(ATIVO) VALUES(${pessoa.props.ativo}) RETURNING *`,
-            );
+      const newPessoa = await conn.query(
+        `INSERT INTO PESSOAS(ATIVO) VALUES(${pessoa.props.ativo}) RETURNING *`,
+      );
 
-            const newPessoa_fisica =
+      const newPessoa_fisica =
                 await conn.query(`INSERT INTO PESSOAS_FISICA(
           ID,
           NOME,
@@ -128,7 +128,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${pessoa_fisica.props.pcd_id ?? null}
         ) RETURNING * `);
 
-            const newFuncionario = await conn.query(`INSERT INTO FUNCIONARIOS(
+      const newFuncionario = await conn.query(`INSERT INTO FUNCIONARIOS(
               ID,
               EMPRESA_ID,
               CARGO_ID,
@@ -154,8 +154,8 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${funcionario.props.registrado}
             ) RETURNING * `);
 
-            const funcionarios_centros_resultado = await conn.query(
-                `INSERT INTO funcionarios_centros_resultado(
+      const funcionarios_centros_resultado = await conn.query(
+        `INSERT INTO funcionarios_centros_resultado(
                     funcionario_id,
                     centro_resultado_id,
                     data_inicio_trabalho
@@ -164,16 +164,16 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                   ${centro_resultado_id},
                   '${funcionario.props.data_admissao}'
                 ) RETURNING *`,
-            );
+      );
 
-            const newRateio = await conn.query(
-                `INSERT INTO RATEIOS (funcionario_id) VALUES (${newPessoa.rows[0].id}) RETURNING *`,
-            );
+      const newRateio = await conn.query(
+        `INSERT INTO RATEIOS (funcionario_id) VALUES (${newPessoa.rows[0].id}) RETURNING *`,
+      );
 
-            const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] =
+      const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] =
                 [];
-            for await (const rateio of rateios) {
-                const rateioResult =
+      for await (const rateio of rateios) {
+        const rateioResult =
                     await conn.query(`INSERT INTO rateios_centros_resultado (
                   rateio_id,
                   centro_resultado_id,
@@ -186,27 +186,27 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                   ${rateio.props.percentual}
               ) RETURNING *`);
 
-                rateioCentroResultadoOutput.push(rateioResult.rows[0]);
-            }
+        rateioCentroResultadoOutput.push(rateioResult.rows[0]);
+      }
 
-            if (emails) {
-                for await (const email of emails) {
-                    const emailResult = await conn.query(
-                        "INSERT INTO EMAILS (PESSOA_ID, TIPO_EMAIL_ID, EMAIL) VALUES ($1, $2, $3) RETURNING *",
-                        [
-                            newPessoa.rows[0].id,
-                            email.props.tipo_email_id,
-                            email.props.email,
-                        ],
-                    );
-                    emailsOutput.push(emailResult.rows[0]);
-                }
-            }
+      if (emails) {
+        for await (const email of emails) {
+          const emailResult = await conn.query(
+            "INSERT INTO EMAILS (PESSOA_ID, TIPO_EMAIL_ID, EMAIL) VALUES ($1, $2, $3) RETURNING *",
+            [
+              newPessoa.rows[0].id,
+              email.props.tipo_email_id,
+              email.props.email,
+            ],
+          );
+          emailsOutput.push(emailResult.rows[0]);
+        }
+      }
 
-            if (telefones) {
-                for await (const telefone of telefones) {
-                    const telefoneResult = await conn.query(
-                        `INSERT INTO TELEFONES(
+      if (telefones) {
+        for await (const telefone of telefones) {
+          const telefoneResult = await conn.query(
+            `INSERT INTO TELEFONES(
                                             PESSOA_ID,
                                             NUMERO,
                                             TIPO_TELEFNE_ID
@@ -215,20 +215,20 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                                               $2,
                                               $3
                                           ) RETURNING *`,
-                        [
-                            newPessoa.rows[0].id,
-                            telefone.props.numero,
-                            telefone.props.tipo_telefne_id,
-                        ],
-                    );
+            [
+              newPessoa.rows[0].id,
+              telefone.props.numero,
+              telefone.props.tipo_telefne_id,
+            ],
+          );
 
-                    telefonesOutput.push(telefoneResult.rows[0]);
-                }
-            }
+          telefonesOutput.push(telefoneResult.rows[0]);
+        }
+      }
 
-            if (contas_bancarias) {
-                for await (const conta_bancaria of contas_bancarias) {
-                    const contaBancariaResult = await conn.query(`
+      if (contas_bancarias) {
+        for await (const conta_bancaria of contas_bancarias) {
+          const contaBancariaResult = await conn.query(`
                 INSERT INTO CONTAS_BANCARIAS (
                     pessoa_id,
                     conta,
@@ -251,14 +251,14 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                     '${conta_bancaria.props.banco}'
                 ) RETURNING *`);
 
-                    contasBancariasOutput.push(contaBancariaResult.rows[0]);
-                }
-            }
+          contasBancariasOutput.push(contaBancariaResult.rows[0]);
+        }
+      }
 
-            if (enderecos) {
-                for await (const endereco of enderecos) {
-                    const enderecoResult = await conn.query(
-                        `INSERT INTO ENDERECOS (
+      if (enderecos) {
+        for await (const endereco of enderecos) {
+          const enderecoResult = await conn.query(
+            `INSERT INTO ENDERECOS (
                 cep,
                 logradouro,
                 pessoa_id,
@@ -277,113 +277,113 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             $7,
             $8
           ) RETURNING *`,
-                        [
-                            endereco.props.cep,
-                            endereco.props.logradouro,
-                            newPessoa.rows[0].id,
-                            endereco.props.tipo_endereco_id ?? null,
-                            endereco.props.complemento ?? null,
-                            endereco.props.numero ?? null,
-                            endereco.props.tipo_logradouro_id ?? null,
-                            endereco.props.bairro_id ?? null,
-                        ],
-                    );
+            [
+              endereco.props.cep,
+              endereco.props.logradouro,
+              newPessoa.rows[0].id,
+              endereco.props.tipo_endereco_id ?? null,
+              endereco.props.complemento ?? null,
+              endereco.props.numero ?? null,
+              endereco.props.tipo_logradouro_id ?? null,
+              endereco.props.bairro_id ?? null,
+            ],
+          );
 
-                    enderecoOutput.push(enderecoResult.rows[0]);
-                }
-            }
+          enderecoOutput.push(enderecoResult.rows[0]);
+        }
+      }
 
-            if (convenios_cidades_funcionarios) {
-                for await (const convenioCidade of convenios_cidades_funcionarios) {
-                    const convenioCidadeFuncionarioResult =
+      if (convenios_cidades_funcionarios) {
+        for await (const convenioCidade of convenios_cidades_funcionarios) {
+          const convenioCidadeFuncionarioResult =
                               await conn.query(
-                                  `INSERT INTO convenios_cidades_funcionarios (
+                                `INSERT INTO convenios_cidades_funcionarios (
                         funcionario_id,
                         convenio_cidade_id
                     ) VALUES (
                           $1,
                           $2
                     ) RETURNING *`,
-                                  [
-                                      newFuncionario.rows[0].id,
-                                      convenioCidade.props.convenio_cidade_id,
-                                  ],
+                                [
+                                  newFuncionario.rows[0].id,
+                                  convenioCidade.props.convenio_cidade_id,
+                                ],
                               );
-                    convenioCidadeFuncionarioOutput.push(
-                        convenioCidadeFuncionarioResult.rows[0],
-                    );
-                }
-            }
+          convenioCidadeFuncionarioOutput.push(
+            convenioCidadeFuncionarioResult.rows[0],
+          );
+        }
+      }
 
 
 
-            if (atividades_funcionarios) {
-                for await (const atividade of atividades_funcionarios) {
+      if (atividades_funcionarios) {
+        for await (const atividade of atividades_funcionarios) {
 
-                    const atividadeResult = await conn.query(
-                        `INSERT INTO atividades_funcionarios (
+          const atividadeResult = await conn.query(
+            `INSERT INTO atividades_funcionarios (
                       funcionario_id,
                         atividade_id
                   ) VALUES (
                         $1,
                         $2
                   ) RETURNING *`,
-                        [
-                            newFuncionario.rows[0].id,
-                            atividade.props.atividade_id,
-                        ],
-                    );
-                    atividadesOutput.push(atividadeResult.rows[0]);
-                }
-            }
+            [
+              newFuncionario.rows[0].id,
+              atividade.props.atividade_id,
+            ],
+          );
+          atividadesOutput.push(atividadeResult.rows[0]);
+        }
+      }
 
-            await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
-            return {
-                pessoa: newPessoa.rows[0],
-                pessoa_fisica: newPessoa_fisica.rows[0],
-                funcionario: newFuncionario.rows[0],
-                emails: emailsOutput,
-                enderecos: enderecoOutput,
-                telefones: telefonesOutput,
-                contas_bancarias: contasBancariasOutput,
-                funcionarios_centros_resultado:
+      return {
+        pessoa: newPessoa.rows[0],
+        pessoa_fisica: newPessoa_fisica.rows[0],
+        funcionario: newFuncionario.rows[0],
+        emails: emailsOutput,
+        enderecos: enderecoOutput,
+        telefones: telefonesOutput,
+        contas_bancarias: contasBancariasOutput,
+        funcionarios_centros_resultado:
                 funcionarios_centros_resultado.rows[0],
-                atividadesOutput,
-                convenioCidadeFuncionarioOutput,
-                rateios: rateioCentroResultadoOutput,
-            };
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+        atividadesOutput,
+        convenioCidadeFuncionarioOutput,
+        rateios: rateioCentroResultadoOutput,
+      };
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async update(id: number, input: any): Promise<any> {
-        try {
-            await conn.query("BEGIN");
+  async update(id: number, input: any): Promise<any> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getAll(): Promise<AllFuncionariosOutput[]> {
-        try {
-            const funcionarios = await conn.query(`SELECT
+  async getAll(): Promise<AllFuncionariosOutput[]> {
+    try {
+      const funcionarios = await conn.query(`SELECT
                         p.id,
                         p.ativo,
                         pf.nome,
@@ -401,15 +401,15 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                           funcionarios AS f ON p.id = f.id
                       inner  join
                       cargos as c on f.cargo_id  = c.id `);
-            return funcionarios.rows;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return funcionarios.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getById(pessoa_id: number): Promise<FuncionarioOutput> {
-        try {
-            const funcionarios = await conn.query(`SELECT
+  async getById(pessoa_id: number): Promise<FuncionarioOutput> {
+    try {
+      const funcionarios = await conn.query(`SELECT
                       *
                       FROM
                           pessoas AS p
@@ -420,9 +420,9 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                       inner  join
                       cargos as c on f.cargo_id  = c.id
                       WHERE p.id = ${pessoa_id}`);
-            return funcionarios.rows[0];
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return funcionarios.rows[0];
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 }

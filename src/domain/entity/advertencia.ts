@@ -8,11 +8,11 @@ export type AdvertenciaProps = {
 };
 
 export default class AdvertenciaEntity {
-    public props: AdvertenciaProps;
+  public props: AdvertenciaProps;
 
-    constructor(props: AdvertenciaProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: AdvertenciaProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

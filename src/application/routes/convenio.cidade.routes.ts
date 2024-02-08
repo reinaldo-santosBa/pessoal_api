@@ -10,20 +10,20 @@ const convenioCidadeService = new ConvenioCidadeService(convenioCidadeRepository
 const convenioCidadeController = new ConvenioCidadeController(convenioCidadeService);
 
 routesConvenioCidade.post("/convenio_cidade", (req, res) =>
-    convenioCidadeController.create(req, res)
+  convenioCidadeController.create(req, res)
 );
 routesConvenioCidade.get("/convenio_cidade/:id", (req, res) =>
-    convenioCidadeController.getById(req, res),
+  convenioCidadeController.getById(req, res),
 );
 routesConvenioCidade.get("/convenio_cidade", (req, res) =>
-    convenioCidadeController.geAll(req, res),
+  convenioCidadeController.geAll(req, res),
 );
 routesConvenioCidade.put("/convenio_cidade/:id", (req, res) =>
-    convenioCidadeController.update(req, res),
+  convenioCidadeController.update(req, res),
 );
 
 routesConvenioCidade.delete("/convenio_cidade/:id", (req, res) =>
-    convenioCidadeController.delete(req, res),
+  convenioCidadeController.delete(req, res),
 );
 
 export default routesConvenioCidade;

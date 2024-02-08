@@ -8,11 +8,11 @@ export type FuncionarioContratoProps = {
 };
 
 export class FuncionarioContratoEntity {
-    public props: FuncionarioContratoProps;
+  public props: FuncionarioContratoProps;
 
-    constructor(props: FuncionarioContratoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: FuncionarioContratoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

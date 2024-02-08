@@ -6,11 +6,11 @@ export type RateioCentroResultadoProps = {
 }
 
 export default class RateioCentroResultadoEntity {
-    public props: RateioCentroResultadoProps;
+  public props: RateioCentroResultadoProps;
 
-    constructor(props: RateioCentroResultadoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: RateioCentroResultadoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

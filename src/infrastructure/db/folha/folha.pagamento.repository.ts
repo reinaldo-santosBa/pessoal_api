@@ -4,10 +4,10 @@ import { FolhaPagamentoRepository } from "../../../domain/repository/folha/folha
 import conn from "../../config/database.config";
 import * as status from "../../../constraints/http.stauts";
 export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoRepository {
-    async insert(input: FolhaPagamentoEntity): Promise<FolhaPagamentoEntity> {
-        try {
-            await conn.query("BEGIN");
-            const folhaPagamento =
+  async insert(input: FolhaPagamentoEntity): Promise<FolhaPagamentoEntity> {
+    try {
+      await conn.query("BEGIN");
+      const folhaPagamento =
               await conn.query(`INSERT INTO folhas_pagamento (
                                 empresa_id,
                                 mes,
@@ -24,43 +24,43 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                         '${input.props.data_fechamento}',
                         ${input.props.folha_base_id},
                                     ) RETURNING *`);
-            await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
-            return folhaPagamento.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return folhaPagamento.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async update(id: number, input: FolhaPagamentoEntity): Promise<FolhaPagamentoEntity> {
-        try {
-            await conn.query("BEGIN");
+  async update(id: number, input: FolhaPagamentoEntity): Promise<FolhaPagamentoEntity> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async get(): Promise<FolhaPagamentoEntity[]> {
-        try {
+  async get(): Promise<FolhaPagamentoEntity[]> {
+    try {
   
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
 }

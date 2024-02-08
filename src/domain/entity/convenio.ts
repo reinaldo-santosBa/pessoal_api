@@ -3,19 +3,19 @@ export type ConvenioProps = {
 }
 
 export default class ConvenioEntity {
-    public props: ConvenioProps;
+  public props: ConvenioProps;
 
-    constructor(props: ConvenioProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: ConvenioProps) {
+    this.props = {
+      ...props
+    };
+  }
 
-    public get getConvenio(): string{
-        return this.props.convenio;
-    }
+  public get getConvenio(): string{
+    return this.props.convenio;
+  }
 
-    private set setConvenio(value: string) {
-        this.props.convenio = value;
-    }
+  private set setConvenio(value: string) {
+    this.props.convenio = value;
+  }
 }

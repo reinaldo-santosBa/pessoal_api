@@ -10,18 +10,18 @@ const funcionarioCentroResultadoService = new FuncionarioCentroResultadoService(
 const funcionarioCentroResultadoController = new FuncionarioCentroResultadoController(funcionarioCentroResultadoService);
 
 funcionarioCentroResultadoRoutes.post(
-    "/funcionario_centro_resultado",
-    (req, res) => funcionarioCentroResultadoController.create(req, res),
+  "/funcionario_centro_resultado",
+  (req, res) => funcionarioCentroResultadoController.create(req, res),
 );
 
 funcionarioCentroResultadoRoutes.get(
-    "/funcionario_centro_resultado/:funcionario_id",
-    (req, res) => funcionarioCentroResultadoController.getAllByFuncionarioId(req, res),
+  "/funcionario_centro_resultado/:funcionario_id",
+  (req, res) => funcionarioCentroResultadoController.getAllByFuncionarioId(req, res),
 );
 
 funcionarioCentroResultadoRoutes.delete(
-    "/funcionario_centro_resultado/:id",
-    (req, res) => funcionarioCentroResultadoController.delete(req, res),
+  "/funcionario_centro_resultado/:id",
+  (req, res) => funcionarioCentroResultadoController.delete(req, res),
 );
 
 

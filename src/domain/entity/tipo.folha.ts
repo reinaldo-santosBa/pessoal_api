@@ -3,12 +3,12 @@ export type TipoFolhaProps = {
 }
 
 export default class TipoFolhaEntity {
-    public props: TipoFolhaProps;
+  public props: TipoFolhaProps;
 
 
-    constructor(props: TipoFolhaProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: TipoFolhaProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

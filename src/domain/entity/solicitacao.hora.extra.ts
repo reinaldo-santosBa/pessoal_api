@@ -13,11 +13,11 @@ export type SolicitacaoHoraExtraProps = {
 };
 
 export default class SolicitacaoHoraExtraEntity {
-    public props: SolicitacaoHoraExtraProps;
+  public props: SolicitacaoHoraExtraProps;
 
-    constructor(props: SolicitacaoHoraExtraProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: SolicitacaoHoraExtraProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

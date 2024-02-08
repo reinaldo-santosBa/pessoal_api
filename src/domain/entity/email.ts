@@ -5,12 +5,12 @@ export type EmailProps = {
 }
 
 export default class EmailEntity {
-    public readonly id: number;
-    public props: EmailProps;
+  public readonly id: number;
+  public props: EmailProps;
 
-    constructor(props: EmailProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: EmailProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

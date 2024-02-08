@@ -8,11 +8,11 @@ export type FolhaPagamentoFuncionarioProps = {
 };
 
 export default class FolhaPagamentoFuncionarioEntity {
-    public props: FolhaPagamentoFuncionarioProps;
+  public props: FolhaPagamentoFuncionarioProps;
 
-    constructor(props: FolhaPagamentoFuncionarioProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: FolhaPagamentoFuncionarioProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

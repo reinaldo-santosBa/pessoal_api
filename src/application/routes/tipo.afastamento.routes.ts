@@ -10,25 +10,25 @@ const tipoAfastamentoService = new TipoAfastamentoService(tipoAfastamentoReposit
 const tipoAfastamentoController = new TipoAfastamentoController(tipoAfastamentoService);
 
 routesTipoAfastamento.post("/tipo_afastamento", (req, res) =>
-    tipoAfastamentoController.create(req, res)
+  tipoAfastamentoController.create(req, res)
 );
 
 routesTipoAfastamento.get("/tipo_afastamento", (req, res) =>
-    tipoAfastamentoController.getAll(req, res)
+  tipoAfastamentoController.getAll(req, res)
 );
 
 routesTipoAfastamento.put("/tipo_afastamento/:id", (req, res) =>
-    tipoAfastamentoController.update(req, res),
+  tipoAfastamentoController.update(req, res),
 );
 
 
 routesTipoAfastamento.get("/tipo_afastamento/:id", (req, res) =>
-    tipoAfastamentoController.getById(req, res),
+  tipoAfastamentoController.getById(req, res),
 );
 
 
 routesTipoAfastamento.delete("/tipo_afastamento/:id", (req, res) =>
-    tipoAfastamentoController.delete(req, res),
+  tipoAfastamentoController.delete(req, res),
 );
 
 

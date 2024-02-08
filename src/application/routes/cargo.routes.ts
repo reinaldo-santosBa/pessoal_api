@@ -10,23 +10,23 @@ const cargoService = new CargosService(cargoRepository);
 const cargoController = new CargoController(cargoService);
 
 routesCargo.post("/cargo", (req: Request, res: Response) =>
-    cargoController.create(req, res),
+  cargoController.create(req, res),
 );
 
 routesCargo.get("/cargo", (req, res) =>
-    cargoController.getAll(req, res)
+  cargoController.getAll(req, res)
 );
 
 routesCargo.get("/cargo/:id", (req, res) =>
-    cargoController.getById(req, res)
+  cargoController.getById(req, res)
 );
 
 routesCargo.put("/cargo/:id", (req, res) =>
-    cargoController.update(req, res)
+  cargoController.update(req, res)
 );
 
 routesCargo.delete("/cargo/:id", (req, res) =>
-    cargoController.delete(req, res),
+  cargoController.delete(req, res),
 );
 
 export default routesCargo;

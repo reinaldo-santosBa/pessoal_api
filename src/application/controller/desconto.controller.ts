@@ -5,36 +5,36 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class DescontoController {
-    constructor(private readonly descontoService: DescontoService) {}
+  constructor(private readonly descontoService: DescontoService) {}
 
-    async create(request: Request, response: Response) {
-        const desconto = request.body as DescontoProps;
+  async create(request: Request, response: Response) {
+    const desconto = request.body as DescontoProps;
 
-        const newDesconto = await this.descontoService.create(desconto);
-        return response.status(status.CREATED).json(newDesconto);
-    }
+    const newDesconto = await this.descontoService.create(desconto);
+    return response.status(status.CREATED).json(newDesconto);
+  }
 
-    async getAll(request: Request, response: Response) {
-        const desconto = await this.descontoService.getAll();
-        return response.json(desconto);
-    }
+  async getAll(request: Request, response: Response) {
+    const desconto = await this.descontoService.getAll();
+    return response.json(desconto);
+  }
 
-    async getById(request: Request, response: Response) {
-        const id = request.params.id;
-        const desconto = await this.descontoService.getById(+id);
-        return response.json(desconto);
-    }
-    async update(request: Request, response: Response) {
-        const id = request.params.id;
-        const input = request.body as DescontoProps;
+  async getById(request: Request, response: Response) {
+    const id = request.params.id;
+    const desconto = await this.descontoService.getById(+id);
+    return response.json(desconto);
+  }
+  async update(request: Request, response: Response) {
+    const id = request.params.id;
+    const input = request.body as DescontoProps;
 
-        const updateDesconto = await this.descontoService.update(+id, input);
-        return response.json(updateDesconto);
-    }
+    const updateDesconto = await this.descontoService.update(+id, input);
+    return response.json(updateDesconto);
+  }
 
-    async delete(request: Request, response: Response) {
-        const id = request.params.id;
-        await this.descontoService.delete(+id);
-        return response.status(status.NO_CONTENT).json();
-    }
+  async delete(request: Request, response: Response) {
+    const id = request.params.id;
+    await this.descontoService.delete(+id);
+    return response.status(status.NO_CONTENT).json();
+  }
 }

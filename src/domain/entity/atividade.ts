@@ -3,11 +3,11 @@ export type AtividadeProps = {
 };
 
 export default class AtividadeEntity {
-    public props: AtividadeProps;
+  public props: AtividadeProps;
 
-    constructor(props: AtividadeProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: AtividadeProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

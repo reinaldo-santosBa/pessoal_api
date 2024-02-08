@@ -10,16 +10,16 @@ const funcionarioService = new FuncionarioService(funcionarioRepository);
 const funcionarioController = new FuncionarioController(funcionarioService);
 
 routesFuncionario.post("/funcionario", (req, res) =>
-    funcionarioController.create(req, res),
+  funcionarioController.create(req, res),
 );
 
 routesFuncionario.get("/funcionario", (req, res) =>
-    funcionarioController.getAll(req, res),
+  funcionarioController.getAll(req, res),
 );
 
 
 routesFuncionario.get("/funcionario/:pessoa_id", (req, res) =>
-    funcionarioController.getById(req, res),
+  funcionarioController.getById(req, res),
 );
 
 

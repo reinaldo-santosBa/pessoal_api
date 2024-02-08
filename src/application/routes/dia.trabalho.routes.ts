@@ -11,24 +11,24 @@ const diaJornadaTrabalhoController = new DiaTrabalhoController(diaJornadaTrabalh
 
 
 routesDiaTrabalho.post("/dia_trabalho", (req, res) =>
-    diaJornadaTrabalhoController.create(req, res)
+  diaJornadaTrabalhoController.create(req, res)
 );
 
 routesDiaTrabalho.get("/dia_trabalho", (req, res) =>
-    diaJornadaTrabalhoController.getAll(req, res),
+  diaJornadaTrabalhoController.getAll(req, res),
 );
 
 routesDiaTrabalho.get("/dia_trabalho/:id", (req, res) =>
-    diaJornadaTrabalhoController.getById(req, res),
+  diaJornadaTrabalhoController.getById(req, res),
 );
 
 
 routesDiaTrabalho.put("/dia_trabalho/:id", (req, res) =>
-    diaJornadaTrabalhoController.update(req, res),
+  diaJornadaTrabalhoController.update(req, res),
 );
 
 routesDiaTrabalho.delete("/dia_trabalho/:id", (req, res) =>
-    diaJornadaTrabalhoController.delete(req, res),
+  diaJornadaTrabalhoController.delete(req, res),
 );
 
 

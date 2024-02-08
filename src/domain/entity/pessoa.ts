@@ -3,11 +3,11 @@ export type PessoaProps = {
 }
 
 export default class PessoaEntity {
-    public props: PessoaProps;
+  public props: PessoaProps;
 
-    constructor(props: PessoaProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: PessoaProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

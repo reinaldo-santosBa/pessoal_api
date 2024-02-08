@@ -4,36 +4,36 @@ import EncargoService from "../service/encargo.service";
 import * as status from "../../constraints/http.stauts";
 
 export default class EncargoController {
-    constructor(private readonly EncargoService: EncargoService) {}
+  constructor(private readonly EncargoService: EncargoService) {}
 
-    async create(request: Request, response: Response) {
-        const input = request.body as EncargoProps;
-        const encargo = await this.EncargoService.create(input);
-        return response.status(status.CREATED).json(encargo);
-    }
+  async create(request: Request, response: Response) {
+    const input = request.body as EncargoProps;
+    const encargo = await this.EncargoService.create(input);
+    return response.status(status.CREATED).json(encargo);
+  }
 
-    async delete(request: Request, response: Response) {
-        const id = request.params.id;
-        await this.EncargoService.delete(+id);
-        return response.status(status.NO_CONTENT).json();
-    }
+  async delete(request: Request, response: Response) {
+    const id = request.params.id;
+    await this.EncargoService.delete(+id);
+    return response.status(status.NO_CONTENT).json();
+  }
 
-    async update(request: Request, response: Response) {
-        const id = request.params.id;
-        const input = request.body as EncargoProps;
+  async update(request: Request, response: Response) {
+    const id = request.params.id;
+    const input = request.body as EncargoProps;
 
-        const encargo = await this.EncargoService.update(+id, input);
-        return response.json(encargo);
-    }
+    const encargo = await this.EncargoService.update(+id, input);
+    return response.json(encargo);
+  }
 
-    async getById(request: Request, response: Response) {
-        const id = request.params.id;
-        const encargo = await this.EncargoService.getById(+id);
-        return response.json(encargo);
-    }
+  async getById(request: Request, response: Response) {
+    const id = request.params.id;
+    const encargo = await this.EncargoService.getById(+id);
+    return response.json(encargo);
+  }
 
-    async getAll(request: Request, response: Response) {
-        const encargos = await this.EncargoService.getAll();
-        return response.json(encargos);
-    }
+  async getAll(request: Request, response: Response) {
+    const encargos = await this.EncargoService.getAll();
+    return response.json(encargos);
+  }
 }

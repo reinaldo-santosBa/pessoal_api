@@ -7,11 +7,11 @@ export type CustaProps = {
 };
 
 export default class CustaEntity {
-    public props: CustaProps;
+  public props: CustaProps;
 
-    constructor(props: CustaProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: CustaProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

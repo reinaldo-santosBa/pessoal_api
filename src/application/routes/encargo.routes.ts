@@ -10,22 +10,22 @@ const encargoService = new EncargoService(encargoRepository);
 const encargoController = new EncargoController(encargoService);
 
 routesEncargo.post("/encargo", (req, res) =>
-    encargoController.create(req, res),
+  encargoController.create(req, res),
 );
 
 routesEncargo.get("/encargo", (req, res) =>
-    encargoController.getAll(req, res)
+  encargoController.getAll(req, res)
 );
 
 routesEncargo.get("/encargo/:id", (req, res) =>
-    encargoController.getById(req, res),
+  encargoController.getById(req, res),
 );
 routesEncargo.put("/encargo/:id", (req, res) =>
-    encargoController.update(req, res),
+  encargoController.update(req, res),
 );
 
 routesEncargo.delete("/encargo/:id", (req, res) =>
-    encargoController.delete(req, res),
+  encargoController.delete(req, res),
 );
 
 export default routesEncargo;

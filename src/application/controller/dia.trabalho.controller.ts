@@ -5,36 +5,36 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class DiaTrabalhoController {
-    constructor(private readonly diaTrabalhoService: DiaJornadaTrabalhoService) {}
+  constructor(private readonly diaTrabalhoService: DiaJornadaTrabalhoService) {}
 
-    async create(request: Request, response: Response) {
-        const input = request.body as DiaJornadaTrabalhoProps;
-        const diaTrabalho = await this.diaTrabalhoService.create(input);
-        return response.status(status.CREATED).json(diaTrabalho);
-    }
+  async create(request: Request, response: Response) {
+    const input = request.body as DiaJornadaTrabalhoProps;
+    const diaTrabalho = await this.diaTrabalhoService.create(input);
+    return response.status(status.CREATED).json(diaTrabalho);
+  }
 
-    async delete(request: Request, response: Response) {
-        const id = request.params.id;
-        await this.diaTrabalhoService.delete(+id);
-        return response.status(status.NO_CONTENT).json();
-    }
+  async delete(request: Request, response: Response) {
+    const id = request.params.id;
+    await this.diaTrabalhoService.delete(+id);
+    return response.status(status.NO_CONTENT).json();
+  }
 
-    async update(request: Request, response: Response) {
-        const id = request.params.id;
-        const input = request.body as DiaJornadaTrabalhoProps;
+  async update(request: Request, response: Response) {
+    const id = request.params.id;
+    const input = request.body as DiaJornadaTrabalhoProps;
 
-        const diaTrabalho = await this.diaTrabalhoService.update(+id, input);
-        return response.json(diaTrabalho);
-    }
+    const diaTrabalho = await this.diaTrabalhoService.update(+id, input);
+    return response.json(diaTrabalho);
+  }
 
-    async getById(request: Request, response: Response) {
-        const id = request.params.id;
-        const diaTrabalho = await this.diaTrabalhoService.getById(+id);
-        return response.json(diaTrabalho);
-    }
+  async getById(request: Request, response: Response) {
+    const id = request.params.id;
+    const diaTrabalho = await this.diaTrabalhoService.getById(+id);
+    return response.json(diaTrabalho);
+  }
 
-    async getAll(request: Request, response: Response) {
-        const diaTrabalho = await this.diaTrabalhoService.getAll();
-        return response.json(diaTrabalho);
-    }
+  async getAll(request: Request, response: Response) {
+    const diaTrabalho = await this.diaTrabalhoService.getAll();
+    return response.json(diaTrabalho);
+  }
 }

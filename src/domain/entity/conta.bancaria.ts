@@ -14,12 +14,12 @@ export type ContaBancariaProps = {
 };
 
 export default class ContaBancariaEntity {
-    public readonly id: number;
-    public props: ContaBancariaProps;
+  public readonly id: number;
+  public props: ContaBancariaProps;
 
-    constructor(props: ContaBancariaProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: ContaBancariaProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

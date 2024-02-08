@@ -24,7 +24,7 @@ export type IInput = {
   //dependentes: Dependentes[];
   rateios: RateioCentroResultadoEntity[];
   centro_resultado_id: number;
-convenios_cidades_funcionarios: ConvenioCidadeFuncionarioEntity[],
+  convenios_cidades_funcionarios: ConvenioCidadeFuncionarioEntity[],
 };
 
 

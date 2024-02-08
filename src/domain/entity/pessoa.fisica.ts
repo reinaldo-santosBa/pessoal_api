@@ -21,12 +21,12 @@ export type PessoaFisicaProps = {
 
 
 export default class PessoaFisicaEntity {
-    public props: PessoaFisicaProps;
+  public props: PessoaFisicaProps;
 
-    constructor(props: PessoaFisicaProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: PessoaFisicaProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }
 

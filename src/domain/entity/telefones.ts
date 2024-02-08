@@ -7,32 +7,32 @@ export type TelefoneProps = {
 };
 
 export default class TelefoneEntity {
-    public readonly id: number;
-    public props: TelefoneProps;
+  public readonly id: number;
+  public props: TelefoneProps;
 
-    constructor(props: TelefoneProps) {
-        this.props = {
-            ...props,
-        };
-    }
-    public get getPessoa_id(): number {
-        return this.props.pessoa_id;
-    }
-    private set setPessoa_id(value: number) {
-        this.props.pessoa_id = value;
-    }
+  constructor(props: TelefoneProps) {
+    this.props = {
+      ...props,
+    };
+  }
+  public get getPessoa_id(): number {
+    return this.props.pessoa_id;
+  }
+  private set setPessoa_id(value: number) {
+    this.props.pessoa_id = value;
+  }
 
-    public get getTipo_telefne_id(): number {
-        return this.props.tipo_telefne_id;
-    }
-    private set setTipo_telefne_id(value: number) {
-        this.props.tipo_telefne_id = value;
-    }
+  public get getTipo_telefne_id(): number {
+    return this.props.tipo_telefne_id;
+  }
+  private set setTipo_telefne_id(value: number) {
+    this.props.tipo_telefne_id = value;
+  }
 
-    public get getNumero(): string {
-        return this.props.numero;
-    }
-    private set setNumero(value: string) {
-        this.props.numero = value;
-    }
+  public get getNumero(): string {
+    return this.props.numero;
+  }
+  private set setNumero(value: string) {
+    this.props.numero = value;
+  }
 }

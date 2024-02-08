@@ -5,11 +5,11 @@ export type ConvenioCidadeFuncionarioProps = {
 
 
 export default class ConvenioCidadeFuncionarioEntity {
-    public props: ConvenioCidadeFuncionarioProps;
+  public props: ConvenioCidadeFuncionarioProps;
 
-    constructor(props: ConvenioCidadeFuncionarioProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: ConvenioCidadeFuncionarioProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

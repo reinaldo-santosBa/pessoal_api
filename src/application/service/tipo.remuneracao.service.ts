@@ -2,38 +2,38 @@ import TipoRemuneracaoEntity, { TipoRemuneracaoProps } from "../../domain/entity
 import { TipoRemuneracaoRepository } from "../../domain/repository/tipo.remuneracao.repository";
 
 export default class TipoRemuneracaoService {
-    constructor(
+  constructor(
     private readonly tipoRemuneracaoRepository: TipoRemuneracaoRepository,
-    ) {}
+  ) {}
 
-    async create(input: TipoRemuneracaoProps): Promise<TipoRemuneracaoEntity> {
-        const tipoRemuneracaoEntity = new TipoRemuneracaoEntity(input);
-        const tipoRemuneracao = await this.tipoRemuneracaoRepository.insert(tipoRemuneracaoEntity);
-        return tipoRemuneracao;
-    }
+  async create(input: TipoRemuneracaoProps): Promise<TipoRemuneracaoEntity> {
+    const tipoRemuneracaoEntity = new TipoRemuneracaoEntity(input);
+    const tipoRemuneracao = await this.tipoRemuneracaoRepository.insert(tipoRemuneracaoEntity);
+    return tipoRemuneracao;
+  }
 
-    async getAll(): Promise<TipoRemuneracaoEntity[]>{
-        const tiposRemuneracao = await this.tipoRemuneracaoRepository.getAll();
-        return tiposRemuneracao;
-    }
+  async getAll(): Promise<TipoRemuneracaoEntity[]>{
+    const tiposRemuneracao = await this.tipoRemuneracaoRepository.getAll();
+    return tiposRemuneracao;
+  }
 
-    async getById(id: number): Promise<TipoRemuneracaoEntity>{
+  async getById(id: number): Promise<TipoRemuneracaoEntity>{
 
-        const tipoRemuneracao = await this.tipoRemuneracaoRepository.getById(id);
-        return tipoRemuneracao;
-    }
+    const tipoRemuneracao = await this.tipoRemuneracaoRepository.getById(id);
+    return tipoRemuneracao;
+  }
 
-    async update(
-        id: number,
-        input: TipoRemuneracaoProps,
-    ): Promise<TipoRemuneracaoEntity> {
-        const tipoRemuneracaoEntity = new TipoRemuneracaoEntity(input);
-        const tipoRemuneracao = await this.tipoRemuneracaoRepository.update(id,tipoRemuneracaoEntity);
+  async update(
+    id: number,
+    input: TipoRemuneracaoProps,
+  ): Promise<TipoRemuneracaoEntity> {
+    const tipoRemuneracaoEntity = new TipoRemuneracaoEntity(input);
+    const tipoRemuneracao = await this.tipoRemuneracaoRepository.update(id,tipoRemuneracaoEntity);
 
-        return tipoRemuneracao;
-    }
+    return tipoRemuneracao;
+  }
 
-    async delete(id: number): Promise<void> {
-        await this.tipoRemuneracaoRepository.delete(id);
-    }
+  async delete(id: number): Promise<void> {
+    await this.tipoRemuneracaoRepository.delete(id);
+  }
 }

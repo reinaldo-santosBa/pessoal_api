@@ -7,11 +7,11 @@ export type AfastamentoProps = {
 }
 
 export default class AfastamentoEntity {
-    public props: AfastamentoProps;
+  public props: AfastamentoProps;
 
-    constructor(props: AfastamentoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: AfastamentoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

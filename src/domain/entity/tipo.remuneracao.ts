@@ -3,11 +3,11 @@ export type TipoRemuneracaoProps = {
 }
 
 export default class TipoRemuneracaoEntity {
-    public props: TipoRemuneracaoProps;
+  public props: TipoRemuneracaoProps;
 
-    constructor(props: TipoRemuneracaoProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: TipoRemuneracaoProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

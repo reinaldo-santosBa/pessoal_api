@@ -4,38 +4,38 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 
 export default class ProvisaoService {
-    constructor(private readonly provisaoRepository: ProvisaoRepository) {}
+  constructor(private readonly provisaoRepository: ProvisaoRepository) {}
 
-    async create(input: ProvisaoProps): Promise<ProvisaoEntity> {
-        if (!input.provisao) {
-            throw new AppError("Provisao Obrigatório", status.BAD_REQUEST);
-        }
-
-        const provisao = new ProvisaoEntity(input);
-
-        const newProvisao = await this.provisaoRepository.insert(provisao);
-
-        return newProvisao;
+  async create(input: ProvisaoProps): Promise<ProvisaoEntity> {
+    if (!input.provisao) {
+      throw new AppError("Provisao Obrigatório", status.BAD_REQUEST);
     }
 
-    async getAll(): Promise<ProvisaoEntity[]> {
-        return await this.provisaoRepository.getAll();
-    }
+    const provisao = new ProvisaoEntity(input);
 
-    async update(id: number, input: ProvisaoProps): Promise<ProvisaoEntity> {
-        if (!input.provisao) {
-            throw new AppError("Provisao Obrigatório", status.BAD_REQUEST);
-        }
-        const provisao = new ProvisaoEntity(input);
-        return await this.provisaoRepository.update(id, provisao);
-    }
+    const newProvisao = await this.provisaoRepository.insert(provisao);
 
-    async delete(id: number): Promise<void> {
-        return await this.provisaoRepository.delete(id);
-    }
+    return newProvisao;
+  }
 
-    async getById(id: number): Promise<ProvisaoEntity> {
-        const provisao = await this.provisaoRepository.getById(id);
-        return provisao;
+  async getAll(): Promise<ProvisaoEntity[]> {
+    return await this.provisaoRepository.getAll();
+  }
+
+  async update(id: number, input: ProvisaoProps): Promise<ProvisaoEntity> {
+    if (!input.provisao) {
+      throw new AppError("Provisao Obrigatório", status.BAD_REQUEST);
     }
+    const provisao = new ProvisaoEntity(input);
+    return await this.provisaoRepository.update(id, provisao);
+  }
+
+  async delete(id: number): Promise<void> {
+    return await this.provisaoRepository.delete(id);
+  }
+
+  async getById(id: number): Promise<ProvisaoEntity> {
+    const provisao = await this.provisaoRepository.getById(id);
+    return provisao;
+  }
 }

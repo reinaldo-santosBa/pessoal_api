@@ -7,13 +7,13 @@ import AppError from "../../../application/errors/AppError";
 export default class FolhaPagamentoDescontoPostgresRepository
 implements FolhaPagamentoDescontoRepository
 {
-    async insert(
-        input: FolhaPagamentoDescontoEntity,
-    ): Promise<FolhaPagamentoDescontoEntity> {
-        try {
-            await conn.query("BEGIN");
-            const folhaPagamentoDesconto = await conn.query(
-                `INSERT INTO folha_pagamentos_descontos (
+  async insert(
+    input: FolhaPagamentoDescontoEntity,
+  ): Promise<FolhaPagamentoDescontoEntity> {
+    try {
+      await conn.query("BEGIN");
+      const folhaPagamentoDesconto = await conn.query(
+        `INSERT INTO folha_pagamentos_descontos (
                 folha_pagamento_funcionario_id,
                 desconto_id,
                 valor
@@ -22,48 +22,48 @@ implements FolhaPagamentoDescontoRepository
                 ${input.props.desconto_id},
                 ${input.props.valor}
               ) RETURNING *`,
-            );
-            await conn.query("COMMIT");
-            return folhaPagamentoDesconto.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      );
+      await conn.query("COMMIT");
+      return folhaPagamentoDesconto.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async update(
-        id: number,
-        input: FolhaPagamentoDescontoEntity,
-    ): Promise<FolhaPagamentoDescontoEntity> {
-        try {
-            await conn.query("BEGIN");
+  async update(
+    id: number,
+    input: FolhaPagamentoDescontoEntity,
+  ): Promise<FolhaPagamentoDescontoEntity> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async get(): Promise<FolhaPagamentoDescontoEntity[]> {
-        try {
-            await conn.query("BEGIN");
+  async get(): Promise<FolhaPagamentoDescontoEntity[]> {
+    try {
+      await conn.query("BEGIN");
 
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 }

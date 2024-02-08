@@ -6,10 +6,10 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class EmailPostgresRepository implements EmailRepository {
-    async insert(input: EmailEntity): Promise<EmailEntity> {
-        try {
-            await conn.query("BEGIN");
-            const email = await conn.query(`INSERT INTO EMAILS(
+  async insert(input: EmailEntity): Promise<EmailEntity> {
+    try {
+      await conn.query("BEGIN");
+      const email = await conn.query(`INSERT INTO EMAILS(
         PESSOA_ID,
         TIPO_EMAIL_ID,
         EMAIL
@@ -18,55 +18,55 @@ export default class EmailPostgresRepository implements EmailRepository {
         ${input.props.tipo_email_id},
         '${input.props.email}'
       ) RETURNING *`);
-            await conn.query("COMMIT");
-            return email.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+      return email.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getByIdPessoa(pessoa_id: number): Promise<EmailEntity[]> {
-        try {
-            const emails = await conn.query(
-                `SELECT ID, PESSOA_ID, TIPO_EMAIL_ID, EMAIL FROM EMAILS WHERE PESSOA_ID = ${pessoa_id}`,
-            );
+  async getByIdPessoa(pessoa_id: number): Promise<EmailEntity[]> {
+    try {
+      const emails = await conn.query(
+        `SELECT ID, PESSOA_ID, TIPO_EMAIL_ID, EMAIL FROM EMAILS WHERE PESSOA_ID = ${pessoa_id}`,
+      );
 
-            return emails.rows;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return emails.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getEmailById(id: number): Promise<number> {
-        const emailCount = (await conn.query(`SELECT * FROM EMAILS WHERE ID = ${id}`)).rowCount;
-        return emailCount;
+  async getEmailById(id: number): Promise<number> {
+    const emailCount = (await conn.query(`SELECT * FROM EMAILS WHERE ID = ${id}`)).rowCount;
+    return emailCount;
+  }
+
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
+      await conn.query(`DELETE FROM EMAILS WHERE ID = ${id}`);
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
-            await conn.query(`DELETE FROM EMAILS WHERE ID = ${id}`);
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
-    }
-
-    async update(id: number, input: EmailEntity): Promise <EmailEntity> {
-        try {
-            await conn.query("BEGIN");
-            const emailUpdate = await conn.query(`UPDATE EMAILS
+  async update(id: number, input: EmailEntity): Promise <EmailEntity> {
+    try {
+      await conn.query("BEGIN");
+      const emailUpdate = await conn.query(`UPDATE EMAILS
             SET TIPO_EMAIL_ID = ${input.props.tipo_email_id},
                 EMAIL = '${input.props.email}'
             WHERE ID = ${id} RETURNING *`);
-            await conn.query("COMMIT");
-            return emailUpdate.rows[0];
+      await conn.query("COMMIT");
+      return emailUpdate.rows[0];
 
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 }

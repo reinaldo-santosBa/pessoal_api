@@ -10,13 +10,13 @@ const routesFolhaBase = Router();
 const folhaBaseRepository = new FolhaBasePostgresRepository();
 
 const folhaBaseService = new FolhaBaseService(
-    folhaBaseRepository
+  folhaBaseRepository
 );
 
 const folhaBaseController = new FolhaBaseController(folhaBaseService);
 
 routesFolhaBase.post("/folha_base", (req, res) =>
-    folhaBaseController.create(req, res)
+  folhaBaseController.create(req, res)
 );
 
 

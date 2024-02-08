@@ -7,11 +7,11 @@ import * as status from "../../constraints/http.stauts";
 
 export default class TelefonePostgresRepository implements TelefoneRepository {
 
-    async insert(input: TelefoneEntity): Promise<TelefoneEntity> {
-        try {
-            await conn.query("BEGIN");
+  async insert(input: TelefoneEntity): Promise<TelefoneEntity> {
+    try {
+      await conn.query("BEGIN");
 
-            const telefone = await conn.query(`INSERT INTO TELEFONES(
+      const telefone = await conn.query(`INSERT INTO TELEFONES(
             PESSOA_ID,
             NUMERO,
             TIPO_TELEFNE_ID
@@ -20,62 +20,62 @@ export default class TelefonePostgresRepository implements TelefoneRepository {
            '${input.props.numero}',
             ${input.props.tipo_telefne_id}
           ) RETURNING *`);
-            await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
-            return telefone.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return telefone.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async update(id: number, input: TelefoneEntity): Promise<TelefoneEntity> {
-        try {
-            await conn.query("BEGIN");
+  async update(id: number, input: TelefoneEntity): Promise<TelefoneEntity> {
+    try {
+      await conn.query("BEGIN");
 
-            const telefone = await conn.query(`UPDATE TELEFONES SET
+      const telefone = await conn.query(`UPDATE TELEFONES SET
               NUMERO = '${input.props.numero}',
               TIPO_TELEFNE_ID = ${input.props.tipo_telefne_id}
               WHERE ID = ${id} RETURNING *`);
 
-            await conn.query("COMMIT");
-            return telefone.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+      return telefone.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
-            await conn.query(`DELETE FROM TELEFONES WHERE ID = ${id}`);
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
+      await conn.query(`DELETE FROM TELEFONES WHERE ID = ${id}`);
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getByIdPessoa(pessoa_id: number): Promise<TelefoneEntity[]> {
-        try {
-            await conn.query("BEGIN");
+  async getByIdPessoa(pessoa_id: number): Promise<TelefoneEntity[]> {
+    try {
+      await conn.query("BEGIN");
 
-            const telefone = await conn.query(
-                `SELECT ID, NUMERO, tipo_telefne_id, PESSOA_ID FROM TELEFONES WHERE PESSOA_ID = ${pessoa_id}`,
-            );
+      const telefone = await conn.query(
+        `SELECT ID, NUMERO, tipo_telefne_id, PESSOA_ID FROM TELEFONES WHERE PESSOA_ID = ${pessoa_id}`,
+      );
 
-            await conn.query("COMMIT");
-            return telefone.rows;
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+      return telefone.rows;
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getById(id: number): Promise<number> {
-        const telefoneCount = await conn.query(`SELECT * FROM TELEFONES WHERE ID = ${id}`);
-        return telefoneCount.rowCount;
-    }
+  async getById(id: number): Promise<number> {
+    const telefoneCount = await conn.query(`SELECT * FROM TELEFONES WHERE ID = ${id}`);
+    return telefoneCount.rowCount;
+  }
 
 }

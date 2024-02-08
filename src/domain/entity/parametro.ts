@@ -6,11 +6,11 @@ export type ParametroProps = {
 
 
 export default class ParametroEntity {
-    public props: ParametroProps;
+  public props: ParametroProps;
 
-    constructor(props: ParametroProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: ParametroProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

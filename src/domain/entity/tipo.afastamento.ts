@@ -3,11 +3,11 @@ export type TipoAfastamentoProps = {
 }
 
 export default class TipoAfastamentoEntity {
-    public props: TipoAfastamentoProps;
+  public props: TipoAfastamentoProps;
 
-    constructor(props: TipoAfastamentoProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: TipoAfastamentoProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

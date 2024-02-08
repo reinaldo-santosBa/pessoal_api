@@ -10,7 +10,7 @@ const custaService = new CustaService(custaRepository);
 const custaController = new CustaController(custaService);
 
 routesCusta.post("/custa", (req, res) =>
-    custaController.create(req, res)
+  custaController.create(req, res)
 );
 
 /*routesCusta.get("/custa/:funcionario_id", (req, res) =>
@@ -18,21 +18,21 @@ routesCusta.post("/custa", (req, res) =>
 );*/
 
 routesCusta.get("/custa", (req, res) =>
-    custaController.getAll(req, res)
+  custaController.getAll(req, res)
 );
 
 routesCusta.get("/custa/:id", (req, res) =>
-    custaController.getById(req, res)
+  custaController.getById(req, res)
 );
 
 
 routesCusta.put("/custa/:id", (req, res) =>
-    custaController.update(req, res)
+  custaController.update(req, res)
 );
 
 
 routesCusta.delete("/custa/:id", (req, res) =>
-    custaController.delete(req, res)
+  custaController.delete(req, res)
 );
 
 export default routesCusta;

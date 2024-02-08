@@ -10,8 +10,8 @@ const processarPagamentoService = new ProcessarFolhaPagamentoService(processarPa
 const processarPagamentoController = new ProcessarFolhaPagamentoController(processarPagamentoService);
 
 
-routesProcessarPagamento.get("/processar_folha_pagamento", (req, res) =>
-    processarPagamentoController.getAll(req, res)
+routesProcessarPagamento.post("/processar_folha_pagamento", (req, res) =>
+  processarPagamentoController.getAll(req, res)
 );
 
 export default routesProcessarPagamento;

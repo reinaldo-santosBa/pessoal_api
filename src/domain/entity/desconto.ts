@@ -4,11 +4,11 @@ export type DescontoProps = {
 
 
 export default class DescontoEntity {
-    public props: DescontoProps;
+  public props: DescontoProps;
 
-    constructor(props: DescontoProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: DescontoProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

@@ -6,11 +6,11 @@ import * as status from "../../constraints/http.stauts";
 
 export default class FuncionarioContratoPostgresRepository implements FuncionarioContratoRepository {
 
-    async insert(input: FuncionarioContratoEntity): Promise<FuncionarioContratoEntity> {
-        try {
-            await conn.query("BEGIN");
-            const funcionarioContrato = await conn.query(
-                `INSERT INTO FUNCIONARIOS_CONTRATOS (
+  async insert(input: FuncionarioContratoEntity): Promise<FuncionarioContratoEntity> {
+    try {
+      await conn.query("BEGIN");
+      const funcionarioContrato = await conn.query(
+        `INSERT INTO FUNCIONARIOS_CONTRATOS (
                     funcionario_id
                     contrato
                     contrato_principal
@@ -25,20 +25,20 @@ export default class FuncionarioContratoPostgresRepository implements Funcionari
                 ${input.props.ajuda_custo},
                 '${input.props.numero_contrato}',
               ) RETURNING *`);
-            await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
-            return funcionarioContrato.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return funcionarioContrato.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
 
-    async update(id: number, input: FuncionarioContratoEntity): Promise<FuncionarioContratoEntity> {
-        try {
-            await conn.query("BEGIN");
-            const funcionarioContrato = await conn.query(`
+  async update(id: number, input: FuncionarioContratoEntity): Promise<FuncionarioContratoEntity> {
+    try {
+      await conn.query("BEGIN");
+      const funcionarioContrato = await conn.query(`
             UPDATE FUNCIONARIOS_CONTRATOS SET
                     contrato = '${input.props.contrato}',
                     contrato_principal = ${input.props.contrato_principal},
@@ -47,39 +47,39 @@ export default class FuncionarioContratoPostgresRepository implements Funcionari
                     numero_contrato = '${input.props.numero_contrato}'
             WHERE ID = ${id} RETURNING *
           `);
-            await conn.query("COMMIT");
-            return funcionarioContrato.rows[0];
+      await conn.query("COMMIT");
+      return funcionarioContrato.rows[0];
 
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
 
-    async getById(id: number): Promise<number> {
-        const funcionarioContratoCount = await conn.query(
-            `SELECT * FROM FUNCIONARIOS_CONTRATOS WHERE ID = ${id}`,
-        );
+  async getById(id: number): Promise<number> {
+    const funcionarioContratoCount = await conn.query(
+      `SELECT * FROM FUNCIONARIOS_CONTRATOS WHERE ID = ${id}`,
+    );
 
-        return funcionarioContratoCount.rowCount;
+    return funcionarioContratoCount.rowCount;
+  }
+
+
+  async  delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
+      await conn.query(`DELETE FROM FUNCIONARIOS_CONTRATOS WHERE ID = ${id}`);
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
 
-    async  delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
-            await conn.query(`DELETE FROM FUNCIONARIOS_CONTRATOS WHERE ID = ${id}`);
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
-    }
-
-
-    async  getByIdFuncionario(funcionario_id: number): Promise<FuncionarioContratoEntity[]> {
-        const contratos = await conn.query(`SELECT
+  async  getByIdFuncionario(funcionario_id: number): Promise<FuncionarioContratoEntity[]> {
+    const contratos = await conn.query(`SELECT
               id
               funcionario_id
               contrato
@@ -90,7 +90,7 @@ export default class FuncionarioContratoPostgresRepository implements Funcionari
           FROM FUNCIONARIOS_CONTRATOS WHERE FUNCIONARIO_ID = ${funcionario_id}
       `);
 
-        return contratos.rows;
-    }
+    return contratos.rows;
+  }
 
 }

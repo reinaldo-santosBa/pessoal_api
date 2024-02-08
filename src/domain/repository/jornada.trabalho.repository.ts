@@ -1,8 +1,9 @@
 import JornadaTrabalhoEntity from "../entity/jornada.trabalho";
 
 export type CargaDiariaOutput = {
-  carga_diaria: number;
-}
+    carga_diaria: number;
+    turnos: number;
+};
 export interface JornadaTrabalhoRepository {
   insert(input: JornadaTrabalhoEntity): Promise<JornadaTrabalhoEntity>;
   getAll(): Promise<JornadaTrabalhoEntity[]>;

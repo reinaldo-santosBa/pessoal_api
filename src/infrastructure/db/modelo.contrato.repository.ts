@@ -5,23 +5,23 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 export default class ModeloContratoPostgresRepository implements ModeloContratoRepository {
-    async getById(id: number): Promise<ModeloContratoEntity> {
-        try {
-            const modeloContrato = await conn.query(
-                `SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO WHERE ID = ${id}`,
-            );
+  async getById(id: number): Promise<ModeloContratoEntity> {
+    try {
+      const modeloContrato = await conn.query(
+        `SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO WHERE ID = ${id}`,
+      );
 
-            return modeloContrato.rows[0];
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return modeloContrato.rows[0];
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async insert(input: ModeloContratoEntity): Promise<ModeloContratoEntity> {
-        try {
-            await conn.query("BEGIN");
-            const modeloContrato = await conn.query(
-                `INSERT INTO MODELOS_CONTRATO(
+  async insert(input: ModeloContratoEntity): Promise<ModeloContratoEntity> {
+    try {
+      await conn.query("BEGIN");
+      const modeloContrato = await conn.query(
+        `INSERT INTO MODELOS_CONTRATO(
                 cargo_id,
                 modelo,
                 numero_modelo
@@ -30,71 +30,71 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
               '${input.props.modelo}',
               ${input.props.numero_modelo}
             ) RETURNING *`,
-            );
+      );
 
-            await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
-            return modeloContrato.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message);
-        }
+      return modeloContrato.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message);
     }
+  }
 
-    async update(
-        id: number,
-        input: ModeloContratoEntity,
-    ): Promise<ModeloContratoEntity> {
-        try {
-            await conn.query("BEGIN");
+  async update(
+    id: number,
+    input: ModeloContratoEntity,
+  ): Promise<ModeloContratoEntity> {
+    try {
+      await conn.query("BEGIN");
 
-            const modeloContrato = await conn.query(`UPDATE MODELOS_CONTRATO
+      const modeloContrato = await conn.query(`UPDATE MODELOS_CONTRATO
             SET cargo_id = ${input.props.cargo_id},
                 modelo = '${input.props.modelo}',
                 numero_modelo = ${input.props.numero_modelo ?? null}
             WHERE ID = ${id} RETURNING *
           `);
 
-            await conn.query("COMMIT");
-            return modeloContrato.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+      return modeloContrato.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
-            await conn.query(`DELETE FROM MODELOS_CONTRATO WHERE ID = ${id}`);
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
+      await conn.query(`DELETE FROM MODELOS_CONTRATO WHERE ID = ${id}`);
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getAll(): Promise<ModeloContratoEntity[]> {
-        try {
-            const modeloContrato = await conn.query(
-                "SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO",
-            );
+  async getAll(): Promise<ModeloContratoEntity[]> {
+    try {
+      const modeloContrato = await conn.query(
+        "SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO",
+      );
 
-            return modeloContrato.rows;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return modeloContrato.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getByIdExisting(id: number): Promise<number> {
-        try {
-            const modeloContrato = await conn.query(
-                `SELECT ID FROM MODELOS_CONTRATO WHERE ID = ${id}`,
-            );
+  async getByIdExisting(id: number): Promise<number> {
+    try {
+      const modeloContrato = await conn.query(
+        `SELECT ID FROM MODELOS_CONTRATO WHERE ID = ${id}`,
+      );
 
-            return modeloContrato.rowCount;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return modeloContrato.rowCount;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 }

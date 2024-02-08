@@ -9,11 +9,11 @@ export type FolhaPagamentoProps = {
 };
 
 export default class FolhaPagamentoEntity {
-    public props: FolhaPagamentoProps;
+  public props: FolhaPagamentoProps;
 
-    constructor(props: FolhaPagamentoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: FolhaPagamentoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

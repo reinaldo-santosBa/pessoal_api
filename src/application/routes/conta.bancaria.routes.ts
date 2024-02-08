@@ -10,19 +10,19 @@ const contaBancariaService = new ContaBancariaService(contaBancariaRepository);
 const contaBancariaController = new ContaBancariaController(contaBancariaService);
 
 routesContaBancaria.post("/conta_bancaria", (req: Request, res: Response) =>
-    contaBancariaController.create(req, res),
+  contaBancariaController.create(req, res),
 );
 
 routesContaBancaria.get("/conta_bancaria/:pessoa_id", (req, res) =>
-    contaBancariaController.getByIdPessoa(req, res),
+  contaBancariaController.getByIdPessoa(req, res),
 );
 
 routesContaBancaria.put("/conta_bancaria/:id", (req, res) =>
-    contaBancariaController.update(req, res),
+  contaBancariaController.update(req, res),
 );
 
 routesContaBancaria.delete("/conta_bancaria/:id", (req, res) =>
-    contaBancariaController.delete(req, res),
+  contaBancariaController.delete(req, res),
 );
 
 export default routesContaBancaria;

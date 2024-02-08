@@ -5,10 +5,10 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 export default class ContaBancariaPostgresRepository implements ContaBancariaRepository {
 
-    async insert(input: ContaBancariaEntity): Promise<ContaBancariaEntity> {
-        try {
-            await conn.query("BEGIN");
-            const newContaBancaria = await conn.query(`
+  async insert(input: ContaBancariaEntity): Promise<ContaBancariaEntity> {
+    try {
+      await conn.query("BEGIN");
+      const newContaBancaria = await conn.query(`
                 INSERT INTO CONTAS_BANCARIAS (
                     pessoa_id,
                     conta,
@@ -30,17 +30,17 @@ export default class ContaBancariaPostgresRepository implements ContaBancariaRep
                     '${input.props.codigo_banco}',
                     '${input.props.banco}'
                 ) RETURNING *`);
-            await conn.query("COMMIT");
-            return newContaBancaria.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      await conn.query("COMMIT");
+      return newContaBancaria.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async getAll(): Promise<ContaBancariaEntity[]> {
-        try {
-            const contasBancarias = await conn.query(`SELECT id,
+  async getAll(): Promise<ContaBancariaEntity[]> {
+    try {
+      const contasBancarias = await conn.query(`SELECT id,
                       pessoa_id,
                       conta,
                       digito,
@@ -52,17 +52,17 @@ export default class ContaBancariaPostgresRepository implements ContaBancariaRep
                       banco
               FROM CONTAS_BANCARIAS`);
 
-            return contasBancarias.rows;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return contasBancarias.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async update(id: number, input: ContaBancariaEntity): Promise<ContaBancariaEntity> {
-        try {
-            await conn.query("BEGIN");
-            const contaBancariaUpdate = await conn.query(
-                `UPDATE CONTAS_BANCARIAS SET
+  async update(id: number, input: ContaBancariaEntity): Promise<ContaBancariaEntity> {
+    try {
+      await conn.query("BEGIN");
+      const contaBancariaUpdate = await conn.query(
+        `UPDATE CONTAS_BANCARIAS SET
                     conta = '${input.props.conta}',
                     digito = '${input.props.digito}',
                     operacao = '${input.props.operacao}',
@@ -71,31 +71,31 @@ export default class ContaBancariaPostgresRepository implements ContaBancariaRep
                     codigo_banco = '${input.props.codigo_banco}',
                     banco = '${input.props.banco}'
               WHERE ID = ${id} RETURNING *`,
-            );
-            await conn.query("COMMIT");
+      );
+      await conn.query("COMMIT");
 
-            return contaBancariaUpdate.rows[0];
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return contaBancariaUpdate.rows[0];
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
-            await conn.query(`DELETE FROM CONTAS_BANCARIAS WHERE ID = ${id}`);
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message);
-        }
+  async delete(id: number): Promise<void> {
+    try {
+      await conn.query("BEGIN");
+      await conn.query(`DELETE FROM CONTAS_BANCARIAS WHERE ID = ${id}`);
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message);
     }
+  }
 
-    async getByIdPessoa(pessoa_id: number): Promise<ContaBancariaEntity[]> {
-        try {
-            const contasBancariasPessoa = await conn.query(
-                `SELECT id,
+  async getByIdPessoa(pessoa_id: number): Promise<ContaBancariaEntity[]> {
+    try {
+      const contasBancariasPessoa = await conn.query(
+        `SELECT id,
                       pessoa_id,
                       conta,
                       digito,
@@ -106,22 +106,22 @@ export default class ContaBancariaPostgresRepository implements ContaBancariaRep
                       codigo_banco,
                       banco
               FROM CONTAS_BANCARIAS WHERE PESSOA_ID = ${pessoa_id}`,
-            );
+      );
 
-            return contasBancariasPessoa.rows;
-        } catch (error) {
-            throw new AppError(error.message);
-        }
+      return contasBancariasPessoa.rows;
+    } catch (error) {
+      throw new AppError(error.message);
     }
+  }
 
-    async getById(id: number): Promise<number> {
-        try {
-            const contaBancariaCount = await conn.query(
-                `SELECT * FROM CONTAS_BANCARIAS WHERE ID = ${id}`,
-            );
-            return contaBancariaCount.rowCount;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+  async getById(id: number): Promise<number> {
+    try {
+      const contaBancariaCount = await conn.query(
+        `SELECT * FROM CONTAS_BANCARIAS WHERE ID = ${id}`,
+      );
+      return contaBancariaCount.rowCount;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 }

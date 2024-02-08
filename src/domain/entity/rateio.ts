@@ -4,11 +4,11 @@ export type RateioProps = {
 };
 
 export default class RateioEntity {
-    public props: RateioProps;
+  public props: RateioProps;
 
-    constructor(props: RateioProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: RateioProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

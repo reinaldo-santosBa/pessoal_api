@@ -6,9 +6,14 @@ import conn from "../config/database.config";
 export default class ProcessarFolhaPagamentoPostgresRepository
 implements ProcessarFolhaPagamentoRepository
 {
-    async getAll(params: ParamsProcessarFolha): Promise<ProcessarFolhaOutput[]> {
-        try {
-            const data = await conn.query(`
+  async getAll(params: ParamsProcessarFolha): Promise<ProcessarFolhaOutput[]> {
+    try {
+      let whereFuncionarioId: string = "";
+      if (params.funcionario_id) {
+        whereFuncionarioId = `AND f.id = ${params.funcionario_id}`;
+      }
+
+      const data = await conn.query(`
                               select
 rcr.centro_resultado_id as centro_resultado_rateio_id,
 rcr.centro_resultado as centro_resultado_rateio,
@@ -47,7 +52,7 @@ inner join provisoes p on p.id = fbp.provisao_id
 INNER JOIN folhas_base_convenios_cidades fbcc on fbcc.folha_base_id  = fb.id
 inner join convenios_cidades cc  on cc.id  = fbcc.convenio_cidade_id
 inner join convenios c2 on c2.id  = cc.convenio_id
-WHERE htf.data_trabalho BETWEEN '${params.ano}-${params.mes}-01' AND '${params.data_fechamento}' and fbip.tipo_folha_id  = ${params.tipo_folha_id}
+WHERE htf.data_trabalho BETWEEN '${params.ano}-${params.mes}-01' AND '${params.data_fechamento}' and fbip.tipo_folha_id  = ${params.tipo_folha_id} ${whereFuncionarioId}
 group by
 centro_resultado_rateio_id,
 centro_resultado_rateio,
@@ -71,9 +76,9 @@ rcr.percentual,
 c2.convenio
             `);
 
-            return data.rows;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return data.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 }

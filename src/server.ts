@@ -16,6 +16,6 @@ server.use("/api/v1",routes);
 server.use(Errors);
 
 server.listen(PORT, () => {
-    console.info(`server is running in port ${PORT}`);
+  console.info(`server is running in port ${PORT}`);
 });
 

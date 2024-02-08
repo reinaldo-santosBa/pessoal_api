@@ -10,26 +10,26 @@ const modeloContratoService = new ModeloContratoService(modeloContratoRepository
 const modeloContratoController = new ModeloContratoController(modeloContratoService);
 
 routesModeloContrato.post("/modelo_contrato", (req, res) =>
-    modeloContratoController.create(req, res)
+  modeloContratoController.create(req, res)
 );
 
 routesModeloContrato.get("/modelo_contrato", (req, res) =>
-    modeloContratoController.getAll(req, res),
+  modeloContratoController.getAll(req, res),
 );
 
 
 routesModeloContrato.put("/modelo_contrato/:id", (req, res) =>
-    modeloContratoController.update(req, res),
+  modeloContratoController.update(req, res),
 );
 
 
 routesModeloContrato.get("/modelo_contrato/:id", (req, res) =>
-    modeloContratoController.getById(req, res),
+  modeloContratoController.getById(req, res),
 );
 
 
 routesModeloContrato.delete("/modelo_contrato/:id", (req, res) =>
-    modeloContratoController.delete(req, res),
+  modeloContratoController.delete(req, res),
 );
 
 

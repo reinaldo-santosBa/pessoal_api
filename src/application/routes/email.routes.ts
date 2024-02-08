@@ -11,20 +11,20 @@ const emailService = new EmailService(emailRepository);
 const emailController = new EmailController(emailService);
 
 routesEmail.post("/email", (req: Request, res: Response) =>
-    emailController.create(req, res),
+  emailController.create(req, res),
 );
 
 routesEmail.delete("/email/:id", (req, res) =>
-    emailController.delete(req, res)
+  emailController.delete(req, res)
 );
 
 routesEmail.get("/email/:pessoa_id", (req, res) =>
-    emailController.getByIdPessoa(req, res)
+  emailController.getByIdPessoa(req, res)
 );
 
 
 routesEmail.put("/email/:id", (req, res) =>
-    emailController.update(req, res),
+  emailController.update(req, res),
 );
 
 export default routesEmail;

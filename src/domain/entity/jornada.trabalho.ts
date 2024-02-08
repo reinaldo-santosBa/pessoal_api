@@ -9,11 +9,11 @@ export type JornadaTrabalhoProps = {
 };
 
 export default class JornadaTrabalhoEntity {
-    public props: JornadaTrabalhoProps;
+  public props: JornadaTrabalhoProps;
 
-    constructor(props: JornadaTrabalhoProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: JornadaTrabalhoProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

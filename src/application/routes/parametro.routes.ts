@@ -11,19 +11,19 @@ const parametroController = new ParametroController(parametroService);
 
 
 routesParametro.post("/parametro", (req, res) =>
-    parametroController.create(req, res)
+  parametroController.create(req, res)
 );
 
 routesParametro.get("/parametro", (req, res) =>
-    parametroController.getAll(req, res),
+  parametroController.getAll(req, res),
 );
 
 routesParametro.put("/parametro/:id", (req, res) =>
-    parametroController.update(req, res),
+  parametroController.update(req, res),
 );
 
 routesParametro.delete("/parametro/:id", (req, res) =>
-    parametroController.delete(req, res),
+  parametroController.delete(req, res),
 );
 
 export default routesParametro;

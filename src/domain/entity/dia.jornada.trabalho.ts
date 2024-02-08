@@ -9,11 +9,11 @@ export type DiaJornadaTrabalhoProps = {
 
 
 export default class DiaJornadaTrabalhoEntity {
-    public props: DiaJornadaTrabalhoProps;
+  public props: DiaJornadaTrabalhoProps;
 
-    constructor(props: DiaJornadaTrabalhoProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: DiaJornadaTrabalhoProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

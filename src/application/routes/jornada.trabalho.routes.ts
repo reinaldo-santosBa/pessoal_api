@@ -11,28 +11,28 @@ const jornadaTrabalhoService = new JornadaTrabalhoService(jornadaTrabalhoReposit
 const jornadaTrabalhoController = new JornadaTrabalhoController(jornadaTrabalhoService);
 
 routesJornadaTrabalho.post(
-    "/jornada_trabalho",
-    (req, res) =>
-        jornadaTrabalhoController.insert(req, res),
+  "/jornada_trabalho",
+  (req, res) =>
+    jornadaTrabalhoController.insert(req, res),
 );
 routesJornadaTrabalho.get(
-    "/jornada_trabalho",
-    (req, res) =>
-        jornadaTrabalhoController.getAll(req, res),
+  "/jornada_trabalho",
+  (req, res) =>
+    jornadaTrabalhoController.getAll(req, res),
 );
 
 routesJornadaTrabalho.get("/jornada_trabalho/:id", (req, res) =>
-    jornadaTrabalhoController.getById(req, res),
+  jornadaTrabalhoController.getById(req, res),
 );
 
 routesJornadaTrabalho.delete(
-    "/jornada_trabalho/:id",
-    (req, res) =>
-        jornadaTrabalhoController.delete(req, res),
+  "/jornada_trabalho/:id",
+  (req, res) =>
+    jornadaTrabalhoController.delete(req, res),
 );
 
 routesJornadaTrabalho.put("/jornada_trabalho/:id", (req, res) =>
-    jornadaTrabalhoController.update(req, res)
+  jornadaTrabalhoController.update(req, res)
 );
 
 export default routesJornadaTrabalho;

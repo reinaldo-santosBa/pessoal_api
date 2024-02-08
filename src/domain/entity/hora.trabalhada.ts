@@ -10,11 +10,11 @@ export type HoraTrabalhadaProps = {
 };
 
 export default class HoraTrabalhadaEntity {
-    public props: HoraTrabalhadaProps;
+  public props: HoraTrabalhadaProps;
 
-    constructor(props:  HoraTrabalhadaProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props:  HoraTrabalhadaProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

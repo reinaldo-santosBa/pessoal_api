@@ -28,9 +28,11 @@ export type ParamsProcessarFolha = {
     mes: number;
     ano: number;
     dias_uteis: number;
-    data_fechamento: string;
-    funcionario_id: number;
+    data_fechamento: Date;
+    funcionario_id?: number;
     tipo_folha_id: number;
+
+    [key: string]: string | number | boolean | Date;
 };
 
 
