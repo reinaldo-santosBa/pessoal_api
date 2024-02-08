@@ -117,6 +117,7 @@ export default class FolhaBaseService {
       folha_base_encargos: input.folha_base_encargos.map(encargo => new FolhaBaseEncargoEntity(encargo))
     });
 
+    await this.folhaBaseRepository.update();
     return folha_base;
   }
 }

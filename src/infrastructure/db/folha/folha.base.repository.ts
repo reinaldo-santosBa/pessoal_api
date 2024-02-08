@@ -113,21 +113,18 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
     }
   }
 
-  /*  async update(
-        id: number,
-        input: FolhaBaseEntity,
-    ): Promise<FolhaBaseEntity> {
-        try {
-            await conn.query("BEGIN");
-
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+  async update(): Promise<void> {
+    try {
+      await conn.query("BEGIN");
+      await conn.query("UPDATE folhas_base SET ativo = false");
+      await conn.query("COMMIT");
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    async delete(id: number): Promise<void> {
+  /*  async delete(id: number): Promise<void> {
         try {
             await conn.query("BEGIN");
 
