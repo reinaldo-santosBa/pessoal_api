@@ -4,80 +4,80 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 
 export default class JornadaTrabalhoService {
-    constructor(
+  constructor(
     private readonly jornadaTrabalhoRepository: JornadaTrabalhoRepository,
-    ) {}
+  ) {}
 
-    async insert(input: JornadaTrabalhoProps): Promise<JornadaTrabalhoEntity> {
-        const camposObrigatorios: string[] = [
-            "jornada_trabalho",
-            "carga_diaria",
-            "carga_semanal",
-            "limite_extra_diario",
-            "turnos"
-        ];
+  async insert(input: JornadaTrabalhoProps): Promise<JornadaTrabalhoEntity> {
+    const camposObrigatorios: string[] = [
+      "jornada_trabalho",
+      "carga_diaria",
+      "carga_semanal",
+      "limite_extra_diario",
+      "turnos"
+    ];
 
-        for (const campo of camposObrigatorios) {
-            if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
-            }
-        }
+    for (const campo of camposObrigatorios) {
+      if (!input[campo]) {
+        throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
+      }
+    }
 
-        const jornadaTrabalho = new JornadaTrabalhoEntity(input);
-        const output =
+    const jornadaTrabalho = new JornadaTrabalhoEntity(input);
+    const output =
         await this.jornadaTrabalhoRepository.insert(jornadaTrabalho);
-        return output;
-    }
+    return output;
+  }
 
-    async getAll(): Promise<JornadaTrabalhoEntity[]> {
-        const jornadaTrabalho = await this.jornadaTrabalhoRepository.getAll();
-        return jornadaTrabalho;
-    }
+  async getAll(): Promise<JornadaTrabalhoEntity[]> {
+    const jornadaTrabalho = await this.jornadaTrabalhoRepository.getAll();
+    return jornadaTrabalho;
+  }
 
-    async update(id: number, input: JornadaTrabalhoProps): Promise<JornadaTrabalhoEntity> {
+  async update(id: number, input: JornadaTrabalhoProps): Promise<JornadaTrabalhoEntity> {
 
-        const jornadaExisting =
+    const jornadaExisting =
           await this.jornadaTrabalhoRepository.getByIdExisting(id);
 
-        if (!jornadaExisting) {
-            throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
-        }
-
-        const camposObrigatorios: string[] = [
-            "jornada_trabalho",
-            "carga_diaria",
-            "carga_semanal",
-            "limite_extra_diario",
-            "turnos"
-        ];
-
-        for (const campo of camposObrigatorios) {
-            if (!input[campo]) {
-                throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
-            }
-        }
-
-        const jornada = new JornadaTrabalhoEntity(input);
-        const output = await this.jornadaTrabalhoRepository.update(id, jornada);
-
-        return output;
-
+    if (!jornadaExisting) {
+      throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
     }
 
-    async getById(id: number): Promise<JornadaTrabalhoEntity> {
-        const jornada_trabalho = await this.jornadaTrabalhoRepository.getById(id);
-        return jornada_trabalho;
+    const camposObrigatorios: string[] = [
+      "jornada_trabalho",
+      "carga_diaria",
+      "carga_semanal",
+      "limite_extra_diario",
+      "turnos"
+    ];
+
+    for (const campo of camposObrigatorios) {
+      if (!input[campo]) {
+        throw new AppError(`${campo} obrigatório`, status.BAD_REQUEST);
+      }
     }
 
-    async delete(id: number): Promise<void> {
-        const jornada =
+    const jornada = new JornadaTrabalhoEntity(input);
+    const output = await this.jornadaTrabalhoRepository.update(id, jornada);
+
+    return output;
+
+  }
+
+  async getById(id: number): Promise<JornadaTrabalhoEntity> {
+    const jornada_trabalho = await this.jornadaTrabalhoRepository.getById(id);
+    return jornada_trabalho;
+  }
+
+  async delete(id: number): Promise<void> {
+    const jornada =
           await this.jornadaTrabalhoRepository.getByIdExisting(id);
 
-        if (!jornada) {
-            throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
-        }
-
-        await this.jornadaTrabalhoRepository.delete(id);
-
+    if (!jornada) {
+      throw new AppError("Jornada de trabalho não encontrada", status.NOT_FOUND);
     }
+
+    await this.jornadaTrabalhoRepository.delete(id);
+
+  }
 }

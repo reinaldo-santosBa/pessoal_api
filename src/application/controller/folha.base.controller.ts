@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 import * as status from "../../constraints/http.stauts";
 
 export default class FolhaBaseController {
-    constructor(private readonly folhabaseService: FolhaBaseService) {}
+  constructor(private readonly folhabaseService: FolhaBaseService) {}
 
-    async create(request: Request, response: Response) {
-        const input = request.body as FolhaBaseInput;
-        const folhaBase = await this.folhabaseService.create(input);
+  async create(request: Request, response: Response) {
+    const input = request.body as FolhaBaseInput;
+    const folhaBase = await this.folhabaseService.create(input);
 
-        return response.status(status.CREATED).json(folhaBase);
-    }
+    return response.status(status.CREATED).json(folhaBase);
+  }
 }

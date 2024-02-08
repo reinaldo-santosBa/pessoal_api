@@ -3,52 +3,52 @@ import { AfastamentoRepository } from "../../domain/repository/afastamento.repos
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 export default class AfastamentoService {
-    constructor(private readonly afastamentoRepository: AfastamentoRepository) {}
+  constructor(private readonly afastamentoRepository: AfastamentoRepository) {}
 
-    async create(input: AfastamentoProps): Promise<AfastamentoEntity> {
-        const afastamento = new AfastamentoEntity(input);
-        const newAfastamento = await this.afastamentoRepository.insert(afastamento);
+  async create(input: AfastamentoProps): Promise<AfastamentoEntity> {
+    const afastamento = new AfastamentoEntity(input);
+    const newAfastamento = await this.afastamentoRepository.insert(afastamento);
 
-        return newAfastamento;
-    }
+    return newAfastamento;
+  }
 
-    async getByIdFuncionario(funcionario_id: number): Promise<AfastamentoEntity[]> {
-        const afastamentos = await this.afastamentoRepository.getByIdFuncionario(funcionario_id);
+  async getByIdFuncionario(funcionario_id: number): Promise<AfastamentoEntity[]> {
+    const afastamentos = await this.afastamentoRepository.getByIdFuncionario(funcionario_id);
 
-        return afastamentos;
-    }
+    return afastamentos;
+  }
 
-    async update(id: number, input: AfastamentoProps): Promise<AfastamentoEntity> {
-        const afastamentoExisting =
+  async update(id: number, input: AfastamentoProps): Promise<AfastamentoEntity> {
+    const afastamentoExisting =
           await this.afastamentoRepository.getByIdExisting(id);
-        if (!afastamentoExisting) {
-            throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
-        }
-
-        const afastamento = new AfastamentoEntity(input);
-        const updateAfastamento = await this.afastamentoRepository.update(id,afastamento);
-
-        return updateAfastamento;
+    if (!afastamentoExisting) {
+      throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
     }
 
-    async delete(id: number): Promise<void> {
-        const afastamentoExisting =
+    const afastamento = new AfastamentoEntity(input);
+    const updateAfastamento = await this.afastamentoRepository.update(id,afastamento);
+
+    return updateAfastamento;
+  }
+
+  async delete(id: number): Promise<void> {
+    const afastamentoExisting =
           await this.afastamentoRepository.getByIdExisting(id);
-        if (!afastamentoExisting) {
-            throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
-        }
-
-        await this.afastamentoRepository.delete(id);
+    if (!afastamentoExisting) {
+      throw new AppError("Afastamento não encontrado", status.NOT_FOUND);
     }
 
-    async getAll(): Promise<AfastamentoEntity[]> {
-        const afastamentos = await this.afastamentoRepository.getAll();
-        return afastamentos;
-    }
+    await this.afastamentoRepository.delete(id);
+  }
 
-    async getById(id: number): Promise<AfastamentoEntity> {
-        const afastamento = await this.afastamentoRepository.getById(id);
-        return afastamento;
+  async getAll(): Promise<AfastamentoEntity[]> {
+    const afastamentos = await this.afastamentoRepository.getAll();
+    return afastamentos;
+  }
 
-    }
+  async getById(id: number): Promise<AfastamentoEntity> {
+    const afastamento = await this.afastamentoRepository.getById(id);
+    return afastamento;
+
+  }
 }

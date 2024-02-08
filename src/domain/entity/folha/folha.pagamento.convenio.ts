@@ -5,11 +5,11 @@ export type FolhaPagamentoConvenioProps = {
 };
 
 export default class FolhaPagamentoConvenioEntity {
-    public props: FolhaPagamentoConvenioProps;
+  public props: FolhaPagamentoConvenioProps;
 
-    constructor(props: FolhaPagamentoConvenioProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: FolhaPagamentoConvenioProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

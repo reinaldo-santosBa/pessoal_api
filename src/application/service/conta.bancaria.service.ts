@@ -4,38 +4,38 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 
 export default class ContaBancariaService {
-    constructor(private readonly contaBancariaRepository: ContaBancariaRepository) {}
+  constructor(private readonly contaBancariaRepository: ContaBancariaRepository) {}
 
-    async create(input: ContaBancariaProps): Promise<ContaBancariaEntity> {
-        const contaBancaria = new ContaBancariaEntity(input);
-        const newContaBancaria = await this.contaBancariaRepository.insert(contaBancaria);
+  async create(input: ContaBancariaProps): Promise<ContaBancariaEntity> {
+    const contaBancaria = new ContaBancariaEntity(input);
+    const newContaBancaria = await this.contaBancariaRepository.insert(contaBancaria);
 
-        return newContaBancaria;
+    return newContaBancaria;
+  }
+
+  async getByIdPessoa(pessoa_id: number): Promise<ContaBancariaEntity[]> {
+    const contasBancarias = await this.contaBancariaRepository.getByIdPessoa(pessoa_id);
+    return contasBancarias;
+  }
+
+  async delete(id: number) {
+    const contaBancariaExisting = await this.contaBancariaRepository.getById(id);
+    if (!contaBancariaExisting) {
+      throw new AppError("Conta Bancaria não encontrada",status.NOT_FOUND);
     }
 
-    async getByIdPessoa(pessoa_id: number): Promise<ContaBancariaEntity[]> {
-        const contasBancarias = await this.contaBancariaRepository.getByIdPessoa(pessoa_id);
-        return contasBancarias;
+    await this.contaBancariaRepository.delete(id);
+  }
+
+  async update(id: number, input: ContaBancariaProps): Promise<ContaBancariaEntity> {
+    const contaBancariaExisting = await this.contaBancariaRepository.getById(id);
+    if (!contaBancariaExisting) {
+      throw new AppError("Conta Bancaria não encontrada",status.NOT_FOUND);
     }
 
-    async delete(id: number) {
-        const contaBancariaExisting = await this.contaBancariaRepository.getById(id);
-        if (!contaBancariaExisting) {
-            throw new AppError("Conta Bancaria não encontrada",status.NOT_FOUND);
-        }
+    const contaBancaria = new ContaBancariaEntity(input);
+    const updateContaBancaria = await this.contaBancariaRepository.update(id, contaBancaria);
 
-        await this.contaBancariaRepository.delete(id);
-    }
-
-    async update(id: number, input: ContaBancariaProps): Promise<ContaBancariaEntity> {
-        const contaBancariaExisting = await this.contaBancariaRepository.getById(id);
-        if (!contaBancariaExisting) {
-            throw new AppError("Conta Bancaria não encontrada",status.NOT_FOUND);
-        }
-
-        const contaBancaria = new ContaBancariaEntity(input);
-        const updateContaBancaria = await this.contaBancariaRepository.update(id, contaBancaria);
-
-        return updateContaBancaria;
-    }
+    return updateContaBancaria;
+  }
 }

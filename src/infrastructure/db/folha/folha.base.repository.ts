@@ -10,12 +10,12 @@ import { FolhaBaseType } from "../../types/folha.base.type";
 
 export default class FolhaBasePostgresRepository implements FolhaBaseRepository {
 
-    async insert(input: FolhaBaseType): Promise<FolhaBaseType> {
-        try {
+  async insert(input: FolhaBaseType): Promise<FolhaBaseType> {
+    try {
 
-            await conn.query("BEGIN");
+      await conn.query("BEGIN");
 
-            const folha_base = await conn.query(`INSERT INTO folhas_base (
+      const folha_base = await conn.query(`INSERT INTO folhas_base (
                 empresa_id,
                 adiantamento,
                 ativo
@@ -25,9 +25,9 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
                 ${input.folha_base.props.ativo}
             ) RETURNING *`);
 
-            const folhaBaseConvenioOutput: FolhaBaseConvenioCidadeEntity[] = [];
-            for await (const folhaBaseConvenio of input.folha_base_convenios_cidades) {
-                const folhaBaseConvenioResult = await conn.query(`
+      const folhaBaseConvenioOutput: FolhaBaseConvenioCidadeEntity[] = [];
+      for await (const folhaBaseConvenio of input.folha_base_convenios_cidades) {
+        const folhaBaseConvenioResult = await conn.query(`
                 INSERT INTO folhas_base_convenios_cidades (
                     folha_base_id,
                     convenio_cidade_id,
@@ -42,14 +42,14 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
                     ${folhaBaseConvenio.props.percentual_descontar}
                 ) RETURNING *
                 `);
-                folhaBaseConvenioOutput.push(folhaBaseConvenioResult.rows[0]);
-            }
+        folhaBaseConvenioOutput.push(folhaBaseConvenioResult.rows[0]);
+      }
 
 
-            const folhaBaseEncargoOutput: FolhaBaseEncargoEntity[] = [];
-            for await (const folhaBaseEncargo of input.folha_base_encargos) {
-                const folhaBaseEncargoResult = await conn.query(
-                    `INSERT INTO folhas_base_encargos (
+      const folhaBaseEncargoOutput: FolhaBaseEncargoEntity[] = [];
+      for await (const folhaBaseEncargo of input.folha_base_encargos) {
+        const folhaBaseEncargoResult = await conn.query(
+          `INSERT INTO folhas_base_encargos (
                         encargo_id,
                         folha_base_id,
                         percentual_empresa,
@@ -60,14 +60,14 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
                         ${folhaBaseEncargo.props.percentual_empresa},
                         ${folhaBaseEncargo.props.percentual_funcionario}
                     ) RETURNING *`,
-                );
-                folhaBaseEncargoOutput.push(folhaBaseEncargoResult.rows[0]);
-            }
+        );
+        folhaBaseEncargoOutput.push(folhaBaseEncargoResult.rows[0]);
+      }
 
-            const folhaBaseItemPcgOutput: FolhaBaseItemPcgEntity[] = [];
-            for await (const folhaBaseItemPcg of input.folha_base_itens_pcg) {
-                const folhaBaseItemPcgResult = await conn.query(
-                    `INSERT INTO folha_base_itens_pcg (
+      const folhaBaseItemPcgOutput: FolhaBaseItemPcgEntity[] = [];
+      for await (const folhaBaseItemPcg of input.folha_base_itens_pcg) {
+        const folhaBaseItemPcgResult = await conn.query(
+          `INSERT INTO folha_base_itens_pcg (
                         folha_base_id,
                         tipo_folha_id,
                         item_pcg_id,
@@ -78,14 +78,14 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
                         ${folhaBaseItemPcg.props.item_pcg_id},
                         '${folhaBaseItemPcg.props.item_pcg}'
                     ) RETURNING *`,
-                );
-                folhaBaseItemPcgOutput.push(folhaBaseItemPcgResult.rows[0]);
-            }
+        );
+        folhaBaseItemPcgOutput.push(folhaBaseItemPcgResult.rows[0]);
+      }
 
 
-            const folhaBaseProvisaoOutput: FolhaBaseProvisaoEntity[] = [];
-            for await (const folhaBaseProvisao of input.folha_base_provisoes) {
-                const folhaBaseProvisaoResult =
+      const folhaBaseProvisaoOutput: FolhaBaseProvisaoEntity[] = [];
+      for await (const folhaBaseProvisao of input.folha_base_provisoes) {
+        const folhaBaseProvisaoResult =
                     await conn.query(`INSERT INTO folhas_base_provisoes (
                         folha_base_id,
                         provisao_id,
@@ -95,25 +95,25 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
                         ${folhaBaseProvisao.props.provisao_id},
                         ${folhaBaseProvisao.props.percentual}
                     ) RETURNING *`);
-                folhaBaseProvisaoOutput.push(folhaBaseProvisaoResult.rows[0]);
-            }
+        folhaBaseProvisaoOutput.push(folhaBaseProvisaoResult.rows[0]);
+      }
 
-            await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
-            return {
-                folha_base: folha_base.rows[0],
-                folha_base_provisoes: folhaBaseProvisaoOutput,
-                folha_base_convenios_cidades: folhaBaseConvenioOutput,
-                folha_base_itens_pcg: folhaBaseItemPcgOutput,
-                folha_base_encargos: folhaBaseEncargoOutput,
-            };
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+      return {
+        folha_base: folha_base.rows[0],
+        folha_base_provisoes: folhaBaseProvisaoOutput,
+        folha_base_convenios_cidades: folhaBaseConvenioOutput,
+        folha_base_itens_pcg: folhaBaseItemPcgOutput,
+        folha_base_encargos: folhaBaseEncargoOutput,
+      };
+    } catch (error) {
+      await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
+  }
 
-    /*  async update(
+  /*  async update(
         id: number,
         input: FolhaBaseEntity,
     ): Promise<FolhaBaseEntity> {

@@ -8,11 +8,11 @@ export type FolhaBaseProps = {
 
 
 export default class FolhaBaseEntity {
-    public props: FolhaBaseProps;
+  public props: FolhaBaseProps;
 
-    constructor(props: FolhaBaseProps) {
-        this.props = {
-            ...props
-        };
-    }
+  constructor(props: FolhaBaseProps) {
+    this.props = {
+      ...props
+    };
+  }
 }

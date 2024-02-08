@@ -1,17 +1,19 @@
 export type FuncionarioCentroResultadoProps = {
-  id: number;
-  funcionario_id: number;
-  centro_resultado_id: number;
-  data_inicio_trabalho: Date;
-  data_fim_trabalho?: Date;
+    id: number;
+    funcionario_id: number;
+    centro_resultado_id: number;
+    centro_resultado: string;
+    cidade_id: number;
+    data_inicio_trabalho: Date;
+    data_fim_trabalho?: Date;
 };
 
 export default class FuncionarioCentroResultadoEntity {
-    public props: FuncionarioCentroResultadoProps;
+  public props: FuncionarioCentroResultadoProps;
 
-    constructor(props: FuncionarioCentroResultadoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: FuncionarioCentroResultadoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }

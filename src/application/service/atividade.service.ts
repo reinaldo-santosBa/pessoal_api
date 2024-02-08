@@ -4,56 +4,56 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 
 export default class AtividadeService {
-    constructor(private readonly atividadeRepository: AtividadeRepository) {}
+  constructor(private readonly atividadeRepository: AtividadeRepository) {}
 
-    async create(input: AtividadeProps): Promise<AtividadeEntity> {
-        if (!input.atividade) {
-            throw new AppError("O campo atividade é obrigatório", status.BAD_REQUEST);
-        }
-
-        const atividade = new AtividadeEntity(input);
-        const newAtividade = await this.atividadeRepository.insert(atividade);
-
-        return newAtividade;
+  async create(input: AtividadeProps): Promise<AtividadeEntity> {
+    if (!input.atividade) {
+      throw new AppError("O campo atividade é obrigatório", status.BAD_REQUEST);
     }
 
-    async getById(id: number): Promise<AtividadeEntity> {
-        const atividade = await this.atividadeRepository.getById(id);
-        return atividade;
+    const atividade = new AtividadeEntity(input);
+    const newAtividade = await this.atividadeRepository.insert(atividade);
+
+    return newAtividade;
+  }
+
+  async getById(id: number): Promise<AtividadeEntity> {
+    const atividade = await this.atividadeRepository.getById(id);
+    return atividade;
+  }
+
+  async getAll(): Promise<AtividadeEntity[]> {
+    const atividades = await this.atividadeRepository.getAll();
+
+    return atividades;
+  }
+
+  async update(id: number, input: AtividadeProps): Promise<AtividadeEntity> {
+
+    if (!input.atividade) {
+      throw new AppError("O campo atividade é obrigatório",status.BAD_REQUEST);
     }
 
-    async getAll(): Promise<AtividadeEntity[]> {
-        const atividades = await this.atividadeRepository.getAll();
-
-        return atividades;
-    }
-
-    async update(id: number, input: AtividadeProps): Promise<AtividadeEntity> {
-
-        if (!input.atividade) {
-            throw new AppError("O campo atividade é obrigatório",status.BAD_REQUEST);
-        }
-
-        const atividadeExisting =
+    const atividadeExisting =
           await this.atividadeRepository.getByIdExisting(id);
 
-        if (!atividadeExisting) {
-            throw new AppError("Atividade não encontrada",status.NOT_FOUND);
-        }
-
-        const atividade = new AtividadeEntity(input);
-        const ativdadeUpdate = await this.atividadeRepository.update(id, atividade);
-        return ativdadeUpdate;
+    if (!atividadeExisting) {
+      throw new AppError("Atividade não encontrada",status.NOT_FOUND);
     }
 
-    async delete(id: number): Promise<void> {
-        const atividadeExisting =
+    const atividade = new AtividadeEntity(input);
+    const ativdadeUpdate = await this.atividadeRepository.update(id, atividade);
+    return ativdadeUpdate;
+  }
+
+  async delete(id: number): Promise<void> {
+    const atividadeExisting =
           await this.atividadeRepository.getByIdExisting(id);
 
-        if (!atividadeExisting) {
-            throw new AppError("Atividade não encontrada", status.NOT_FOUND);
-        }
-
-        await this.atividadeRepository.delete(id);
+    if (!atividadeExisting) {
+      throw new AppError("Atividade não encontrada", status.NOT_FOUND);
     }
+
+    await this.atividadeRepository.delete(id);
+  }
 }

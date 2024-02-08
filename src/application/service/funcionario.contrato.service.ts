@@ -3,48 +3,48 @@ import { FuncionarioContratoRepository } from "../../domain/repository/funcionar
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 export default class FuncionarioContratoService {
-    constructor(
+  constructor(
     private readonly funcionarioContratoRepository: FuncionarioContratoRepository,
-    ) {}
+  ) {}
 
-    async create(
-        input: FuncionarioContratoProps,
-    ): Promise<FuncionarioContratoEntity> {
-        const contrato = new FuncionarioContratoEntity(input);
+  async create(
+    input: FuncionarioContratoProps,
+  ): Promise<FuncionarioContratoEntity> {
+    const contrato = new FuncionarioContratoEntity(input);
 
-        const newContrato = await this.funcionarioContratoRepository.insert(contrato);
+    const newContrato = await this.funcionarioContratoRepository.insert(contrato);
 
-        return newContrato;
+    return newContrato;
+  }
+
+  async update(id: number, input: FuncionarioContratoProps): Promise<FuncionarioContratoEntity> {
+    const existingContrato = await this.funcionarioContratoRepository.getById(id);
+    if (!existingContrato) {
+      throw new AppError("Contrato não encontrada", status.NOT_FOUND);
     }
 
-    async update(id: number, input: FuncionarioContratoProps): Promise<FuncionarioContratoEntity> {
-        const existingContrato = await this.funcionarioContratoRepository.getById(id);
-        if (!existingContrato) {
-            throw new AppError("Contrato não encontrada", status.NOT_FOUND);
-        }
+    const contrato = new FuncionarioContratoEntity(input);
 
-        const contrato = new FuncionarioContratoEntity(input);
-
-        const updateContrato = await this.funcionarioContratoRepository.update(
-            id,
-            contrato
-        );
-        return updateContrato;
-    }
+    const updateContrato = await this.funcionarioContratoRepository.update(
+      id,
+      contrato
+    );
+    return updateContrato;
+  }
 
 
-    async delete(id: number): Promise<void> {
-        const existingContrato =
+  async delete(id: number): Promise<void> {
+    const existingContrato =
            await this.funcionarioContratoRepository.getById(id);
-        if (!existingContrato) {
-            throw new AppError("Contrato não encontrada", status.NOT_FOUND);
-        }
-
-        await this.funcionarioContratoRepository.delete(id);
+    if (!existingContrato) {
+      throw new AppError("Contrato não encontrada", status.NOT_FOUND);
     }
 
-    async getByIdFuncionario(funcionario_id: number): Promise<FuncionarioContratoEntity[]> {
-        const contratos = await this.funcionarioContratoRepository.getByIdFuncionario(funcionario_id);
-        return contratos;
-    }
+    await this.funcionarioContratoRepository.delete(id);
+  }
+
+  async getByIdFuncionario(funcionario_id: number): Promise<FuncionarioContratoEntity[]> {
+    const contratos = await this.funcionarioContratoRepository.getByIdFuncionario(funcionario_id);
+    return contratos;
+  }
 }

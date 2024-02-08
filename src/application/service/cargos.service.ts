@@ -4,58 +4,58 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 
 export default class CargosService {
-    constructor(private readonly cargoRepository: CargoRepository) {}
+  constructor(private readonly cargoRepository: CargoRepository) {}
 
-    async create(input: CargoProps): Promise<CargoEntity> {
+  async create(input: CargoProps): Promise<CargoEntity> {
 
-        if (!input.cargo) {
-            throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
-        }
-
-        const cargo = new CargoEntity(input);
-        const output = await this.cargoRepository.insert(cargo);
-
-        return output;
+    if (!input.cargo) {
+      throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
     }
 
-    async getAll(): Promise<CargoEntity[]> {
-        try {
-            const cargos = await this.cargoRepository.getAll();
-            return cargos;
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+    const cargo = new CargoEntity(input);
+    const output = await this.cargoRepository.insert(cargo);
+
+    return output;
+  }
+
+  async getAll(): Promise<CargoEntity[]> {
+    try {
+      const cargos = await this.cargoRepository.getAll();
+      return cargos;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
+  async update(id: number, input: CargoProps): Promise<CargoEntity> {
+    if (!input.cargo) {
+      throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
     }
 
-    async update(id: number, input: CargoProps): Promise<CargoEntity> {
-        if (!input.cargo) {
-            throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
-        }
+    const cargoExisting = await this.cargoRepository.getByIdExisting(id);
 
-        const cargoExisting = await this.cargoRepository.getByIdExisting(id);
+    if (!cargoExisting) {
+      throw new AppError("Cargo não encontrado", status.NOT_FOUND);
+    }
+    const cargo = new CargoEntity(input);
 
-        if (!cargoExisting) {
-            throw new AppError("Cargo não encontrado", status.NOT_FOUND);
-        }
-        const cargo = new CargoEntity(input);
+    const cargoUpdate = await this.cargoRepository.update(id, cargo);
 
-        const cargoUpdate = await this.cargoRepository.update(id, cargo);
+    return cargoUpdate;
+  }
 
-        return cargoUpdate;
+  async getById(id: number): Promise<CargoEntity> {
+    const cargo = await this.cargoRepository.getById(id);
+    return cargo;
+  }
+
+  async delete(id: number) {
+    const cargoExisting = await this.cargoRepository.getByIdExisting(id);
+
+    if (!cargoExisting) {
+      throw new AppError("Cargo não encontrado", status.NOT_FOUND);
     }
 
-    async getById(id: number): Promise<CargoEntity> {
-        const cargo = await this.cargoRepository.getById(id);
-        return cargo;
-    }
-
-    async delete(id: number) {
-        const cargoExisting = await this.cargoRepository.getByIdExisting(id);
-
-        if (!cargoExisting) {
-            throw new AppError("Cargo não encontrado", status.NOT_FOUND);
-        }
-
-        await this.cargoRepository.delete(id);
-    }
+    await this.cargoRepository.delete(id);
+  }
 }

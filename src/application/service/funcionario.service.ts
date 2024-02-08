@@ -30,65 +30,65 @@ export type IInputProps = {
 
 
 export default class FuncionarioService {
-    constructor(private readonly funcionarioRepository: FuncionarioRepository) { }
-    private readonly totalRateio: number = 100;
+  constructor(private readonly funcionarioRepository: FuncionarioRepository) { }
+  private readonly totalRateio: number = 100;
 
-    async create({
-        pessoa,
-        pessoa_fisica,
-        enderecos,
-        funcionario,
-        emails,
-        telefones,
-        contas_bancarias,
-        rateios,
-        centro_resultado_id,
-        atividades_funcionarios,
-        convenios_cidades_funcionarios
-    }: IInputProps): Promise<IInput> {
+  async create({
+    pessoa,
+    pessoa_fisica,
+    enderecos,
+    funcionario,
+    emails,
+    telefones,
+    contas_bancarias,
+    rateios,
+    centro_resultado_id,
+    atividades_funcionarios,
+    convenios_cidades_funcionarios
+  }: IInputProps): Promise<IInput> {
 
-        let totalPercentual: number = 0;
-        for await (const rateio of rateios) {
-            totalPercentual += rateio.percentual;
-        }
-
-        if (totalPercentual !== this.totalRateio) {
-            throw new AppError("A soma dos percentuais deve ser igual a 100%", status.BAD_REQUEST);
-        }
-
-        const funcionarioResponse = await this.funcionarioRepository.insert({
-            pessoa: new PessoaEntity(pessoa),
-            funcionario: new FuncionarioEntity(funcionario),
-            pessoa_fisica: new PessoaFisicaEntity(pessoa_fisica),
-            enderecos: enderecos.map(endereco => new EnderecoEntity(endereco)),
-            emails: emails.map(email => new EmailEntity(email)),
-            telefones: telefones.map(telefone => new TelefoneEntity(telefone)),
-            contas_bancarias: contas_bancarias.map(
-                conta_bancaria => new ContaBancariaEntity(conta_bancaria),
-            ),
-            rateios: rateios.map(
-                rateio => new RateioCentroResultadoEntity(rateio),
-            ),
-            centro_resultado_id,
-            atividades_funcionarios: atividades_funcionarios.map(
-                atividade => new AtividadeFuncionarioEntity(atividade),
-            ),
-            convenios_cidades_funcionarios: convenios_cidades_funcionarios.map(
-                convenio_cidade =>
-                    new ConvenioCidadeFuncionarioEntity(convenio_cidade),
-            ),
-        });
-
-        return funcionarioResponse;
+    let totalPercentual: number = 0;
+    for await (const rateio of rateios) {
+      totalPercentual += rateio.percentual;
     }
 
-    async getAll(): Promise<AllFuncionariosOutput[]> {
-        const funcionarios = await this.funcionarioRepository.getAll();
-        return funcionarios;
+    if (totalPercentual !== this.totalRateio) {
+      throw new AppError("A soma dos percentuais deve ser igual a 100%", status.BAD_REQUEST);
     }
 
-    async getById(pessoa_id: number): Promise<FuncionarioOutput> {
-        const funcionario = await this.funcionarioRepository.getById(pessoa_id);
-        return funcionario;
-    }
+    const funcionarioResponse = await this.funcionarioRepository.insert({
+      pessoa: new PessoaEntity(pessoa),
+      funcionario: new FuncionarioEntity(funcionario),
+      pessoa_fisica: new PessoaFisicaEntity(pessoa_fisica),
+      enderecos: enderecos.map(endereco => new EnderecoEntity(endereco)),
+      emails: emails.map(email => new EmailEntity(email)),
+      telefones: telefones.map(telefone => new TelefoneEntity(telefone)),
+      contas_bancarias: contas_bancarias.map(
+        conta_bancaria => new ContaBancariaEntity(conta_bancaria),
+      ),
+      rateios: rateios.map(
+        rateio => new RateioCentroResultadoEntity(rateio),
+      ),
+      centro_resultado_id,
+      atividades_funcionarios: atividades_funcionarios.map(
+        atividade => new AtividadeFuncionarioEntity(atividade),
+      ),
+      convenios_cidades_funcionarios: convenios_cidades_funcionarios.map(
+        convenio_cidade =>
+          new ConvenioCidadeFuncionarioEntity(convenio_cidade),
+      ),
+    });
+
+    return funcionarioResponse;
+  }
+
+  async getAll(): Promise<AllFuncionariosOutput[]> {
+    const funcionarios = await this.funcionarioRepository.getAll();
+    return funcionarios;
+  }
+
+  async getById(pessoa_id: number): Promise<FuncionarioOutput> {
+    const funcionario = await this.funcionarioRepository.getById(pessoa_id);
+    return funcionario;
+  }
 }

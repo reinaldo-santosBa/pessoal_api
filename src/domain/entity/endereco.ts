@@ -40,11 +40,11 @@ export type EnderecoProps = {
 };
 
 export default class EnderecoEntity {
-    public props: EnderecoProps;
+  public props: EnderecoProps;
 
-    constructor(props: EnderecoProps) {
-        this.props = {
-            ...props,
-        };
-    }
+  constructor(props: EnderecoProps) {
+    this.props = {
+      ...props,
+    };
+  }
 }
