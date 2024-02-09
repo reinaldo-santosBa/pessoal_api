@@ -18,6 +18,12 @@ routesConvenioCidade.get("/convenio_cidade/:id", (req, res) =>
 routesConvenioCidade.get("/convenio_cidade", (req, res) =>
   convenioCidadeController.geAll(req, res),
 );
+
+routesConvenioCidade.get("/convenio_cidade/:cidade_id", (req, res) =>
+  convenioCidadeController.getByCidadeId(req, res),
+);
+
+
 routesConvenioCidade.put("/convenio_cidade/:id", (req, res) =>
   convenioCidadeController.update(req, res),
 );

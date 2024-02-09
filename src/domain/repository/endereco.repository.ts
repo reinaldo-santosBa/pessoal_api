@@ -2,7 +2,6 @@ import EnderecoEntity, {
   BairrosProps,
   CidadesProps,
   EstadoProps,
-  RigoesProps
 } from "../entity/endereco";
 
 export interface EnderecoRepository {
@@ -11,8 +10,7 @@ export interface EnderecoRepository {
   getById(id: number): Promise<number>;
   delete(id: number): Promise<void>;
   getByIdPessoa(pessoa_id: number): Promise<EnderecoEntity[]>;
-  getRegioes(): Promise<RigoesProps[]>;
-  getEstados(regiao_id: number): Promise<EstadoProps[]>;
+  getEstados(): Promise<EstadoProps[]>;
   getCidades(estado_id: number): Promise<CidadesProps[]>;
   getBairros(cidade_id: number): Promise<BairrosProps[]>;
   getBairroById(id: number): Promise<BairrosProps>;

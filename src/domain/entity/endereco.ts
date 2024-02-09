@@ -13,11 +13,6 @@ export type EstadoProps = {
   codigo_ibge: string;
 };
 
-export type RigoesProps = {
-  id: number;
-  regiao: string;
-}
-
 export type BairrosProps = {
   id: number;
   cidade_id: number;

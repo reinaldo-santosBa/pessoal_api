@@ -1,5 +1,5 @@
 import AppError from "../../application/errors/AppError";
-import EnderecoEntity, { BairrosProps, CidadesProps, EstadoProps, RigoesProps } from "../../domain/entity/endereco";
+import EnderecoEntity, { BairrosProps, CidadesProps, EstadoProps } from "../../domain/entity/endereco";
 import { EnderecoRepository } from "../../domain/repository/endereco.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
@@ -15,27 +15,13 @@ export default class EnderecoPostgresRepository implements EnderecoRepository {
     }
   }
 
-  async getRegioes(): Promise<RigoesProps[]> {
-    try {
-      const regioes = await conn.query(
-        "SELECT id, regiao FROM REGIOES",
-      );
-
-      return regioes.rows;
-    } catch (error) {
-      throw new AppError(error.message, status.INTERNAL_SERVER);
-    }
-  }
-
-
-  async getEstados(regiao_id: number): Promise<EstadoProps[]> {
+  async getEstados(): Promise<EstadoProps[]> {
     try {
       const estados = await conn.query(`SELECT
                   id,
                   estado,
                   uf,
-                  regiao_id,
-                  codigo_ibge FROM ESTADOS WHERE REGIAO_ID = ${regiao_id}`);
+                  codigo_ibge FROM ESTADOS`);
       return estados.rows;
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);

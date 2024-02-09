@@ -54,14 +54,9 @@ export default class EnderecoController {
     return response.json(enderecos);
   }
 
-  async getRegioes(request: Request, response: Response) {
-    const regioes = await this.enderecoService.getRegioes();
-    return response.json(regioes);
-  }
 
   async getEstados(request: Request, response: Response) {
-    const regiao_id = request.params.regiao_id;
-    const estados = await this.enderecoService.getEstados(+regiao_id);
+    const estados = await this.enderecoService.getEstados();
     return response.json(estados);
   }
 

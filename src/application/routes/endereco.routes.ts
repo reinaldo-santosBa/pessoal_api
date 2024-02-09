@@ -18,13 +18,7 @@ routesEndereco.get("/endereco/:pessoa_id", (req, res) =>
   enderecoController.getByIdPessoa(req, res)
 );
 
-
-routesEndereco.get("/regioes", (req, res) =>
-  enderecoController.getRegioes(req, res)
-);
-
-
-routesEndereco.get("/estados/:regiao_id", (req, res) =>
+routesEndereco.get("/estados", (req, res) =>
   enderecoController.getEstados(req, res)
 );
 

@@ -15,10 +15,7 @@ export default class ConvenioCidadeController {
     return response.status(status.CREATED).json(convenioCidade);
   }
 
-  async update(
-    request: Request,
-    response: Response,
-  ) {
+  async update(request: Request, response: Response) {
     const id = request.params.id;
     const input = request.body as ConvenioCidadeProps;
     const convenioCidade = await this.convenioCidadeService.update(
@@ -28,21 +25,21 @@ export default class ConvenioCidadeController {
     return response.json(convenioCidade);
   }
 
-  async geAll(
-    request: Request,
-    response: Response,
-  ) {
+  async geAll(request: Request, response: Response) {
     const convenioCidade = await this.convenioCidadeService.geAll();
     return response.json(convenioCidade);
   }
 
-  async getById(
-    request: Request,
-    response: Response,
-  ) {
+  async getById(request: Request, response: Response) {
     const id = request.params.id;
     const convenioCidade = await this.convenioCidadeService.getById(+id);
     return response.json(convenioCidade);
+  }
+
+  async getByCidadeId(request: Request, response: Response) {
+    const cidade_id = request.params.cidade_id;
+    const conveniosCidade = await this.convenioCidadeService.getByCidadeId(+cidade_id);
+    return response.json(conveniosCidade);
   }
 
   async delete(request: Request, response: Response) {

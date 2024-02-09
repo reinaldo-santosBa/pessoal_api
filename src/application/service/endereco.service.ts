@@ -2,8 +2,7 @@ import EnderecoEntity, {
   BairrosProps,
   CidadesProps,
   EnderecoProps,
-  EstadoProps,
-  RigoesProps
+  EstadoProps
 } from "../../domain/entity/endereco";
 import { EnderecoRepository } from "../../domain/repository/endereco.repository";
 import AppError from "../errors/AppError";
@@ -57,13 +56,8 @@ export default class EnderecoService {
     return enderecos;
   }
 
-  async getRegioes(): Promise<RigoesProps[]>{
-    const regioes = await this.enderecoRepository.getRegioes();
-    return regioes;
-  }
-
-  async getEstados(regiao_id: number): Promise<EstadoProps[]> {
-    const estados = await this.enderecoRepository.getEstados(regiao_id);
+  async getEstados(): Promise<EstadoProps[]> {
+    const estados = await this.enderecoRepository.getEstados();
     return estados;
   }
 

@@ -1,5 +1,6 @@
 import ConvenioCidadeEntity, { ConvenioCidadeProps } from "../../domain/entity/convenio.cidade";
 import { ConvenioCidadeRepository } from "../../domain/repository/convenio.cidade.repository";
+import { AllConvenioCidade } from "../../infrastructure/db/convenio.cidade.repository";
 
 export default class ConvenioCidadeService {
   constructor(
@@ -8,7 +9,8 @@ export default class ConvenioCidadeService {
 
   async create(input: ConvenioCidadeProps): Promise<ConvenioCidadeEntity> {
     const convenioCidadeEntity = new ConvenioCidadeEntity(input);
-    const convenioCidade = await this.convenioCidadeRepository.insert(convenioCidadeEntity);
+    const convenioCidade =
+            await this.convenioCidadeRepository.insert(convenioCidadeEntity);
     return convenioCidade;
   }
 
@@ -17,11 +19,19 @@ export default class ConvenioCidadeService {
     input: ConvenioCidadeProps,
   ): Promise<ConvenioCidadeEntity> {
     const convenioCidadeEntity = new ConvenioCidadeEntity(input);
-    const convenioCidade = await this.convenioCidadeRepository.update(id, convenioCidadeEntity);
+    const convenioCidade = await this.convenioCidadeRepository.update(
+      id,
+      convenioCidadeEntity,
+    );
     return convenioCidade;
   }
 
-  async geAll(): Promise<ConvenioCidadeEntity[]> {
+  async getByCidadeId(cidade_id: number): Promise<ConvenioCidadeEntity[]> {
+    const conveniosCidade = await this.convenioCidadeRepository.getByCidadeId(cidade_id);
+    return conveniosCidade;
+  }
+
+  async geAll(): Promise<AllConvenioCidade[]> {
     const convenioCidade = await this.convenioCidadeRepository.geAll();
     return convenioCidade;
   }
