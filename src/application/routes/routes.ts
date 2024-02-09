@@ -27,6 +27,7 @@ import routesParametro from "./parametro.routes";
 import routesFolhaBase from "./folha.base.routes";
 import routesProcessarPagamento from "./processar.folha.pagamento.routes";
 import routesConvenioCidade from "./convenio.cidade.routes";
+import routesFolhaPagamento from "./folha.pagamento.routes";
 
 const routes = Router();
 
@@ -58,6 +59,7 @@ routes.use(routesParametro);
 routes.use(routesFolhaBase);
 routes.use(routesProcessarPagamento);
 routes.use(routesConvenioCidade);
+routes.use(routesFolhaPagamento);
 
 
 export default routes;

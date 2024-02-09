@@ -1,5 +1,5 @@
 export type FolhaPagamentoEncargoProps = {
-  folha_pagamento_funcionario_id: number;
+  folha_pagamento_funcionario_id?: number;
   encargo_id: number;
   valor: number;
 };

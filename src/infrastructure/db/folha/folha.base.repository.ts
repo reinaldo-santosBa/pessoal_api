@@ -9,10 +9,8 @@ import conn from "../../config/database.config";
 import { FolhaBaseType } from "../../types/folha.base.type";
 
 export default class FolhaBasePostgresRepository implements FolhaBaseRepository {
-
   async insert(input: FolhaBaseType): Promise<FolhaBaseType> {
     try {
-
       await conn.query("BEGIN");
 
       const folha_base = await conn.query(`INSERT INTO folhas_base (
@@ -44,7 +42,6 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
                 `);
         folhaBaseConvenioOutput.push(folhaBaseConvenioResult.rows[0]);
       }
-
 
       const folhaBaseEncargoOutput: FolhaBaseEncargoEntity[] = [];
       for await (const folhaBaseEncargo of input.folha_base_encargos) {
@@ -81,7 +78,6 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
         );
         folhaBaseItemPcgOutput.push(folhaBaseItemPcgResult.rows[0]);
       }
-
 
       const folhaBaseProvisaoOutput: FolhaBaseProvisaoEntity[] = [];
       for await (const folhaBaseProvisao of input.folha_base_provisoes) {
@@ -123,6 +119,14 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
   }
+
+  /*async getAll(): Promise<FolhaBaseType[]> {
+    try {
+      await conn.query("");
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }*/
 
   /*  async delete(id: number): Promise<void> {
         try {

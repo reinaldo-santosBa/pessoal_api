@@ -76,8 +76,8 @@ where fcr.funcionario_id  = ${funcionario_id} and fcr.data_fim_trabalho  is null
                   '${input.props.data_trabalho}',
                   '${input.props.hora_inicio_turno_1}',
                   '${input.props.hora_fim_turno_1}',
-                  '${input.props.hora_inicio_turno_2}',
-                  '${input.props.hora_fim_turno_2}'
+                  ${input.props.hora_inicio_turno_2 ? input.props.hora_inicio_turno_2 : "NULL"},
+                  ${input.props.hora_fim_turno_2 ? input.props.hora_fim_turno_2 : "NULL"}
                 ) RETURNING *`,
       );
 

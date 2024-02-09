@@ -53,6 +53,7 @@ INNER JOIN folhas_base_convenios_cidades fbcc on fbcc.folha_base_id  = fb.id
 inner join convenios_cidades cc  on cc.id  = fbcc.convenio_cidade_id
 inner join convenios c2 on c2.id  = cc.convenio_id
 WHERE htf.data_trabalho BETWEEN '${params.ano}-${params.mes}-01' AND '${params.data_fechamento}' and fbip.tipo_folha_id  = ${params.tipo_folha_id} ${whereFuncionarioId}
+and fb.ativo = true
 group by
 centro_resultado_rateio_id,
 centro_resultado_rateio,

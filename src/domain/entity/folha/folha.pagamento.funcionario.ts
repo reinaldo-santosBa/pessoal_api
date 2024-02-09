@@ -1,5 +1,5 @@
 export type FolhaPagamentoFuncionarioProps = {
-  folha_pagamento_id: number;
+  folha_pagamento_id?: number;
   centro_resultado_id: number;
   item_pcg_id: number;
   tipo_folha_id: number;
