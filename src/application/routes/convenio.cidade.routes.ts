@@ -19,7 +19,7 @@ routesConvenioCidade.get("/convenio_cidade", (req, res) =>
   convenioCidadeController.geAll(req, res),
 );
 
-routesConvenioCidade.get("/convenio_cidade/:cidade_id", (req, res) =>
+routesConvenioCidade.get("/convenio_cidade/cidade/:cidade_id", (req, res) =>
   convenioCidadeController.getByCidadeId(req, res),
 );
 

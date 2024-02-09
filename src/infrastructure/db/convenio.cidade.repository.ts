@@ -5,7 +5,7 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 
-export type AllConvenioCidade = {
+export type ConvenioCidade = {
     cidade_id: number;
     convenio_id: number;
     valor_pagar: number;
@@ -62,7 +62,7 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
     }
   }
 
-  async geAll(): Promise<AllConvenioCidade[]> {
+  async geAll(): Promise<ConvenioCidade[]> {
     try {
       const convenioCidade = await conn.query(`SELECT cd.id,
                     cd.cidade_id,
@@ -93,15 +93,21 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
     }
   }
 
-  async getByCidadeId(cidade_id: number) {
+  async getByCidadeId(cidade_id: number): Promise<ConvenioCidade[]> {
     try {
-      const convenioCidade = await conn.query(`SELECT id,
-                    cidade_id,
-                    convenio_id,
-                    valor_pagar,
-                    percentual_descontar,
-                    valor_descontar FROM convenios_cidades WHERE cidade_id = ${cidade_id}`);
-      return convenioCidade.rows[0];
+      const convenioCidade =
+                await conn.query(`                 SELECT cd.id,
+                    cd.cidade_id,
+                    cd.convenio_id,
+                    cd.valor_pagar,
+                    cd.percentual_descontar,
+                    cd.valor_descontar,
+                    c.convenio
+                    FROM convenios_cidades cd
+                    inner join convenios c on c.id  = cd.convenio_id
+                    WHERE cd.cidade_id = ${cidade_id}
+                   order by cd.id;`);
+      return convenioCidade.rows;
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
