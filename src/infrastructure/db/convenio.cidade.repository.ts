@@ -82,14 +82,20 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
     }
   }
 
-  async getById(id: number): Promise<ConvenioCidadeEntity> {
+  async getById(id: number): Promise<ConvenioCidade> {
     try {
-      const convenioCidade = await conn.query(`SELECT id,
-                    cidade_id,
-                    convenio_id,
-                    valor_pagar,
-                    percentual_descontar,
-                    valor_descontar FROM convenios_cidades WHERE ID = ${id}`);
+      const convenioCidade = await conn.query(`SELECT
+                    cd.id,
+                    cd.cidade_id,
+                    cd.convenio_id,
+                    cd.valor_pagar,
+                    cd.percentual_descontar,
+                    valor_descontar,
+                    c.convenio,
+                    c2.cidade
+                    FROM convenios_cidades cd
+                    inner join convenios c on c.id  = cd.convenio_id
+                    inner join cidades c2 on c2.id = cd.cidade_id WHERE cd.ID = ${id}`);
       return convenioCidade.rows[0];
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
@@ -98,7 +104,8 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
 
   async getByCidadeId(cidade_id: number): Promise<ConvenioCidade[]> {
     try {
-      const convenioCidade = await conn.query(`                 SELECT cd.id,
+      const convenioCidade =
+                await conn.query(`                 SELECT cd.id,
                     cd.cidade_id,
                     cd.convenio_id,
                     cd.valor_pagar,
