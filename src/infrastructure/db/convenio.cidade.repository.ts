@@ -12,6 +12,7 @@ export type ConvenioCidade = {
     percentual_descontar: number;
     valor_descontar: number;
     convenio: string;
+    cidade: string;
 };
 export default class ConvenioCidadePostgresRepository implements ConvenioCidadeRepository {
   async insert(input: ConvenioCidadeEntity): Promise<ConvenioCidadeEntity> {
@@ -70,9 +71,11 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
                     cd.valor_pagar,
                     cd.percentual_descontar,
                     cd.valor_descontar,
-                    c.convenio
+                    c.convenio,
+                      c2.cidade
                     FROM convenios_cidades cd
-                    inner join convenios c on c.id  = cd.convenio_id`);
+                    inner join convenios c on c.id  = cd.convenio_id
+                    inner join cidades c2 on c2.id = cd.cidade_id`);
       return convenioCidade.rows;
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
@@ -95,16 +98,17 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
 
   async getByCidadeId(cidade_id: number): Promise<ConvenioCidade[]> {
     try {
-      const convenioCidade =
-                await conn.query(`                 SELECT cd.id,
+      const convenioCidade = await conn.query(`                 SELECT cd.id,
                     cd.cidade_id,
                     cd.convenio_id,
                     cd.valor_pagar,
                     cd.percentual_descontar,
                     cd.valor_descontar,
-                    c.convenio
+                    c.convenio,
+                      c2.cidade
                     FROM convenios_cidades cd
                     inner join convenios c on c.id  = cd.convenio_id
+                    inner join cidades c2 on c2.id = cd.cidade_id
                     WHERE cd.cidade_id = ${cidade_id}
                    order by cd.id;`);
       return convenioCidade.rows;
