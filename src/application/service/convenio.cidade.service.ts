@@ -37,7 +37,7 @@ export default class ConvenioCidadeService {
     return convenioCidade;
   }
 
-  async getById(id: number): Promise<ConvenioCidadeEntity> {
+  async getById(id: number): Promise<ConvenioCidade> {
     const convenioCidade = await this.convenioCidadeRepository.getById(id);
     return convenioCidade;
   }
