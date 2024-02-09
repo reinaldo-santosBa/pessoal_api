@@ -64,7 +64,7 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
 
   async geAll(): Promise<AllConvenioCidade[]> {
     try {
-      const convenioCidade = await conn.query(`SELECT id,
+      const convenioCidade = await conn.query(`SELECT cd.id,
                     cd.cidade_id,
                     cd.convenio_id,
                     cd.valor_pagar,
