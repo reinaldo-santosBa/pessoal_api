@@ -13,11 +13,17 @@ export default class ParametroPostgresRepository implements ParametroRepository 
       const parametro = await conn.query(`INSERT INTO parametros (
                 centro_resultado,
                 limite_hora_extra_diario,
-                limite_hora_extra_mensal
+                limite_hora_extra_mensal,
+                fornecedor_agrupador_id,
+                insumo_mao_de_obra_id,
+                servico_folha_pagamento_id
             ) VALUES (
                 ${input.props.centro_resultado},
                 ${input.props.limite_hora_extra_diario},
-                ${input.props.limite_hora_extra_mensal}
+                ${input.props.limite_hora_extra_mensal},
+                ${input.props.fornecedor_agrupador_id},
+                ${input.props.insumo_mao_de_obra_id},
+                ${input.props.servico_folha_pagamento_id},
             ) RETURNING *`);
 
       await conn.query("COMMIT");
@@ -45,10 +51,14 @@ limite_hora_extra_mensal FROM parametros`,
     try {
       await conn.query("BEGIN");
       const parametro =
-              await conn.query(`UPDATE parametros SET centro_resultado = ${input.props.centro_resultado},
+          await conn.query(`UPDATE parametros SET
+                centro_resultado = ${input.props.centro_resultado},
                 limite_hora_extra_diario = ${input.props.limite_hora_extra_diario},
-                limite_hora_extra_mensal = ${input.props.limite_hora_extra_mensal}
-                WHERE ID = ${id} RETURNING *`);
+                limite_hora_extra_mensal = ${input.props.limite_hora_extra_mensal},
+                fornecedor_agrupador_id = ${input.props.fornecedor_agrupador_id},
+                insumo_mao_de_obra_id = ${input.props.insumo_mao_de_obra_id},
+                servico_folha_pagamento_id = ${input.props.servico_folha_pagamento_id}
+            WHERE ID = ${id} RETURNING *`);
 
       await conn.query("COMMIT");
       return parametro.rows[0];

@@ -27,10 +27,17 @@ export type IInputProps = {
     convenios_cidades_funcionarios?: ConvenioCidadeFuncionarioProps[]
 };
 
+export type FuncionarioUpdateProps = {
+    funcionario: FuncionarioProps;
+    pessoa: PessoaProps;
+    pessoa_fisica: PessoaFisicaProps;
+};
 
 
 export default class FuncionarioService {
-  constructor(private readonly funcionarioRepository: FuncionarioRepository) { }
+  constructor(
+        private readonly funcionarioRepository: FuncionarioRepository,
+  ) {}
   private readonly totalRateio: number = 100;
 
   async create({
@@ -44,8 +51,18 @@ export default class FuncionarioService {
     rateios,
     centro_resultado_id,
     atividades_funcionarios,
-    convenios_cidades_funcionarios
+    convenios_cidades_funcionarios,
   }: IInputProps): Promise<IInput> {
+    if (!centro_resultado_id) {
+      throw new AppError(
+        "centro_resultado_id obrigatório",
+        status.BAD_REQUEST,
+      );
+    }
+
+    if (!rateios) {
+      throw new AppError("rateios obrigatório", status.BAD_REQUEST);
+    }
 
     let totalPercentual: number = 0;
     for await (const rateio of rateios) {
@@ -53,7 +70,10 @@ export default class FuncionarioService {
     }
 
     if (totalPercentual !== this.totalRateio) {
-      throw new AppError("A soma dos percentuais deve ser igual a 100%", status.BAD_REQUEST);
+      throw new AppError(
+        "A soma dos percentuais deve ser igual a 100%",
+        status.BAD_REQUEST,
+      );
     }
 
     const funcionarioResponse = await this.funcionarioRepository.insert({
@@ -82,6 +102,14 @@ export default class FuncionarioService {
     return funcionarioResponse;
   }
 
+  async update(id: number, input: FuncionarioUpdateProps): Promise<void> {
+    await this.funcionarioRepository.update(id, {
+      funcionario: new FuncionarioEntity(input.funcionario),
+      pessoa: new PessoaEntity(input.pessoa),
+      pessoa_fisica: new  PessoaFisicaEntity(input.pessoa_fisica)
+    });
+  }
+
   async getAll(): Promise<AllFuncionariosOutput[]> {
     const funcionarios = await this.funcionarioRepository.getAll();
     return funcionarios;
@@ -89,6 +117,10 @@ export default class FuncionarioService {
 
   async getById(pessoa_id: number): Promise<FuncionarioOutput> {
     const funcionario = await this.funcionarioRepository.getById(pessoa_id);
+
+    if (!funcionario) {
+      throw new AppError("funcionario não encontrado", status.NOT_FOUND);
+    }
     return funcionario;
   }
 }

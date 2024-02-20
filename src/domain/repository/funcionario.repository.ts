@@ -20,18 +20,18 @@ export type IInput = {
   enderecos?: EnderecoEntity[];
   telefones?: TelefoneEntity[];
   contas_bancarias?: ContaBancariaEntity[];
-  atividades_funcionarios: AtividadeFuncionarioEntity[];
+  atividades_funcionarios?: AtividadeFuncionarioEntity[];
   //dependentes: Dependentes[];
   rateios: RateioCentroResultadoEntity[];
   centro_resultado_id: number;
-  convenios_cidades_funcionarios: ConvenioCidadeFuncionarioEntity[],
+  convenios_cidades_funcionarios?: ConvenioCidadeFuncionarioEntity[],
 };
 
 
 export interface FuncionarioRepository {
-  insert(input: IInput): Promise<any>;
-  delete(id: number): Promise<void>;
-  update(id: number, input: any): Promise<any>;
-  getAll(): Promise<AllFuncionariosOutput[]>;
-  getById(pessoa_id: number): Promise<any>;
+    insert(input: IInput): Promise<IInput>;
+    delete(id: number): Promise<void>;
+    update(id: number, input: any): Promise<any>;
+    getAll(): Promise<AllFuncionariosOutput[]>;
+    getById(pessoa_id: number): Promise<any>;
 }

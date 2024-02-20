@@ -13,8 +13,7 @@ implements ProcessarFolhaPagamentoRepository
         whereFuncionarioId = `AND f.id = ${params.funcionario_id}`;
       }
 
-      const data = await conn.query(`
-                              select
+      const data = await conn.query(`select
 rcr.centro_resultado_id as centro_resultado_rateio_id,
 rcr.centro_resultado as centro_resultado_rateio,
 f.id as funcionario_id,

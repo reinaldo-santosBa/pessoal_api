@@ -13,6 +13,7 @@ export type ConvenioCidade = {
     valor_descontar: number;
     convenio: string;
     cidade: string;
+    estado_id: number;
 };
 export default class ConvenioCidadePostgresRepository implements ConvenioCidadeRepository {
   async insert(input: ConvenioCidadeEntity): Promise<ConvenioCidadeEntity> {
@@ -92,10 +93,12 @@ export default class ConvenioCidadePostgresRepository implements ConvenioCidadeR
                     cd.percentual_descontar,
                     valor_descontar,
                     c.convenio,
-                    c2.cidade
+                    c2.cidade,
+                    e.id as estado_id
                     FROM convenios_cidades cd
                     inner join convenios c on c.id  = cd.convenio_id
-                    inner join cidades c2 on c2.id = cd.cidade_id WHERE cd.ID = ${id}`);
+                    inner join cidades c2 on c2.id = cd.cidade_id
+                    inner join estados e on E.id = c2.estado_id WHERE cd.ID = ${id}`);
       return convenioCidade.rows[0];
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);

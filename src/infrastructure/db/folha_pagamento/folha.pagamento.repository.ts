@@ -75,33 +75,4 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
     }
   }
 
-  /*async update(id: number, input: FolhaPagamentoEntity): Promise<FolhaPagamentoEntity> {
-    try {
-      await conn.query("BEGIN");
-
-      await conn.query("COMMIT");
-    } catch (error) {
-      await conn.query("ROLLBACK");
-      throw new AppError(error.message, status.INTERNAL_SERVER);
-    }
-  }
-
-  async delete(id: number): Promise<void> {
-    try {
-      await conn.query("BEGIN");
-
-      await conn.query("COMMIT");
-    } catch (error) {
-      await conn.query("ROLLBACK");
-      throw new AppError(error.message, status.INTERNAL_SERVER);
-    }
-  }
-
-  async get(): Promise<FolhaPagamentoEntity[]> {
-    try {
-
-    } catch (error) {
-      throw new AppError(error.message, status.INTERNAL_SERVER);
-    }
-  }*/
 }

@@ -9,6 +9,11 @@ import ContaBancariaEntity from "../../domain/entity/conta.bancaria";
 import RateioCentroResultadoEntity from "../../domain/entity/rateio.centro.resultado";
 import AtividadeFuncionarioEntity from "../../domain/entity/atividade.funcionario";
 import ConvenioCidadeFuncionarioEntity from "../../domain/entity/convenio.cidade.funcionario";
+import FuncionarioEntity from "../../domain/entity/funcionario";
+import PessoaEntity from "../../domain/entity/pessoa";
+import PessoaFisicaEntity from "../../domain/entity/pessoa.fisica";
+import api from "../services/api";
+import { formatCPF } from "../../utils/formatCPF";
 
 export interface AllFuncionariosOutput {
   id: number;
@@ -61,6 +66,12 @@ export interface FuncionarioOutput {
 }
 
 
+export type FuncionarioUpdateType = {
+    funcionario: FuncionarioEntity;
+    pessoa: PessoaEntity;
+    pessoa_fisica: PessoaFisicaEntity;
+}
+
 export default class FuncionarioPostgresRepository implements FuncionarioRepository {
   async insert({
     funcionario,
@@ -73,7 +84,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
     atividades_funcionarios,
     rateios,
     centro_resultado_id,
-    convenios_cidades_funcionarios
+    convenios_cidades_funcionarios,
   }: IInput): Promise<any> {
     try {
       await conn.query("BEGIN");
@@ -89,8 +100,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         `INSERT INTO PESSOAS(ATIVO) VALUES(${pessoa.props.ativo}) RETURNING *`,
       );
 
-      const newPessoa_fisica =
-                await conn.query(`INSERT INTO PESSOAS_FISICA(
+      const newPessoa_fisica = await conn.query(`INSERT INTO PESSOAS_FISICA(
           ID,
           NOME,
           CPF,
@@ -111,7 +121,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
           )VALUES(
             ${newPessoa.rows[0].id},
             '${pessoa_fisica.props.nome}',
-            '${pessoa_fisica.props.cpf}',
+            '${formatCPF(pessoa_fisica.props.cpf)}',
             '${pessoa_fisica.props.rg}',
             '${pessoa_fisica.props.orgao_expeditor}',
             '${pessoa_fisica.props.carteira_trabalho}',
@@ -131,6 +141,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
       const newFuncionario = await conn.query(`INSERT INTO FUNCIONARIOS(
               ID,
               EMPRESA_ID,
+              empresa,
               CARGO_ID,
               DATA_ADMISSAO,
               DATA_DEMISSAO,
@@ -143,6 +154,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
           )VALUES(
             ${newPessoa.rows[0].id},
             ${funcionario.props.empresa_id},
+            '${funcionario.props.empresa}',
             ${funcionario.props.cargo_id},
             '${funcionario.props.data_admissao}',
             '${funcionario.props.data_demissao ?? null}',
@@ -295,31 +307,27 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
 
       if (convenios_cidades_funcionarios) {
         for await (const convenioCidade of convenios_cidades_funcionarios) {
-          const convenioCidadeFuncionarioResult =
-                              await conn.query(
-                                `INSERT INTO convenios_cidades_funcionarios (
+          const convenioCidadeFuncionarioResult = await conn.query(
+            `INSERT INTO convenios_cidades_funcionarios (
                         funcionario_id,
                         convenio_cidade_id
                     ) VALUES (
                           $1,
                           $2
                     ) RETURNING *`,
-                                [
-                                  newFuncionario.rows[0].id,
-                                  convenioCidade.props.convenio_cidade_id,
-                                ],
-                              );
+            [
+              newFuncionario.rows[0].id,
+              convenioCidade.props.convenio_cidade_id,
+            ],
+          );
           convenioCidadeFuncionarioOutput.push(
             convenioCidadeFuncionarioResult.rows[0],
           );
         }
       }
 
-
-
       if (atividades_funcionarios) {
         for await (const atividade of atividades_funcionarios) {
-
           const atividadeResult = await conn.query(
             `INSERT INTO atividades_funcionarios (
                       funcionario_id,
@@ -339,6 +347,44 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
 
       await conn.query("COMMIT");
 
+      const funcionarioExisting = await api.get(
+        `/funcionario/${formatCPF(pessoa_fisica.props.cpf)}`,
+      );
+
+      if (!funcionarioExisting.data) {
+        const enderecoPrincipal =
+              await conn.query(`SELECT e.uf , c.cidade FROM ENDERECOS en
+                                                                            inner join bairros b
+                                                                            on en.bairro_id = b.id
+                                                                            inner join cidades c
+                                                                            on b.cidade_id = c.id
+                                                                            inner join estados e
+                                                                            on c.estado_id  = e.id
+                                                                            WHERE PESSOA_ID = ${newFuncionario.rows[0].id} and principal = true`);
+
+        /*      const sexo = await conn.query(`select g.genero from pessoas_fisica pf
+inner join generos g
+on pf.genero_id = g.id
+where pf.id  = ${newFuncionario.rows[0].id}`);
+
+        const teste = sexo.rows[0].genero.charAt(0) as string;
+*/
+        const forn_cod = await api.post("/funcionario", {
+          uf: enderecoPrincipal.rows[0].uf,
+          cidade: enderecoPrincipal.rows[0].cidade,
+          sexo: "M",
+          nome: pessoa_fisica.props.nome,
+          cpf: formatCPF(pessoa_fisica.props.cpf)
+        });
+
+        await conn.query(
+          `UPDATE funcionarios SET fornecedor_id = ${forn_cod.data.FORN_COD} WHERE ID = ${newFuncionario.rows[0].id}`,
+        );
+      } else {
+        await conn.query(`UPDATE funcionarios SET fornecedor_id = ${funcionarioExisting.data.FORN_COD} WHERE ID = ${newFuncionario.rows[0].id}`);
+      }
+
+
       return {
         pessoa: newPessoa.rows[0],
         pessoa_fisica: newPessoa_fisica.rows[0],
@@ -348,7 +394,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         telefones: telefonesOutput,
         contas_bancarias: contasBancariasOutput,
         funcionarios_centros_resultado:
-                funcionarios_centros_resultado.rows[0],
+                    funcionarios_centros_resultado.rows[0],
         atividadesOutput,
         convenioCidadeFuncionarioOutput,
         rateios: rateioCentroResultadoOutput,
@@ -359,9 +405,41 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
     }
   }
 
-  async update(id: number, input: any): Promise<any> {
+  async update(id: number, input: FuncionarioUpdateType): Promise<void> {
     try {
       await conn.query("BEGIN");
+      await conn.query(`UPDATE PESSOAS SET ativo = '${input.pessoa.props.ativo}' WHERE ID = ${id}`);
+      await conn.query(`UPDATE PESSOAS_FISICA SET
+            nome = '${input.pessoa_fisica.props.nome}',
+            cpf = '${input.pessoa_fisica.props.cpf}',
+            rg = '${input.pessoa_fisica.props.rg ?? null}',
+            orgao_expeditor = '${input.pessoa_fisica.props.orgao_expeditor ?? null}',
+            nacionalidade_id = ${input.pessoa_fisica.props.nacionalidade_id ?? null},
+            nome_mae = '${input.pessoa_fisica.props.nome_mae ?? null}',
+            nome_pai = '${input.pessoa_fisica.props.nome_pai ?? null}',
+            naturalidade_id = ${input.pessoa_fisica.props.naturalidade_id ?? null},
+            carteira_trabalho = '${input.pessoa_fisica.props.carteira_trabalho ?? null}',
+            titulo_eleitor = '${input.pessoa_fisica.props.titulo_eleitor}',
+            zona_titulo_eleitor = '${input.pessoa_fisica.props.zona_titulo_eleitor}',
+            nascimento = '${input.pessoa_fisica.props.nascimento}',
+            estado_civil_id = ${input.pessoa_fisica.props.estado_civil_id ?? null},
+            genero_id = ${input.pessoa_fisica.props.genero_id ?? null},
+            pis = '${input.pessoa_fisica.props.pis}',
+            pcd_id = ${input.pessoa_fisica.props.pcd_id ?? null}
+        WHERE ID = ${id}`);
+
+      await conn.query(`UPDATE FUNCIONARIOS SET
+            empresa_id = ${input.funcionario.props.empresa_id},
+            cargo_id = ${input.funcionario.props.cargo_id},
+            data_admissao = '${input.funcionario.props.data_admissao}',
+            data_demissao = '${input.funcionario.props.data_demissao}',
+            adiantamento = ${input.funcionario.props.adiantamento},
+            periculosidade = ${input.funcionario.props.periculosidade},
+            receber_transporte = ${input.funcionario.props.receber_transporte},
+            contribuicao_sindical = ${input.funcionario.props.contribuicao_sindical},
+            jornada_trabalho_id = ${input.funcionario.props.jornada_trabalho_id},
+            registrado = ${input.funcionario.props.registrado}
+        WHERE ID = ${id}`);
 
       await conn.query("COMMIT");
     } catch (error) {

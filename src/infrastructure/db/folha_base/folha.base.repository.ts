@@ -1,5 +1,6 @@
 import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
+import FolhaBaseEntity from "../../../domain/entity/folha/folha.base";
 import FolhaBaseConvenioCidadeEntity from "../../../domain/entity/folha/folha.base.convenio.cidade";
 import FolhaBaseEncargoEntity from "../../../domain/entity/folha/folha.base.encargo";
 import FolhaBaseItemPcgEntity from "../../../domain/entity/folha/folha.base.itens.pcg";
@@ -120,29 +121,51 @@ export default class FolhaBasePostgresRepository implements FolhaBaseRepository 
     }
   }
 
-  /*async getAll(): Promise<FolhaBaseType[]> {
+  async getAll(): Promise<FolhaBaseType[]> {
     try {
-      await conn.query("");
+      const folha_base = await conn.query(`select fb.id as fb_id,
+fb.empresa_id,
+fb.adiantamento,
+fb.ativo,
+fbcc.id as fbcc_id,
+fbcc.convenio_cidade_id,
+fbcc.valor_pagar,
+fbcc.valor_descontar,
+fbcc.percentual_descontar,
+fbip.id as fbip_id,
+fbip.tipo_folha_id,
+fbip.item_pcg_id,
+fbip.item_pcg,
+fbp.id as fbp_id,
+fbp.folha_base_id,
+fbp.provisao_id,
+fbp.percentual,
+fbe.id as fbe_id,
+fbe.encargo_id,
+fbe.percentual_empresa,
+fbe.percentual_funcionario
+from folhas_base fb
+inner join folha_base_itens_pcg fbip on fbip.folha_base_id  = fb.id
+inner join folhas_base_convenios_cidades fbcc on fbcc.folha_base_id = fb.id
+inner join folhas_base_encargos fbe on fbe.folha_base_id = fb.id
+inner join folhas_base_provisoes fbp on fbp.folha_base_id = fb.id
+`);
+
+      return folha_base.rows;
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
-  }*/
+  }
 
-  /*  async delete(id: number): Promise<void> {
-        try {
-            await conn.query("BEGIN");
-
-            await conn.query("COMMIT");
-        } catch (error) {
-            await conn.query("ROLLBACK");
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
+  async getById(id: number): Promise<FolhaBaseEntity> {
+    try {
+      const folha_base = await conn.query(`SELECT id,
+empresa_id,
+adiantamento,
+ativo FROM FOLHAS_BASE WHERE ID = ${id}`);
+      return folha_base.rows[0];
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
     }
-
-    async get(): Promise<FolhaBaseEntity[]> {
-        try {
-        } catch (error) {
-            throw new AppError(error.message, status.INTERNAL_SERVER);
-        }
-    }*/
+  }
 }

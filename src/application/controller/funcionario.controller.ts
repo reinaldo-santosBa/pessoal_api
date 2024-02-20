@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import FuncionarioService, { IInputProps } from "../service/funcionario.service";
+import FuncionarioService, { FuncionarioUpdateProps, IInputProps } from "../service/funcionario.service";
 import * as status from "../../constraints/http.stauts";
 import Joi from "joi";
 
@@ -56,6 +56,7 @@ const schemaValidation = Joi.object({
   },
   funcionario: {
     empresa_id: Joi.number().required(),
+    empresa: Joi.string().allow(null).optional(),
     cargo_id: Joi.number().required(),
     data_admissao: Joi.date().required(),
     data_demissao: Joi.date().allow(null).optional(),
@@ -124,5 +125,12 @@ export default class FuncionarioController {
     const pessoa_id = request.params.pessoa_id;
     const funcionario = await this.funcionarioService.getById(+pessoa_id);
     return response.json(funcionario);
+  }
+
+  async update(request: Request, response: Response) {
+    const input = request.body as FuncionarioUpdateProps;
+    const id = request.params.id;
+    await this.funcionarioService.update(+id, input);
+    return response.status(status.NO_CONTENT).json();
   }
 }

@@ -10,9 +10,7 @@ const schemaValidation = Joi.object({
   carga_diaria: Joi.number().required(),
   unidade_tempo: Joi.string().valid("H", "M"),
   carga_semanal: Joi.number().required(),
-  limite_extra_diario: Joi.number().required(),
-  limite_extra_semanl: Joi.number().allow(null),
-  limite_extra_mensal: Joi.number().allow(null),
+  turnos: Joi.number().required()
 });
 
 export default class JornadaTrabalhoController {

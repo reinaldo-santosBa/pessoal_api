@@ -1,16 +1,17 @@
 export type FuncionarioProps = {
-  empresa_id: number;
-  cargo_id: number;
-  data_admissao: Date;
-  data_demissao?: Date;
-  adiantamento: boolean;
-  periculosidade: boolean;
-  receber_transporte: boolean;
-  contribuicao_sindical: boolean;
-  jornada_trabalho_id?: number;
-  registrado: boolean;
+    empresa_id: number;
+    empresa: string;
+    cargo_id: number;
+    data_admissao: Date;
+    data_demissao?: Date;
+    adiantamento: boolean;
+    periculosidade: boolean;
+    receber_transporte: boolean;
+    contribuicao_sindical: boolean;
+    jornada_trabalho_id?: number;
+    registrado: boolean;
 
-  [key: string]: string | number | boolean | Date;
+    [key: string]: string | number | boolean | Date;
 };
 
 export default class FuncionarioEntity {

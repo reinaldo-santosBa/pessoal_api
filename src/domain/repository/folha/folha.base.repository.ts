@@ -1,9 +1,9 @@
 import { FolhaBaseType } from "../../../infrastructure/types/folha.base.type";
+import FolhaBaseEntity from "../../entity/folha/folha.base";
 
 export interface FolhaBaseRepository {
     insert(input: FolhaBaseType): Promise<FolhaBaseType>;
     update(): Promise<void>;
-    //getAll(): Promise<FolhaBaseType[]>;
-    /*delete(id: number): Promise<void>;
-  get(): Promise<FolhaBaseEntity[]>;*/
+    getAll(): Promise<FolhaBaseType[]>;
+    getById(id: number): Promise<FolhaBaseEntity>;
 }

@@ -11,4 +11,9 @@ export default class FolhaBaseController {
 
     return response.status(status.CREATED).json(folhaBase);
   }
+
+  async getAll(request: Request, response: Response) {
+    const folha_base = await this.folhabaseService.getAll();
+    return response.json(folha_base);
+  }
 }

@@ -13,7 +13,6 @@ export default class JornadaTrabalhoService {
       "jornada_trabalho",
       "carga_diaria",
       "carga_semanal",
-      "limite_extra_diario",
       "turnos"
     ];
 

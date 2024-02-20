@@ -49,8 +49,6 @@ export default class FolhaBaseService {
       }
     }
 
-
-
     if (input.folha_base_encargos.length === 0) {
       throw new AppError("folha_base_encargos obrigatório", status.BAD_REQUEST);
     }
@@ -118,6 +116,12 @@ export default class FolhaBaseService {
     });
 
     await this.folhaBaseRepository.update();
+    return folha_base;
+  }
+
+  async getAll(): Promise<FolhaBaseType[]> {
+    const folha_base = await this.folhaBaseRepository.getAll();
+
     return folha_base;
   }
 }

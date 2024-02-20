@@ -3,7 +3,7 @@ export type JornadaTrabalhoProps = {
   carga_diaria: number;
   unidade_tempo: string;
   carga_semanal: number;
-  turno: number;
+  turnos: number;
 
     [key: string]: string | number;
 };

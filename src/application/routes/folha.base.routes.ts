@@ -1,5 +1,5 @@
 import { Router } from "express";
-import FolhaBasePostgresRepository from "../../infrastructure/db/folha/folha.base.repository";
+import FolhaBasePostgresRepository from "../../infrastructure/db/folha_base/folha.base.repository";
 import FolhaBaseController from "../controller/folha.base.controller";
 import FolhaBaseService from "../service/folha.base.service";
 
@@ -20,6 +20,9 @@ routesFolhaBase.post("/folha_base", (req, res) =>
 );
 
 
+routesFolhaBase.get("/folha_base", (req, res) =>
+  folhaBaseController.getAll(req, res)
+);
 
 
 export default routesFolhaBase;
