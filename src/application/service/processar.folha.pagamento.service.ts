@@ -9,9 +9,7 @@ export default class ProcessarFolhaPagamentoService {
     //private readonly jornadaTrabalhoRepository: JornadaTrabalhoRepository,
   ) {}
 
-  async getAll(
-    params: ParamsProcessarFolha,
-  ): Promise<ProcessarFolhaOutput[]> {
+  async getAll(params: ParamsProcessarFolha): Promise<ProcessarFolhaOutput[]> {
     const camposObrigatorios: string[] = [
       "centro_resultado_id",
       "registrado",
@@ -28,7 +26,8 @@ export default class ProcessarFolhaPagamentoService {
       }
     }
 
-    const processarFolha = await this.processarFolhaRepository.getAll(params);
+    const processarFolha =
+            await this.processarFolhaRepository.getAll(params);
 
     /*  const totalHoraExtraMes: number = 0;
 

@@ -62,7 +62,11 @@ export default class FolhaPagamentoService {
     const somasArray: Partial<ProcessarFolhaOutput>[] =
         Object.values(somas);
 
+<<<<<<< HEAD
     /*  const folhaPagamento = await this.folhaPagamentoRepository.insert({
+=======
+    /*const folhaPagamento = await this.folhaPagamentoRepository.insert({
+>>>>>>> f89ad46e340e98d0e0c254bedad89593823699b9
       folhas_pagamento: new FolhaPagamentoEntity({
         ano: input.folha_pagamento.ano,
         data_fechamento: input.folha_pagamento.data_fechamento,

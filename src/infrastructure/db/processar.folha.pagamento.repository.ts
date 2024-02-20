@@ -6,7 +6,9 @@ import conn from "../config/database.config";
 export default class ProcessarFolhaPagamentoPostgresRepository
 implements ProcessarFolhaPagamentoRepository
 {
-  async getAll(params: ParamsProcessarFolha): Promise<ProcessarFolhaOutput[]> {
+  async getAll(
+    params: ParamsProcessarFolha,
+  ): Promise<ProcessarFolhaOutput[]> {
     try {
       let whereFuncionarioId: string = "";
       if (params.funcionario_id) {
@@ -34,9 +36,15 @@ fbp.percentual * rcr.percentual/100 as percentual_provisao,
 fbcc.valor_descontar * rcr.percentual/100 * rcr.percentual/100 as valor_descontar_convenio,
 fbcc.valor_pagar * rcr.percentual/100 * rcr.percentual/100 as valor_pagar_convenio,
 fbcc.percentual_descontar * rcr.percentual/100 as percentual_descontar_convenio,
-c2.convenio
+c2.id as convenio_id,
+c2.convenio,
+fb.empresa_id,
+fbip.item_pcg_id,
+fbip.tipo_folha_id,
+fbp.provisao_id ,
+fbe.encargo_id
 from funcionarios f
-inner join rateios r on r.funcionario_id = f.id and r.ativo
+inner join rateios r on r.funcionario_id = f.id
 inner join rateios_centros_resultado rcr on rcr.rateio_id = r.id
 inner join pessoas_fisica pf on pf.id = f.id
 inner join funcionarios_centros_resultado fcr on fcr.funcionario_id = f.id and fcr.centro_resultado_id = ${params.centro_resultado_id}
@@ -73,8 +81,14 @@ valor_descontar_convenio,
 valor_pagar_convenio,
 percentual_descontar_convenio,
 rcr.percentual,
-c2.convenio
-            `);
+c2.convenio,
+c2.id ,
+c2.convenio,
+fb.empresa_id,
+fbip.item_pcg_id,
+fbip.tipo_folha_id,
+fbp.provisao_id ,
+fbe.encargo_id;`);
 
       return data.rows;
     } catch (error) {
