@@ -16,8 +16,11 @@ routesFalta.post("/falta", (req, res) =>
 routesFalta.get("/falta", (req, res) => faltaController.getAll(req, res));
 
 
-routesFalta.get("/falta/:funcionario_id", (req, res) => faltaController.getByFuncionarioId(req, res));
+routesFalta.get("/falta/funcionario/:funcionario_id", (req, res) => faltaController.getByFuncionarioId(req, res));
 
+routesFalta.get("/falta/:id", (req, res) =>
+  faltaController.getById(req, res),
+);
 
 routesFalta.put("/falta/:id", (req, res) => faltaController.update(req, res));
 

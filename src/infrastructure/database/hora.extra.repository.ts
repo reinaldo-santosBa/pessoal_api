@@ -73,7 +73,7 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
                   ${input.props.horas_extras},
                   '${input.props.observacao}',
                   ${input.props.autorizado_por},
-                  '${input.props.data_autorizacao}',
+                  '${input.props.data_autorizacao ?? new Date()}',
                   ${input.props.status_solicitacao_id}
                 ) RETURNING *`,
       );

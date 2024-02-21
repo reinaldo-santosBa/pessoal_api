@@ -6,6 +6,18 @@ import * as status from "../../constraints/http.stauts";
 
 
 export default class FaltaPostgresRepository implements FaltaRepository {
+  async getById(id: number): Promise<FaltaEntity> {
+    try {
+      const faltas = await conn.query(`SELECT id,
+funcionario_id,
+data_falta,
+horas FROM FALTAS WHERE ID = ${id}`);
+      return faltas.rows[0];
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
   async insert(input: FaltaEntity): Promise<FaltaEntity> {
     try {
       await conn.query("BEGIN");

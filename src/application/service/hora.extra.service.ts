@@ -4,6 +4,12 @@ import { HoraExtraRepository } from "../../domain/repository/hora.extra.reposito
 import HoraExtraEntity, { HoraExtraProps } from "../../domain/entity/hora.extra";
 
 
+export enum statusSolicitacao {
+    Pendente = 1,
+	Aprovado = 2,
+	Rejeitado =3
+}
+
 export default class HoraExtraService {
   constructor(private readonly horaExtraRepository: HoraExtraRepository) {}
 
@@ -73,8 +79,13 @@ export default class HoraExtraService {
       horaExtra,
     );
 
-    /* if (updateHoraExtra.props.status_solicitacao_id === ) {
-      }*/
+    /*if (updateHoraExtra.props.status_solicitacao_id === statusSolicitacao.Aprovado) {
+      if (updateHoraExtra.props.horas_extras > 2) {
+
+      } else {
+
+      }
+    }*/
 
     return updateHoraExtra;
   }

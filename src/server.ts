@@ -1,8 +1,8 @@
-import "express-async-errors";
+import cors from "cors";
 import "dotenv/config";
 import express, { Express } from "express";
+import "express-async-errors";
 import Errors from "./application/middlewares/Errors";
-import cors from "cors";
 import routes from "./application/routes/routes";
 
 const PORT: string = process.env.PORT || "3001";

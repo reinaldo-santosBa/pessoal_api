@@ -36,4 +36,10 @@ export default class FaltaController {
     await this.faltaService.delete(+id);
     return response.status(status.NO_CONTENT).json();
   }
+
+  async getById(request: Request, response: Response) {
+    const id = request.params.id;
+    const falta = await this.faltaService.getById(+id);
+    return response.json(falta);
+  }
 }

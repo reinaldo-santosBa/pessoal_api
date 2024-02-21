@@ -23,8 +23,9 @@ export interface ProcessarFolhaOutput {
     tipo_folha_id: number;
     provisao_id: number;
     encargo_id: number;
-    convenio_cidade_id: number
+    convenio_cidade_id: number;
 }
+
 
 
 export type ParamsProcessarFolha = {
