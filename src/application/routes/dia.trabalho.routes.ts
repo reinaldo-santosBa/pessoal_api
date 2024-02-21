@@ -1,5 +1,5 @@
 import { Router } from "express";
-import DiaJornadaPostgresRepository from "../../infrastructure/db/dia.jornada.trabalho.repository";
+import DiaJornadaPostgresRepository from "../../infrastructure/database/dia.jornada.trabalho.repository";
 import DiaJornadaTrabalhoService from "../service/dia.jornada.trabalho.service";
 import DiaTrabalhoController from "../controller/dia.trabalho.controller";
 

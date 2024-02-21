@@ -1,5 +1,5 @@
 import { Router } from "express";
-import TipoRemuneracaoPostgresRepository from "../../infrastructure/db/tipo.remuneracao.repostory";
+import TipoRemuneracaoPostgresRepository from "../../infrastructure/database/tipo.remuneracao.repostory";
 import TipoRemuneracaoService from "../service/tipo.remuneracao.service";
 import TipoRemuneracaoController from "../controller/tipo.remuneracao.controller";
 

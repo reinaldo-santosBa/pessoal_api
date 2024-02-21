@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ConvenioPostgresRepository from "../../infrastructure/db/convenio.repository";
+import ConvenioPostgresRepository from "../../infrastructure/database/convenio.repository";
 import ConvenioService from "../service/convenio.service";
 import ConvenioController from "../controller/convenio.controller";
 

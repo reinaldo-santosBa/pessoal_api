@@ -1,5 +1,5 @@
 import { Router } from "express";
-import TipoAfastamentoPostgresRepository from "../../infrastructure/db/tipo.afastamento.repository";
+import TipoAfastamentoPostgresRepository from "../../infrastructure/database/tipo.afastamento.repository";
 import TipoAfastamentoService from "../service/tipo.afastamento.service";
 import TipoAfastamentoController from "../controller/tipo.afastamento.controller";
 

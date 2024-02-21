@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AfastamentoPostgresRepository from "../../infrastructure/db/afastamento.repository";
+import AfastamentoPostgresRepository from "../../infrastructure/database/afastamento.repository";
 import AfastamentoService from "../service/afastamento.service";
 import AfastamentoController from "../controller/afastamento.controller";
 

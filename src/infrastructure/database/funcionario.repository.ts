@@ -345,8 +345,6 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         }
       }
 
-      await conn.query("COMMIT");
-
       const funcionarioExisting = await api.get(
         `/funcionario/${formatCPF(pessoa_fisica.props.cpf)}`,
       );
@@ -384,7 +382,7 @@ where pf.id  = ${newFuncionario.rows[0].id}`);
         await conn.query(`UPDATE funcionarios SET fornecedor_id = ${funcionarioExisting.data.FORN_COD} WHERE ID = ${newFuncionario.rows[0].id}`);
       }
 
-
+      await conn.query("COMMIT");
       return {
         pessoa: newPessoa.rows[0],
         pessoa_fisica: newPessoa_fisica.rows[0],
@@ -459,8 +457,14 @@ where pf.id  = ${newFuncionario.rows[0].id}`);
     }
   }
 
-  async getAll(): Promise<AllFuncionariosOutput[]> {
+  async getAll(centro_resultado_id?: number): Promise<AllFuncionariosOutput[]> {
     try {
+      let whereCentroResultadoId: string = "";
+
+      if (centro_resultado_id) {
+        whereCentroResultadoId = `where fcr.centro_resultado_id = ${centro_resultado_id}`;
+      }
+
       const funcionarios = await conn.query(`SELECT
                         p.id,
                         p.ativo,
@@ -470,7 +474,8 @@ where pf.id  = ${newFuncionario.rows[0].id}`);
                         pf.nascimento,
                         f.empresa_id,
                         c.cargo,
-                        f.registrado
+                        f.registrado,
+                        fcr.centro_resultado_id
                       FROM
                           pessoas AS p
                       INNER JOIN
@@ -478,7 +483,11 @@ where pf.id  = ${newFuncionario.rows[0].id}`);
                       INNER JOIN
                           funcionarios AS f ON p.id = f.id
                       inner  join
-                      cargos as c on f.cargo_id  = c.id `);
+                      cargos as c on f.cargo_id  = c.id
+                      inner join funcionarios_centros_resultado fcr
+                      on fcr.funcionario_id  = f.id
+                      ${whereCentroResultadoId}
+                      `);
       return funcionarios.rows;
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);

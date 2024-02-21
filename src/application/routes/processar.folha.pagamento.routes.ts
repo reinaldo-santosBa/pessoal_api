@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProcessarFolhaPagamentoPostgresRepository from "../../infrastructure/db/processar.folha.pagamento.repository";
+import ProcessarFolhaPagamentoPostgresRepository from "../../infrastructure/database/processar.folha.pagamento.repository";
 import ProcessarFolhaPagamentoService from "../service/processar.folha.pagamento.service";
 import ProcessarFolhaPagamentoController from "../controller/processar.folha.pagamento.controller";
 

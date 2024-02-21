@@ -1,9 +1,9 @@
 import { Router } from "express";
 import HoraTrabalhadaController from "../controller/hora.trabalhada.controller";
-import HoraTrabalhadaPostgresRepository from "../../infrastructure/db/hora.trabalhada.repository";
+import HoraTrabalhadaPostgresRepository from "../../infrastructure/database/hora.trabalhada.repository";
 import HoraTrabalhadaService from "../service/hora.trabalhada.service";
-import SolicitacaoHoraExtraPostgresRepository from "../../infrastructure/db/solicitacao.hora.extra.repository";
-import JornadaTrabalhoPostgresRepository from "../../infrastructure/db/jornada.trabalho.repository";
+import SolicitacaoHoraExtraPostgresRepository from "../../infrastructure/database/hora.extra.repository";
+import JornadaTrabalhoPostgresRepository from "../../infrastructure/database/jornada.trabalho.repository";
 
 const horaTrabalhadaRoutes = Router();
 

@@ -1,4 +1,4 @@
-import FolhaBaseConvenioCidadeEntity from "../../../domain/entity/folha/folha.base.convenio.cidade";
+import FolhaBaseConvenioCidadeEntity from "../../../domain/entity/folha_base/folha.base.convenio.cidade";
 import { FolhaBaseConvenioCidadeRepository } from "../../../domain/repository/folha/folha.base.convenio-cidade.repository";
 
 

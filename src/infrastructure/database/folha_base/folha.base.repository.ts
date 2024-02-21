@@ -1,10 +1,10 @@
 import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
-import FolhaBaseEntity from "../../../domain/entity/folha/folha.base";
-import FolhaBaseConvenioCidadeEntity from "../../../domain/entity/folha/folha.base.convenio.cidade";
-import FolhaBaseEncargoEntity from "../../../domain/entity/folha/folha.base.encargo";
-import FolhaBaseItemPcgEntity from "../../../domain/entity/folha/folha.base.itens.pcg";
-import FolhaBaseProvisaoEntity from "../../../domain/entity/folha/folha.base.provisao";
+import FolhaBaseEntity from "../../../domain/entity/folha_base/folha.base";
+import FolhaBaseConvenioCidadeEntity from "../../../domain/entity/folha_base/folha.base.convenio.cidade";
+import FolhaBaseEncargoEntity from "../../../domain/entity/folha_base/folha.base.encargo";
+import FolhaBaseItemPcgEntity from "../../../domain/entity/folha_base/folha.base.itens.pcg";
+import FolhaBaseProvisaoEntity from "../../../domain/entity/folha_base/folha.base.provisao";
 import { FolhaBaseRepository } from "../../../domain/repository/folha/folha.base.repository";
 import conn from "../../config/database.config";
 import { FolhaBaseType } from "../../types/folha.base.type";

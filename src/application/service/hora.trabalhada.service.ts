@@ -2,14 +2,14 @@ import HoraTrabalhadaEntity, { HoraTrabalhadaProps } from "../../domain/entity/h
 import { HoraTrabalhadaRepository } from "../../domain/repository/hora.trabalhada.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
-import { SolicitacaoHoraExtraRepository } from "../../domain/repository/solicitacao.hora.extra";
+import { HoraExtraRepository } from "../../domain/repository/hora.extra.repository";
 import { JornadaTrabalhoRepository } from "../../domain/repository/jornada.trabalho.repository";
 import calculateDifferenceTime from "../../utils/calculate.difference.time";
 
 export default class HoraTrabalhadaService {
   constructor(
     private readonly horaTrabalhadaRepository: HoraTrabalhadaRepository,
-    private readonly solicitacaoHoraExtraRepository: SolicitacaoHoraExtraRepository,
+    private readonly horaExtraRepository: HoraExtraRepository,
     private readonly jornadaTrabalhoRepository: JornadaTrabalhoRepository,
   ) {}
 
@@ -67,7 +67,7 @@ export default class HoraTrabalhadaService {
         }
 
         const statusResult =
-            await this.solicitacaoHoraExtraRepository.getStatusSolicitacao(
+            await this.horaExtraRepository.getStatusSolicitacao(
               input.funcionario_id,
               input.data_trabalho,
             );
@@ -124,7 +124,7 @@ export default class HoraTrabalhadaService {
         }
 
         const statusResult =
-                await this.solicitacaoHoraExtraRepository.getStatusSolicitacao(
+                await this.horaExtraRepository.getStatusSolicitacao(
                   input.funcionario_id,
                   input.data_trabalho,
                 );
@@ -222,7 +222,7 @@ export default class HoraTrabalhadaService {
         }
 
         const statusResult =
-                    await this.solicitacaoHoraExtraRepository.getStatusSolicitacao(
+                    await this.horaExtraRepository.getStatusSolicitacao(
                       funcionario_id,
                       data_trabalho,
                     );
@@ -280,7 +280,7 @@ export default class HoraTrabalhadaService {
         }
 
         const statusResult =
-                    await this.solicitacaoHoraExtraRepository.getStatusSolicitacao(
+                    await this.horaExtraRepository.getStatusSolicitacao(
                       funcionario_id,
                       data_trabalho,
                     );

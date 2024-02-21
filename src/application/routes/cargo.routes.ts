@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import CargoPostgresRepository from "../../infrastructure/db/cargo.repository";
+import CargoPostgresRepository from "../../infrastructure/database/cargo.repository";
 import CargosService from "../service/cargos.service";
 import CargoController from "../controller/cargo.controller";
 

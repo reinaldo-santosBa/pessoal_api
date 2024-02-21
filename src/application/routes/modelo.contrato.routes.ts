@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ModeloContratoPostgresRepository from "../../infrastructure/db/modelo.contrato.repository";
+import ModeloContratoPostgresRepository from "../../infrastructure/database/modelo.contrato.repository";
 import ModeloContratoService from "../service/modelo.contrato.service";
 import ModeloContratoController from "../controller/modelo.contrato.controller";
 

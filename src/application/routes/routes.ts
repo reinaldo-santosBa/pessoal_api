@@ -11,7 +11,7 @@ import routesAdvertencia from "./advertencia.routes";
 import routesSeeds from "./seeds.routes";
 import routesEndereco from "./endereco.routes";
 import routesCusta from "./custa.routes";
-import routesSolicitacaoHoraExtra from "./solicitacao.hora.extra.routes";
+import routesSolicitacaoHoraExtra from "./hora.extra.routes";
 import routesConvenio from "./convenio.routes";
 import routesEncargo from "./encargo.routes";
 import routesTipoAfastamento from "./tipo.afastamento.routes";
@@ -28,6 +28,7 @@ import routesFolhaBase from "./folha.base.routes";
 import routesProcessarPagamento from "./processar.folha.pagamento.routes";
 import routesConvenioCidade from "./convenio.cidade.routes";
 import routesFolhaPagamento from "./folha.pagamento.routes";
+import routesFalta from "./falta.routes";
 
 const routes = Router();
 
@@ -60,6 +61,7 @@ routes.use(routesFolhaBase);
 routes.use(routesProcessarPagamento);
 routes.use(routesConvenioCidade);
 routes.use(routesFolhaPagamento);
+routes.use(routesFalta);
 
 
 export default routes;

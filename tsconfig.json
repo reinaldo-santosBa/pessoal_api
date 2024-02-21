@@ -17,7 +17,7 @@
     "typeRoots": ["./src/@types","node_modules/@types"],
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*", "funcionario", "src/httpStatus/.ts"],
+  "include": ["src/**/*", "funcionario", "src/httpStatus/.ts", "src/infrastructure/database/hora.extra.repository.ts"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "files": true

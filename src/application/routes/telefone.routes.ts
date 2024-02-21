@@ -1,5 +1,5 @@
 import { Router } from "express";
-import TelefonePostgresRepository from "../../infrastructure/db/telefone.repository";
+import TelefonePostgresRepository from "../../infrastructure/database/telefone.repository";
 import TelefoneService from "../service/telefone.service";
 import TelefoneController from "../controller/telefone.controller";
 

@@ -18,13 +18,12 @@ export interface ProcessarFolhaOutput {
     valor_descontar_convenio: number;
     valor_pagar_convenio: number;
     percentual_descontar_convenio: number;
-    convenio_id: number;
-    convenio: string;
     empresa_id: number;
     item_pcg_id: number;
     tipo_folha_id: number;
     provisao_id: number;
     encargo_id: number;
+    convenio_cidade_id: number
 }
 
 

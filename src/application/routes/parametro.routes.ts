@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ParametroPostgresRepository from "../../infrastructure/db/parametro.repository";
+import ParametroPostgresRepository from "../../infrastructure/database/parametro.repository";
 import ParametroSevice from "../service/parametro.service";
 import ParametroController from "../controller/parametro.controller";
 

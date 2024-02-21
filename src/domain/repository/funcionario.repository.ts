@@ -1,4 +1,4 @@
-import { AllFuncionariosOutput } from "../../infrastructure/db/funcionario.repository";
+import { AllFuncionariosOutput } from "../../infrastructure/database/funcionario.repository";
 import AtividadeFuncionarioEntity from "../entity/atividade.funcionario";
 import ContaBancariaEntity from "../entity/conta.bancaria";
 import ConvenioCidadeFuncionarioEntity from "../entity/convenio.cidade.funcionario";
@@ -32,6 +32,6 @@ export interface FuncionarioRepository {
     insert(input: IInput): Promise<IInput>;
     delete(id: number): Promise<void>;
     update(id: number, input: any): Promise<any>;
-    getAll(): Promise<AllFuncionariosOutput[]>;
+    getAll(centro_resultado_id?: number): Promise<AllFuncionariosOutput[]>;
     getById(pessoa_id: number): Promise<any>;
 }

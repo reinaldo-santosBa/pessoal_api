@@ -1,5 +1,5 @@
 import { Router } from "express";
-import FuncionarioPostgresRepository from "../../infrastructure/db/funcionario.repository";
+import FuncionarioPostgresRepository from "../../infrastructure/database/funcionario.repository";
 import FuncionarioController from "../controller/funcionario.controller";
 import FuncionarioService from "../service/funcionario.service";
 

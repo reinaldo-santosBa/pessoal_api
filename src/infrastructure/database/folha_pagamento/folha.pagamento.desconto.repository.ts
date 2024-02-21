@@ -1,6 +1,6 @@
 import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
-import FolhaPagamentoDescontoEntity from "../../../domain/entity/folha/folha.pagamento.desconto";
+import FolhaPagamentoDescontoEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.desconto";
 import conn from "../../config/database.config";
 
 export default class FolhaPagamentoDescontoPostgresRepository

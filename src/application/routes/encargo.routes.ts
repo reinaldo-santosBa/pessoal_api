@@ -1,5 +1,5 @@
 import { Router } from "express";
-import EncargoPostgresRepository from "../../infrastructure/db/encargo.repository";
+import EncargoPostgresRepository from "../../infrastructure/database/encargo.repository";
 import EncargoController from "../controller/encargo.controller";
 import EncargoService from "../service/encargo.service";
 

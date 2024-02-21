@@ -1,6 +1,6 @@
 import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
-import FolhaPagamentoRemuneracaoEntity from "../../../domain/entity/folha/folha.pagamento.remuneracao";
+import FolhaPagamentoRemuneracaoEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.remuneracao";
 import conn from "../../config/database.config";
 export default class FolhaPagamentoRemuneracaoPostgresRepository {
   async insert(input: FolhaPagamentoRemuneracaoEntity): Promise<FolhaPagamentoRemuneracaoEntity> {

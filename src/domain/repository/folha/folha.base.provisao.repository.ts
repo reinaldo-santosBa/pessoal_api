@@ -1,4 +1,4 @@
-import FolhaBaseProvisaoEntity from "../../entity/folha/folha.base.provisao";
+import FolhaBaseProvisaoEntity from "../../entity/folha_base/folha.base.provisao";
 
 export interface FolhaBaseProvisaoRepository {
     update(id: number, input: FolhaBaseProvisaoEntity): Promise<void>;

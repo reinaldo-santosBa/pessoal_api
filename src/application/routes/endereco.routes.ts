@@ -1,5 +1,5 @@
 import { Router } from "express";
-import EnderecoPostgresRepository from "../../infrastructure/db/endereco.repository";
+import EnderecoPostgresRepository from "../../infrastructure/database/endereco.repository";
 import EnderecoService from "../service/endereco.service";
 import EnderecoController from "../controller/endereco.controller";
 

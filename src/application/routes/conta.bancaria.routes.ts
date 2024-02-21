@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import ContaBancariaPostgresRepository from "../../infrastructure/db/conta.bancaria.repository";
+import ContaBancariaPostgresRepository from "../../infrastructure/database/conta.bancaria.repository";
 import ContaBancariaService from "../service/conta.bancaria.service";
 import ContaBancariaController from "../controller/conta.bancaria.controller";
 

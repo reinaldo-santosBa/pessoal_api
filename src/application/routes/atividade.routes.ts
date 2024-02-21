@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AtividadePostgresRepository from "../../infrastructure/db/atividade.repository";
+import AtividadePostgresRepository from "../../infrastructure/database/atividade.repository";
 import AtividadeService from "../service/atividade.service";
 import AtividadeController from "../controller/atividade.controller";
 

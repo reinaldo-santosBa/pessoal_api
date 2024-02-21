@@ -1,12 +1,12 @@
 import * as status from "../../constraints/http.stauts";
-import FolhaBaseConvenioCidadeEntity, { FolhaBaseConvenioCidadeProps } from "../../domain/entity/folha/folha.base.convenio.cidade";
-import FolhaBaseEncargoEntity, { FolhaBaseEncargoProps } from "../../domain/entity/folha/folha.base.encargo";
-import FolhaBaseItemPcgEntity, { FolhaBaseItemPcgProps } from "../../domain/entity/folha/folha.base.itens.pcg";
-import FolhaBaseProvisaoEntity, { FolhaBaseProvisaoProps } from "../../domain/entity/folha/folha.base.provisao";
+import FolhaBaseConvenioCidadeEntity, { FolhaBaseConvenioCidadeProps } from "../../domain/entity/folha_base/folha.base.convenio.cidade";
+import FolhaBaseEncargoEntity, { FolhaBaseEncargoProps } from "../../domain/entity/folha_base/folha.base.encargo";
+import FolhaBaseItemPcgEntity, { FolhaBaseItemPcgProps } from "../../domain/entity/folha_base/folha.base.itens.pcg";
+import FolhaBaseProvisaoEntity, { FolhaBaseProvisaoProps } from "../../domain/entity/folha_base/folha.base.provisao";
 import { FolhaBaseRepository } from "../../domain/repository/folha/folha.base.repository";
 import { FolhaBaseType } from "../../infrastructure/types/folha.base.type";
 import AppError from "../errors/AppError";
-import FolhaBaseEntity, { FolhaBaseProps } from "./../../domain/entity/folha/folha.base";
+import FolhaBaseEntity, { FolhaBaseProps } from "../../domain/entity/folha_base/folha.base";
 
 
 export type FolhaBaseInput = {

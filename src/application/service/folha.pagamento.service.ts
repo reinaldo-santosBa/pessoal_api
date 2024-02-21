@@ -1,10 +1,10 @@
-import FolhaPagamentoEntity from "../../domain/entity/folha/folha.pagamento";
-import FolhaPagamentoConvenioEntity from "../../domain/entity/folha/folha.pagamento.convenio";
-import FolhaPagamentoDescontoEntity from "../../domain/entity/folha/folha.pagamento.desconto";
-import FolhaPagamentoEncargoEntity from "../../domain/entity/folha/folha.pagamento.encargo";
-import FolhaPagamentoFuncionarioEntity from "../../domain/entity/folha/folha.pagamento.funcionario";
-import FolhaPagamentoProvisaoEntity from "../../domain/entity/folha/folha.pagamento.provisao";
-import FolhaPagamentoRemuneracaoEntity from "../../domain/entity/folha/folha.pagamento.remuneracao";
+import FolhaPagamentoEntity from "../../domain/entity/folha_pagamento/folha.pagamento";
+import FolhaPagamentoConvenioEntity from "../../domain/entity/folha_pagamento/folha.pagamento.convenio";
+import FolhaPagamentoDescontoEntity from "../../domain/entity/folha_pagamento/folha.pagamento.desconto";
+import FolhaPagamentoEncargoEntity from "../../domain/entity/folha_pagamento/folha.pagamento.encargo";
+import FolhaPagamentoFuncionarioEntity from "../../domain/entity/folha_pagamento/folha.pagamento.funcionario";
+import FolhaPagamentoProvisaoEntity from "../../domain/entity/folha_pagamento/folha.pagamento.provisao";
+import FolhaPagamentoRemuneracaoEntity from "../../domain/entity/folha_pagamento/folha.pagamento.remuneracao";
 import { FolhaPagamentoRepository } from "../../domain/repository/folha/folha.pagamento.repository";
 import { ParamsProcessarFolha, ProcessarFolhaOutput } from "../../domain/repository/processar.folha.pagamento.repository";
 
@@ -76,14 +76,15 @@ export default class FolhaPagamentoService {
         funcionario => new FolhaPagamentoFuncionarioEntity({
             centro_resultado_id: funcionario.centro_resultado_folha_id,
             funcionario_id: funcionario.funcionario_id,
-            item_pcg_id: ,
-            salario_liquido: ,
-            tipo_folha_id: ,
+            item_pcg_id: funcionario.item_pcg_id,
+            salario_liquido: 23000,
+            tipo_folha_id: 1,
         }),
       ),
       folha_pagamentos_convenios_cidades: somasArray.map(convenio => new FolhaPagamentoConvenioEntity({
-          convenio_id: ,
-          valor: convenio.,
+          convenio_cidade_id: convenio.convenio_cidade_id,
+          valor_descontado: convenio.valor_descontar_convenio,
+          valor_pago: convenio.valor_pagar_convenio,
       }),
       ),
         folha_pagamentos_descontos: somasArray.map(desconto => new FolhaPagamentoDescontoEntity({
@@ -91,12 +92,13 @@ export default class FolhaPagamentoService {
             valor: ,
       })) ,
         folha_pagamentos_encargo: somasArray.map(encargo => new FolhaPagamentoEncargoEntity({
-            encargo_id:,
-            valor:,
+            encargo_id: encargo.encargo_id,
+            valor_funcionario: encargo.valor_encargo_funcionario,
+            valor_empresa: encargo.valor_encargo_empresa,
       })),
         folha_pagamentos_provisoes: somasArray.map(provisao => new FolhaPagamentoProvisaoEntity({
-            provisao_id:,
-            valor:,
+            provisao_id: provisao.provisao_id,
+            valor: provisao.percentual_provisao
       })),
         folha_pagamentos_remuneracoes: somasArray.map(remuneracao => new FolhaPagamentoRemuneracaoEntity({
             tipo_remuneracao_id:,
@@ -104,6 +106,7 @@ export default class FolhaPagamentoService {
       })),
     });
 */
+
     return somasArray;
   }
 }

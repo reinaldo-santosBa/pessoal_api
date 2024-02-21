@@ -1,7 +1,8 @@
 export type FolhaPagamentoEncargoProps = {
-  folha_pagamento_funcionario_id?: number;
-  encargo_id: number;
-  valor: number;
+    folha_pagamento_funcionario_id?: number;
+    encargo_id: number;
+    valor_empresa: number;
+    valor_funcionario: number;
 };
 
 export default class FolhaPagamentoEncargoEntity {

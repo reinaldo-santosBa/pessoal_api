@@ -1,7 +1,7 @@
 import { Router } from "express";
 import FuncionarioContratoService from "../service/funcionario.contrato.service";
 import FuncionarioContratoController from "../controller/funcionario.contrato.controller";
-import FuncionarioContratoPostgresRepository from "../../infrastructure/db/funcionario.contrato.repository";
+import FuncionarioContratoPostgresRepository from "../../infrastructure/database/funcionario.contrato.repository";
 
 const routesFuncionarioContrato = Router();
 

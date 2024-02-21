@@ -1,4 +1,4 @@
-import FolhaBaseEncargoEntity from "../../../domain/entity/folha/folha.base.encargo";
+import FolhaBaseEncargoEntity from "../../../domain/entity/folha_base/folha.base.encargo";
 import { FolhaBaseEncargoRepository } from "../../../domain/repository/folha/folha.base.encargo.repository";
 
 export default class FolhaBaseEncargoPostgresRepository implements FolhaBaseEncargoRepository {

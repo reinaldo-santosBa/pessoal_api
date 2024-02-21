@@ -1,21 +1,46 @@
 import AppError from "../../application/errors/AppError";
-import SolicitacaoHoraExtraEntity from "../../domain/entity/solicitacao.hora.extra";
-import { SolicitacaoHoraExtraRepository, StatusOutput } from "../../domain/repository/solicitacao.hora.extra";
+import { HoraExtraRepository, StatusOutput } from "../../domain/repository/hora.extra.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
+import HoraExtraEntity from "../../domain/entity/hora.extra";
+import { LimiteHorasOutput } from "../../domain/repository/hora.trabalhada.repository";
 
 
-export default class SolicitacaoHoraExtraPostgresRepository
-implements SolicitacaoHoraExtraRepository
-{
-  async getStatusSolicitacao(funcionario_id: number, data_extra: Date): Promise<StatusOutput> {
+export default class HoraExtraPostgresRepository implements HoraExtraRepository {
+
+  async getAll(): Promise<HoraExtraEntity[]> {
+    try {
+      const statusSolicitacao = await conn.query(`select
+he.funcionario_id,
+he.solicitante_id,
+he.data_solicitacao,
+he.data_extra,
+he.horas_extras,
+he.observacao,
+he.autorizado_por,
+he.data_autorizacao,
+he.status_solicitacao_id,
+ss.status_solicitacao ,
+pf.nome
+from horas_extras he inner join pessoas_fisica pf on pf.id  = he.funcionario_id
+inner join status_solicitacoes ss on ss.id = he.status_solicitacao_id `);
+      return statusSolicitacao.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
+  async getStatusSolicitacao(
+    funcionario_id: number,
+    data_extra: Date,
+  ): Promise<StatusOutput> {
     try {
       const statusSolicitacao = await conn.query(
         `select  ss.status_solicitacao,
 		she.horas_extras,
 		she.data_extra
 from status_solicitacoes ss
-inner join solicitacoes_horas_extras she
+inner join horas_extras she
 on ss.id = she.status_solicitacao_id
 where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Aprovado' and she.data_extra = '${data_extra}'`,
       );
@@ -26,13 +51,11 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
     }
   }
 
-  async insert(
-    input: SolicitacaoHoraExtraEntity,
-  ): Promise<SolicitacaoHoraExtraEntity> {
+  async insert(input: HoraExtraEntity): Promise<HoraExtraEntity> {
     try {
       await conn.query("BEGIN");
       const solicitacaoHoraExtra = await conn.query(
-        `INSERT INTO solicitacoes_horas_extras (
+        `INSERT INTO horas_extras (
                         funcionario_id,
                         solicitante_id,
                         data_solicitacao,
@@ -63,13 +86,13 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
     }
   }
 
-  async getById(id: number): Promise<number> {
+  async getById(id: number): Promise<HoraExtraEntity> {
     try {
-      const solicitacaoHoraExtraCount = await conn.query(
-        `SELECT ID FROM solicitacoes_horas_extras WHERE ID = ${id}`,
+      const horaExtra = await conn.query(
+        `SELECT * FROM horas_extras WHERE ID = ${id}`,
       );
 
-      return solicitacaoHoraExtraCount.rowCount;
+      return horaExtra.rows[0];
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
@@ -77,7 +100,7 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
 
   async getAllFuncionarioId(
     funcionario_id: number,
-  ): Promise<SolicitacaoHoraExtraEntity[]> {
+  ): Promise<HoraExtraEntity[]> {
     try {
       const solicitacaoHoraExtra = await conn.query(`SELECT
                           id,
@@ -89,7 +112,7 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
                           observacao,
                           autorizado_por,
                           data_autorizacao
-                          FROM solicitacoes_horas_extras WHERE FUNCIONARIO_ID = ${funcionario_id}`);
+                          FROM horas_extras WHERE FUNCIONARIO_ID = ${funcionario_id}`);
 
       return solicitacaoHoraExtra.rows;
     } catch (error) {
@@ -97,14 +120,11 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
     }
   }
 
-  async update(
-    id: number,
-    input: SolicitacaoHoraExtraEntity,
-  ): Promise<SolicitacaoHoraExtraEntity> {
+  async update(id: number, input: HoraExtraEntity): Promise<HoraExtraEntity> {
     try {
       await conn.query("BEGIN");
       const solicitacaoHoraExtra = await conn.query(
-        `UPDATE solicitacoes_horas_extras
+        `UPDATE horas_extras
                   SET solicitante_id = ${input.props.solicitante_id},
                       data_solicitacao = '${input.props.data_solicitacao}',
                       data_extra = '${input.props.data_extra}',
@@ -126,11 +146,25 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
     try {
       await conn.query("BEGIN");
       await conn.query(
-        `DELETE FROM solicitacoes_horas_extras WHERE ID = ${id}`,
+        `DELETE FROM horas_extras WHERE ID = ${id}`,
       );
       await conn.query("COMMIT");
     } catch (error) {
       await conn.query("ROLLBACK");
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
+  async getLimiteHoras(funcionario_id: number): Promise<LimiteHorasOutput> {
+    try {
+      const limiteHoras =
+                await conn.query(`select p.limite_hora_extra_diario , p.limite_hora_extra_mensal
+from parametros as p
+inner join funcionarios_centros_resultado as fcr
+on p.centro_resultado  = fcr.centro_resultado_id
+where fcr.funcionario_id  = ${funcionario_id} and fcr.data_fim_trabalho  is null`);
+      return limiteHoras.rows[0];
+    } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
   }

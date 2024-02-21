@@ -1,5 +1,5 @@
 import { Router } from "express";
-import TipoFolhaPostgresRepository from "../../infrastructure/db/tipo.folha.repository";
+import TipoFolhaPostgresRepository from "../../infrastructure/database/tipo.folha.repository";
 import TipoFolhaService from "../service/tipo.folha.service";
 import TipoFolhaController from "../controller/tipo.folha.controller";
 

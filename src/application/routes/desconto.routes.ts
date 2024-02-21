@@ -1,5 +1,5 @@
 import { Router } from "express";
-import DescontoPostgresRepository from "../../infrastructure/db/desconto.repository";
+import DescontoPostgresRepository from "../../infrastructure/database/desconto.repository";
 import DescontoService from "../service/desconto.service";
 import DescontoController from "../controller/desconto.controller";
 

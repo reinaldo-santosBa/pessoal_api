@@ -1,4 +1,4 @@
-import FolhaBaseItemPcgEntity from "../../../domain/entity/folha/folha.base.itens.pcg";
+import FolhaBaseItemPcgEntity from "../../../domain/entity/folha_base/folha.base.itens.pcg";
 import { FolhaBaseItemPcgRepository } from "../../../domain/repository/folha/folha.base.item-pcg.repository";
 
 export default class FolhaBaseItemPcgPostgresRepository implements FolhaBaseItemPcgRepository {

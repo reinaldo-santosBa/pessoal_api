@@ -1,5 +1,5 @@
 import { Router } from "express";
-import JornadaTrabalhoPostgresRepository from "../../infrastructure/db/jornada.trabalho.repository";
+import JornadaTrabalhoPostgresRepository from "../../infrastructure/database/jornada.trabalho.repository";
 import JornadaTrabalhoService from "../service/jornada.trabalho.service";
 import JornadaTrabalhoController from "../controller/jornada.trabalho.controller";
 

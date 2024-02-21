@@ -1,5 +1,5 @@
 import { Router } from "express";
-import FolhaBasePostgresRepository from "../../infrastructure/db/folha_base/folha.base.repository";
+import FolhaBasePostgresRepository from "../../infrastructure/database/folha_base/folha.base.repository";
 import FolhaBaseController from "../controller/folha.base.controller";
 import FolhaBaseService from "../service/folha.base.service";
 

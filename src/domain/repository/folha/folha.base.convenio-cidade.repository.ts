@@ -1,4 +1,4 @@
-import FolhaBaseConvenioCidadeEntity from "../../entity/folha/folha.base.convenio.cidade";
+import FolhaBaseConvenioCidadeEntity from "../../entity/folha_base/folha.base.convenio.cidade";
 
 export interface FolhaBaseConvenioCidadeRepository {
     update(id: number, input: FolhaBaseConvenioCidadeEntity): Promise<void>;

@@ -36,13 +36,12 @@ fbp.percentual * rcr.percentual/100 as percentual_provisao,
 fbcc.valor_descontar * rcr.percentual/100 * rcr.percentual/100 as valor_descontar_convenio,
 fbcc.valor_pagar * rcr.percentual/100 * rcr.percentual/100 as valor_pagar_convenio,
 fbcc.percentual_descontar * rcr.percentual/100 as percentual_descontar_convenio,
-c2.id as convenio_id,
-c2.convenio,
 fb.empresa_id,
 fbip.item_pcg_id,
 fbip.tipo_folha_id,
 fbp.provisao_id ,
-fbe.encargo_id
+fbe.encargo_id,
+cc.id as convenio_cidade_id
 from funcionarios f
 inner join rateios r on r.funcionario_id = f.id
 inner join rateios_centros_resultado rcr on rcr.rateio_id = r.id
@@ -57,8 +56,7 @@ inner join folha_base_itens_pcg fbip  on fbip.folha_base_id = fb.id
 inner join folhas_base_provisoes fbp  on fbp.folha_base_id = fb.id
 inner join provisoes p on p.id = fbp.provisao_id
 INNER JOIN folhas_base_convenios_cidades fbcc on fbcc.folha_base_id  = fb.id
-inner join convenios_cidades cc  on cc.id  = fbcc.convenio_cidade_id
-inner join convenios c2 on c2.id  = cc.convenio_id
+inner join convenios_cidades cc on cc.id  = fbcc.convenio_cidade_id
 WHERE htf.data_trabalho BETWEEN '${params.ano}-${params.mes}-01' AND '${params.data_fechamento}' and fbip.tipo_folha_id  = ${params.tipo_folha_id} ${whereFuncionarioId}
 and fb.ativo = true
 group by
@@ -81,14 +79,12 @@ valor_descontar_convenio,
 valor_pagar_convenio,
 percentual_descontar_convenio,
 rcr.percentual,
-c2.convenio,
-c2.id ,
-c2.convenio,
 fb.empresa_id,
 fbip.item_pcg_id,
 fbip.tipo_folha_id,
 fbp.provisao_id ,
-fbe.encargo_id;`);
+fbe.encargo_id,
+cc.id `);
 
       return data.rows;
     } catch (error) {

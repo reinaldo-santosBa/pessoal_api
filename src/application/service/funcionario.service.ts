@@ -8,7 +8,7 @@ import PessoaFisicaEntity, { PessoaFisicaProps } from "../../domain/entity/pesso
 import RateioCentroResultadoEntity, { RateioCentroResultadoProps } from "../../domain/entity/rateio.centro.resultado";
 import TelefoneEntity, { TelefoneProps } from "../../domain/entity/telefones";
 import { FuncionarioRepository, IInput } from "../../domain/repository/funcionario.repository";
-import { AllFuncionariosOutput, FuncionarioOutput } from "../../infrastructure/db/funcionario.repository";
+import { AllFuncionariosOutput, FuncionarioOutput } from "../../infrastructure/database/funcionario.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 import ConvenioCidadeFuncionarioEntity, { ConvenioCidadeFuncionarioProps } from "../../domain/entity/convenio.cidade.funcionario";
@@ -106,12 +106,15 @@ export default class FuncionarioService {
     await this.funcionarioRepository.update(id, {
       funcionario: new FuncionarioEntity(input.funcionario),
       pessoa: new PessoaEntity(input.pessoa),
-      pessoa_fisica: new  PessoaFisicaEntity(input.pessoa_fisica)
+      pessoa_fisica: new PessoaFisicaEntity(input.pessoa_fisica),
     });
   }
 
-  async getAll(): Promise<AllFuncionariosOutput[]> {
-    const funcionarios = await this.funcionarioRepository.getAll();
+  async getAll(
+    centro_resultado_id?: number,
+  ): Promise<AllFuncionariosOutput[]> {
+    const funcionarios =
+        await this.funcionarioRepository.getAll(centro_resultado_id);
     return funcionarios;
   }
 

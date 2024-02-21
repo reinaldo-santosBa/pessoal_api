@@ -1,5 +1,5 @@
 import { FolhaBaseType } from "../../../infrastructure/types/folha.base.type";
-import FolhaBaseEntity from "../../entity/folha/folha.base";
+import FolhaBaseEntity from "../../entity/folha_base/folha.base";
 
 export interface FolhaBaseRepository {
     insert(input: FolhaBaseType): Promise<FolhaBaseType>;

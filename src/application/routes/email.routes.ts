@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import EmailPostgresRepository from "../../infrastructure/db/email.repository";
+import EmailPostgresRepository from "../../infrastructure/database/email.repository";
 import EmailService from "../service/email.service";
 import EmailController from "../controller/email.controller";
 

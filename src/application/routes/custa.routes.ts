@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CustaPostgresRepository from "../../infrastructure/db/custa.repository";
+import CustaPostgresRepository from "../../infrastructure/database/custa.repository";
 import CustaService from "../service/custa.service";
 import CustaController from "../controller/custa.controller";
 

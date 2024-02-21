@@ -1,5 +1,5 @@
 import { Router } from "express";
-import SeedsPostgresRepository from "../../infrastructure/db/seeds.repository";
+import SeedsPostgresRepository from "../../infrastructure/database/seeds.repository";
 import SeedsService from "../service/seeds.service";
 import SeedsController from "../controller/seeds.controller";
 

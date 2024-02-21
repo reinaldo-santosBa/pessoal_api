@@ -1,4 +1,4 @@
-import FolhaBaseItemPcgEntity from "../../entity/folha/folha.base.itens.pcg";
+import FolhaBaseItemPcgEntity from "../../entity/folha_base/folha.base.itens.pcg";
 
 export interface FolhaBaseItemPcgRepository {
     update(id: number, input: FolhaBaseItemPcgEntity): Promise<void>;

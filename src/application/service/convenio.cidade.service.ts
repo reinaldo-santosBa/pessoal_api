@@ -1,6 +1,6 @@
 import ConvenioCidadeEntity, { ConvenioCidadeProps } from "../../domain/entity/convenio.cidade";
 import { ConvenioCidadeRepository } from "../../domain/repository/convenio.cidade.repository";
-import { ConvenioCidade } from "../../infrastructure/db/convenio.cidade.repository";
+import { ConvenioCidade } from "../../infrastructure/database/convenio.cidade.repository";
 
 export default class ConvenioCidadeService {
   constructor(

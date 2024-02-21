@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProvisaoPostgresRepository from "../../infrastructure/db/provisao.repository";
+import ProvisaoPostgresRepository from "../../infrastructure/database/provisao.repository";
 import ProvisaoService from "../service/provisao.service";
 import ProvisaoController from "../controller/provisao.controller";
 

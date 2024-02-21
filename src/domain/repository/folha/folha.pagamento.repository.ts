@@ -1,10 +1,10 @@
-import FolhaPagamentoEntity from "../../entity/folha/folha.pagamento";
-import FolhaPagamentoConvenioEntity from "../../entity/folha/folha.pagamento.convenio";
-import FolhaPagamentoDescontoEntity from "../../entity/folha/folha.pagamento.desconto";
-import FolhaPagamentoEncargoEntity from "../../entity/folha/folha.pagamento.encargo";
-import FolhaPagamentoFuncionarioEntity from "../../entity/folha/folha.pagamento.funcionario";
-import FolhaPagamentoProvisaoEntity from "../../entity/folha/folha.pagamento.provisao";
-import FolhaPagamentoRemuneracaoEntity from "../../entity/folha/folha.pagamento.remuneracao";
+import FolhaPagamentoEntity from "../../entity/folha_pagamento/folha.pagamento";
+import FolhaPagamentoConvenioEntity from "../../entity/folha_pagamento/folha.pagamento.convenio";
+import FolhaPagamentoDescontoEntity from "../../entity/folha_pagamento/folha.pagamento.desconto";
+import FolhaPagamentoEncargoEntity from "../../entity/folha_pagamento/folha.pagamento.encargo";
+import FolhaPagamentoFuncionarioEntity from "../../entity/folha_pagamento/folha.pagamento.funcionario";
+import FolhaPagamentoProvisaoEntity from "../../entity/folha_pagamento/folha.pagamento.provisao";
+import FolhaPagamentoRemuneracaoEntity from "../../entity/folha_pagamento/folha.pagamento.remuneracao";
 
 export type FolhaPagamentoType = {
     folhas_pagamento: FolhaPagamentoEntity;

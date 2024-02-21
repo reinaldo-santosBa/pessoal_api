@@ -1,7 +1,7 @@
 import { Router } from "express";
 import FolhaPagamentoService from "../service/folha.pagamento.service";
 import FolhaPagamentoController from "../controller/folha.pagamento.controller";
-import FolhaPagamentoPostgresRepository from "../../infrastructure/db/folha_pagamento/folha.pagamento.repository";
+import FolhaPagamentoPostgresRepository from "../../infrastructure/database/folha_pagamento/folha.pagamento.repository";
 
 const routesFolhaPagamento = Router();
 

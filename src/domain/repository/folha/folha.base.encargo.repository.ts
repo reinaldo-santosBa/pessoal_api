@@ -1,4 +1,4 @@
-import FolhaBaseEncargoEntity from "../../entity/folha/folha.base.encargo";
+import FolhaBaseEncargoEntity from "../../entity/folha_base/folha.base.encargo";
 
 export interface FolhaBaseEncargoRepository {
     update(id: number, input: FolhaBaseEncargoEntity): Promise<void>;

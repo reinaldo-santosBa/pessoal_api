@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AdvertenciaPostgresRepository from "../../infrastructure/db/advertencia.repository";
+import AdvertenciaPostgresRepository from "../../infrastructure/database/advertencia.repository";
 import AdvertenciaService from "../service/advertencia.service";
 import AdvertenciaController from "../controller/advertencia.controller";
 

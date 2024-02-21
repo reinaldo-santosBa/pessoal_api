@@ -117,7 +117,8 @@ export default class FuncionarioController {
   }
 
   async getAll(request: Request, response: Response) {
-    const funcionarios = await this.funcionarioService.getAll();
+    const centro_resultado_id = request.query.centro_resultado_id;
+    const funcionarios = await this.funcionarioService.getAll(+centro_resultado_id);
     return response.json(funcionarios);
   }
 

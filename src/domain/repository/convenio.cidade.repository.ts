@@ -1,4 +1,4 @@
-import { ConvenioCidade } from "../../infrastructure/db/convenio.cidade.repository";
+import { ConvenioCidade } from "../../infrastructure/database/convenio.cidade.repository";
 import ConvenioCidadeEntity from "../entity/convenio.cidade";
 
 export interface ConvenioCidadeRepository {
