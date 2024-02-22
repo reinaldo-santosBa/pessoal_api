@@ -5,7 +5,8 @@ export type FolhaPagamentoProps = {
   dias_uteis: number;
   data_fechamento: Date;
   valor_folha: number;
-  folha_base_id: number;
+    folha_base_id: number;
+    empresa: string;
 };
 
 export default class FolhaPagamentoEntity {

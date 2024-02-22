@@ -2,9 +2,9 @@ export type FolhaBaseProps = {
     id?: number;
     empresa_id: number;
     adiantamento: number;
-    ativo: boolean
+    ativo: boolean;
+    empresa: string;
 };
-
 
 
 export default class FolhaBaseEntity {

@@ -25,7 +25,8 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
                 JORNADA_TRABALHO,
                 CARGA_DIARIA,
                 UNIDADE_TEMPO,
-                CARGA_SEMANAL
+                CARGA_SEMANAL,
+                TURNOS
             FROM JORNADAS_TRABALHO WHERE ID = ${id}`);
       return jornada_trabalho.rows[0];
     } catch (error) {
@@ -67,7 +68,8 @@ export default class JornadaTrabalhoPostgresRepository implements JornadaTrabalh
                         JORNADA_TRABALHO,
                         CARGA_DIARIA,
                         UNIDADE_TEMPO,
-                        CARGA_SEMANAL
+                        CARGA_SEMANAL,
+                        TURNOS
                 FROM JORNADAS_TRABALHO`,
       );
       await conn.query("COMMIT");

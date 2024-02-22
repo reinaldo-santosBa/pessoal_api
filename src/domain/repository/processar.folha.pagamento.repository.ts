@@ -1,4 +1,3 @@
-
 export interface ProcessarFolhaOutput {
     centro_resultado_rateio_id: number;
     centro_resultado_rateio: string;
@@ -24,6 +23,8 @@ export interface ProcessarFolhaOutput {
     provisao_id: number;
     encargo_id: number;
     convenio_cidade_id: number;
+    folha_base_id: number,
+    empresa: string;
 }
 
 

@@ -5,14 +5,27 @@ import FolhaBaseConvenioCidadeEntity from "../../../domain/entity/folha_base/fol
 import FolhaBaseEncargoEntity from "../../../domain/entity/folha_base/folha.base.encargo";
 import FolhaBaseItemPcgEntity from "../../../domain/entity/folha_base/folha.base.itens.pcg";
 import FolhaBaseProvisaoEntity from "../../../domain/entity/folha_base/folha.base.provisao";
-import { FolhaBaseRepository } from "../../../domain/repository/folha/folha.base.repository";
+import { FolhaBaseRepository, IFolhaBaseResult } from "../../../domain/repository/folha/folha.base.repository";
 import conn from "../../config/database.config";
 import { FolhaBaseType } from "../../types/folha.base.type";
 
 export default class FolhaBasePostgresRepository implements FolhaBaseRepository {
+  async getAtivo(): Promise<IFolhaBaseResult> {
+    try {
+      const folhaBase = await conn.query(`select *
+                    from folhas_base
+                    where ativo = true
+        `);
+      return folhaBase.rows[0];
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
   async insert(input: FolhaBaseType): Promise<FolhaBaseType> {
     try {
       await conn.query("BEGIN");
+      await this.update();
 
       const folha_base = await conn.query(`INSERT INTO folhas_base (
                 empresa_id,

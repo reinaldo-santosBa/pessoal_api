@@ -6,7 +6,6 @@ import * as status from "../../constraints/http.stauts";
 export default class ProcessarFolhaPagamentoService {
   constructor(
         private readonly processarFolhaRepository: ProcessarFolhaPagamentoRepository,
-    //private readonly jornadaTrabalhoRepository: JornadaTrabalhoRepository,
   ) {}
 
   async getAll(params: ParamsProcessarFolha): Promise<ProcessarFolhaOutput[]> {
@@ -29,11 +28,9 @@ export default class ProcessarFolhaPagamentoService {
     const processarFolha =
             await this.processarFolhaRepository.getAll(params);
 
-    /*  const totalHoraExtraMes: number = 0;
-
-    for await (const funcionario of processarFolha) {
-      const cargaTrabalho = await this.jornadaTrabalhoRepository.getByFuncionarioId(funcionario.funcionario_id);
-    }*/
+    if (!processarFolha) {
+      throw new AppError("Não encontrado nenhum valor", status.NOT_FOUND);
+    }
 
     return processarFolha;
   }

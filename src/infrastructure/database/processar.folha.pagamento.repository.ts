@@ -39,7 +39,9 @@ fbip.item_pcg_id,
 fbip.tipo_folha_id,
 fbp.provisao_id ,
 fbe.encargo_id,
-cc.id as convenio_cidade_id
+cc.id as convenio_cidade_id,
+fb.id as folha_base_id,
+fb.empresa
 from funcionarios f
 inner join rateios r on r.funcionario_id = f.id
 inner join rateios_centros_resultado rcr on rcr.rateio_id = r.id
@@ -84,7 +86,9 @@ fbip.item_pcg_id,
 fbip.tipo_folha_id,
 fbp.provisao_id ,
 fbe.encargo_id,
-cc.id;`);
+cc.id,
+fb.id,
+fb.empresa;`);
 
       return data.rows;
     } catch (error) {
