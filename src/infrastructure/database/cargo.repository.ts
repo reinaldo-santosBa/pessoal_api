@@ -3,20 +3,24 @@ import CargoEntity from "../../domain/entity/cargo";
 import { CargoRepository } from "../../domain/repository/cargo.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
+import { CargoType } from "../../application/service/cargos.service";
 
 
 export type CargoAtividadesType = {
-    atividade: string;
+    id?: number;
+    cargo_id?: number;
     atividade_id: number;
-}
+    atividade?: string;
+};
 
-export type CargoType = {
+export type CargoTypeInput = {
     cargo: CargoEntity,
     cargo_atividades: CargoAtividadesType[]
 };
 
+
 export default class CargoPostgresRepository implements CargoRepository {
-  async getById(id: number): Promise<CargoEntity> {
+  async getById(id: number): Promise<CargoType> {
     try {
       const cargo = await conn.query(`SELECT
         ID,
@@ -26,13 +30,29 @@ export default class CargoPostgresRepository implements CargoRepository {
         COMISSAO_INDIRETA,
         JORNADA_TRABALHO_ID
       FROM CARGOS WHERE ID = ${id}`);
-      return cargo.rows[0];
+
+      const atividades_cargos = await conn.query(`
+            select ca.id,
+      		ca.cargo_id,
+      		ca.atividade_id,
+      		a.atividade
+      from cargos_atividades ca
+      inner join atividades a
+      on ca.atividade_id = a.id
+      inner join cargos c
+      on c.id = ca.cargo_id
+      where c.id  = ${id}
+    `);
+      return {
+        cargo: cargo.rows[0],
+        cargo_atividades: atividades_cargos.rows,
+      };
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
   }
 
-  async insert(input: CargoType): Promise<CargoEntity> {
+  async insert(input: CargoTypeInput): Promise<CargoEntity> {
     try {
       await conn.query("BEGIN");
 

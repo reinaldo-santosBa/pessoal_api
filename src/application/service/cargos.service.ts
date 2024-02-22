@@ -20,7 +20,7 @@ export default class CargosService {
     const cargo = new CargoEntity(input.cargo);
     const output = await this.cargoRepository.insert({
       cargo,
-      cargo_atividades: input.cargo_atividades
+      cargo_atividades: input.cargo_atividades,
     });
 
     return output;
@@ -52,7 +52,7 @@ export default class CargosService {
     return cargoUpdate;
   }
 
-  async getById(id: number): Promise<CargoEntity> {
+  async getById(id: number): Promise<CargoType> {
     const cargo = await this.cargoRepository.getById(id);
     return cargo;
   }
