@@ -1,6 +1,6 @@
 import AppError from "../../application/errors/AppError";
 import CargoEntity from "../../domain/entity/cargo";
-import { CargoRepository } from "../../domain/repository/cargo.repository";
+import { AllCargo, CargoRepository } from "../../domain/repository/cargo.repository";
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 import { CargoType } from "../../application/service/cargos.service";
@@ -88,17 +88,20 @@ export default class CargoPostgresRepository implements CargoRepository {
     }
   }
 
-  async getAll(): Promise<CargoEntity[]> {
+  async getAll(): Promise<AllCargo[]> {
     try {
       await conn.query("BEGIN");
       const cargos = await conn.query(`SELECT
-            ID,
-        CARGO,
-        REMUNERACAO,
-        COMISSAO_DIRETA,
-        COMISSAO_INDIRETA,
-        JORNADA_TRABALHO_ID
-      FROM CARGOS`);
+        c.ID,
+        c.CARGO,
+        c.REMUNERACAO,
+        c.COMISSAO_DIRETA,
+        c.COMISSAO_INDIRETA,
+        c.JORNADA_TRABALHO_ID,
+        jt.jornada_trabalho
+      FROM CARGOS c
+      inner join jornadas_trabalho jt
+      on jt.id = c.jornada_trabalho_id`);
       await conn.query("COMMIT");
       return cargos.rows;
     } catch (error) {

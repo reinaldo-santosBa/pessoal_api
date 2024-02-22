@@ -1,8 +1,3 @@
-import FolhaPagamentoEntity from "../../domain/entity/folha_pagamento/folha.pagamento";
-import FolhaPagamentoConvenioEntity from "../../domain/entity/folha_pagamento/folha.pagamento.convenio";
-import FolhaPagamentoEncargoEntity from "../../domain/entity/folha_pagamento/folha.pagamento.encargo";
-import FolhaPagamentoFuncionarioEntity from "../../domain/entity/folha_pagamento/folha.pagamento.funcionario";
-import FolhaPagamentoProvisaoEntity from "../../domain/entity/folha_pagamento/folha.pagamento.provisao";
 import { FolhaBaseRepository } from "../../domain/repository/folha/folha.base.repository";
 import { FolhaPagamentoRepository } from "../../domain/repository/folha/folha.pagamento.repository";
 import { ParamsProcessarFolha, ProcessarFolhaOutput } from "../../domain/repository/processar.folha.pagamento.repository";
@@ -20,7 +15,8 @@ export default class FolhaPagamentoService {
   ) {}
 
   async create(input: FolhaPagamentoInput) {
-    const somas: {
+
+    /*const somas: {
           [funcionarioId: number]: Partial<ProcessarFolhaOutput>;
       } = {};
 
@@ -58,6 +54,10 @@ export default class FolhaPagamentoService {
     });
 
     const somasArray: Partial<ProcessarFolhaOutput>[] = Object.values(somas);
+
+
+    return somasArray;
+*/
     const folhaBaseResult = await this.folhaBaseRepository.getAtivo();
     const teste = {
       ano: input.folha_pagamento.ano,
@@ -71,7 +71,7 @@ export default class FolhaPagamentoService {
     };
 
     const folhaPagamento = await this.folhaPagamentoRepository.insert(
-      somasArray,
+      input.data,
       teste,
     );
 

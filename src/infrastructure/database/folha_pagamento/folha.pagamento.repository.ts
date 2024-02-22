@@ -1,11 +1,7 @@
 import AppError from "../../../application/errors/AppError";
+import * as status from "../../../constraints/http.stauts";
 import { FolhaPagamentoRepository } from "../../../domain/repository/folha/folha.pagamento.repository";
 import conn from "../../config/database.config";
-import * as status from "../../../constraints/http.stauts";
-import FolhaPagamentoEncargoEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.encargo";
-import FolhaPagamentoProvisaoEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.provisao";
-import FolhaPagamentoConvenioEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.convenio";
-import FolhaPagamentoFuncionarioEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.funcionario";
 export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoRepository {
 
   async insert(input: any, teste: any): Promise<any> {
@@ -58,23 +54,27 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                                  100
                                 ) RETURNING *`,
         );
-        //folhaPagamentoFuncionarioOutput.push(folhaPagamentoFuncionario.rows[0]);
-        const folhaPagamentoEncargo = await conn.query(
-          `INSERT INTO folha_pagamentos_encargos (
+          //folhaPagamentoFuncionarioOutput.push(folhaPagamentoFuncionario.rows[0]);
+
+        for await (const encargo of input.data.encargos) {
+          const folhaPagamentoEncargo = await conn.query(
+            `INSERT INTO folha_pagamentos_encargos (
                     folha_pagamento_funcionario_id,
                     encargo_id,
                     valor_empresa,
                     valor_funcionario
                 )VALUES (
                     ${folhaPagamentoFuncionario.rows[0].id},
-                    ${data.encargo_id},
-                    ${data.valor_encargo_empresa},
-                    ${data.valor_encargo_funcionario}
+                    ${encargo.encargo_id},
+                    ${encargo.valor_encargo_empresa},
+                    ${encargo.valor_encargo_funcionario}
                 ) RETURNING *`,
-        );
+          );
         //folhaPagamentoEncargoOutput.push(folhaPagamentoEncargo.rows[0]);
+        }
 
-        /*const folhaPagamentoProvisao = await conn.query(
+
+        /*   const folhaPagamentoProvisao = await conn.query(
           `INSERT INTO folha_pagamentos_provisoes (
                     provisao_id,
                     folha_pagamento_funcionario_id,
@@ -104,7 +104,7 @@ valor_descontado
         */
       }
 
-      await conn.query("COMMIT");
+      // await conn.query("COMMIT");
 
       /*
 

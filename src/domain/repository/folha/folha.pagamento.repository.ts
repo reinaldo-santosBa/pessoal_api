@@ -1,8 +1,3 @@
-import FolhaPagamentoEntity from "../../entity/folha_pagamento/folha.pagamento";
-import FolhaPagamentoConvenioEntity from "../../entity/folha_pagamento/folha.pagamento.convenio";
-import FolhaPagamentoEncargoEntity from "../../entity/folha_pagamento/folha.pagamento.encargo";
-import FolhaPagamentoFuncionarioEntity from "../../entity/folha_pagamento/folha.pagamento.funcionario";
-import FolhaPagamentoProvisaoEntity from "../../entity/folha_pagamento/folha.pagamento.provisao";
 
 /*export type FolhaPagamentoType = {
     folhas_pagamento: FolhaPagamentoEntity;

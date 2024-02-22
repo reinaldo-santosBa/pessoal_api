@@ -1,5 +1,5 @@
 import CargoEntity, { CargoProps } from "../../domain/entity/cargo";
-import { CargoRepository } from "../../domain/repository/cargo.repository";
+import { AllCargo, CargoRepository } from "../../domain/repository/cargo.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 import { CargoAtividadesType } from "../../infrastructure/database/cargo.repository";
@@ -26,7 +26,7 @@ export default class CargosService {
     return output;
   }
 
-  async getAll(): Promise<CargoEntity[]> {
+  async getAll(): Promise<AllCargo[]> {
     try {
       const cargos = await this.cargoRepository.getAll();
       return cargos;

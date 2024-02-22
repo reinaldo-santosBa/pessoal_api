@@ -8,7 +8,7 @@ export default class ProcessarFolhaPagamentoService {
         private readonly processarFolhaRepository: ProcessarFolhaPagamentoRepository,
   ) {}
 
-  async getAll(params: ParamsProcessarFolha): Promise<ProcessarFolhaOutput[]> {
+  async getAll(params: ParamsProcessarFolha): Promise<any> {
     const camposObrigatorios: string[] = [
       "centro_resultado_id",
       "registrado",
