@@ -2,18 +2,26 @@ import CargoEntity, { CargoProps } from "../../domain/entity/cargo";
 import { CargoRepository } from "../../domain/repository/cargo.repository";
 import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
+import { CargoAtividadesType } from "../../infrastructure/database/cargo.repository";
+
+export type CargoType = {
+    cargo: CargoProps;
+    cargo_atividades: CargoAtividadesType[];
+};
 
 export default class CargosService {
   constructor(private readonly cargoRepository: CargoRepository) {}
 
-  async create(input: CargoProps): Promise<CargoEntity> {
-
+  async create(input: CargoType): Promise<CargoEntity> {
     if (!input.cargo) {
       throw new AppError("Cargo é obrigatório", status.BAD_REQUEST);
     }
 
-    const cargo = new CargoEntity(input);
-    const output = await this.cargoRepository.insert(cargo);
+    const cargo = new CargoEntity(input.cargo);
+    const output = await this.cargoRepository.insert({
+      cargo,
+      cargo_atividades: input.cargo_atividades
+    });
 
     return output;
   }

@@ -5,11 +5,21 @@ import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
 
+export type CargoAtividadesType = {
+    atividade: string;
+    atividade_id: number;
+}
+
+export type CargoType = {
+    cargo: CargoEntity,
+    cargo_atividades: CargoAtividadesType[]
+};
+
 export default class CargoPostgresRepository implements CargoRepository {
   async getById(id: number): Promise<CargoEntity> {
     try {
       const cargo = await conn.query(`SELECT
-            ID,
+        ID,
         CARGO,
         REMUNERACAO,
         COMISSAO_DIRETA,
@@ -22,7 +32,7 @@ export default class CargoPostgresRepository implements CargoRepository {
     }
   }
 
-  async insert(input: CargoEntity): Promise<CargoEntity> {
+  async insert(input: CargoType): Promise<CargoEntity> {
     try {
       await conn.query("BEGIN");
 
@@ -33,12 +43,22 @@ export default class CargoPostgresRepository implements CargoRepository {
         COMISSAO_INDIRETA,
         JORNADA_TRABALHO_ID
       )VALUES (
-        '${input.props.cargo}',
-        ${input.props.remuneracao ?? null},
-        ${input.props.comissao_direta ?? null},
-        ${input.props.comissao_indireta ?? null},
-        ${input.props.jornada_trabalho_id ?? null}
+        '${input.cargo.props.cargo}',
+        ${input.cargo.props.remuneracao ?? null},
+        ${input.cargo.props.comissao_direta ?? null},
+        ${input.cargo.props.comissao_indireta ?? null},
+        ${input.cargo.props.jornada_trabalho_id ?? null}
       ) RETURNING *`);
+
+      for await (const cargo_atividade of input.cargo_atividades) {
+        await conn.query(`INSERT INTO CARGOS_ATIVIDADES (
+                cargo_id,
+                atividade_id
+            ) VALUES (
+                ${cargo.rows[0].id},
+                ${cargo_atividade.atividade_id}
+            )`);
+      }
 
       await conn.query("COMMIT");
       return cargo.rows[0];
@@ -68,8 +88,9 @@ export default class CargoPostgresRepository implements CargoRepository {
   }
 
   async getByIdExisting(id: number): Promise<number> {
-    const cargo = (await conn.query(`SELECT * FROM CARGOS WHERE ID = ${id}`))
-      .rowCount;
+    const cargo = (
+      await conn.query(`SELECT * FROM CARGOS WHERE ID = ${id}`)
+    ).rowCount;
 
     return cargo;
   }
