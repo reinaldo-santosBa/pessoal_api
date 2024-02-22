@@ -4,6 +4,13 @@ import { ModeloContratoRepository } from "../../domain/repository/modelo.contrat
 import conn from "../config/database.config";
 import * as status from "../../constraints/http.stauts";
 
+
+export type AllModeloContrato = {
+    cargo_id: number;
+    modelo: string;
+    numero_modelo?: number;
+    cargo: string;
+};
 export default class ModeloContratoPostgresRepository implements ModeloContratoRepository {
   async getById(id: number): Promise<ModeloContratoEntity> {
     try {
@@ -74,10 +81,13 @@ export default class ModeloContratoPostgresRepository implements ModeloContratoR
     }
   }
 
-  async getAll(): Promise<ModeloContratoEntity[]> {
+  async getAll(): Promise<AllModeloContrato[]> {
     try {
       const modeloContrato = await conn.query(
-        "SELECT id, cargo_id, modelo, numero_modelo FROM MODELOS_CONTRATO",
+        `SELECT mc.id, mc.cargo_id, mc.modelo, mc.numero_modelo , c.cargo
+FROM modelos_contrato mc
+inner join cargos c
+on mc.cargo_id = c.id`,
       );
 
       return modeloContrato.rows;
