@@ -16,49 +16,27 @@ export default class FolhaPagamentoService {
 
   async create(input: FolhaPagamentoInput) {
 
-    /*const somas: {
+    /*  const somas: {
           [funcionarioId: number]: Partial<ProcessarFolhaOutput>;
       } = {};
 
     input.data.forEach(obj => {
+
       const funcionarioId = obj.funcionario_id;
       if (!somas[funcionarioId]) {
         somas[funcionarioId] = { ...obj };
       } else {
         somas[funcionarioId].salario_base =
                   Number(somas[funcionarioId].salario_base) +
-                  Number(obj.salario_base);
-        somas[funcionarioId].valor_encargo_empresa =
-                  Number(somas[funcionarioId].valor_encargo_empresa) +
-                  Number(obj.valor_encargo_empresa);
-        somas[funcionarioId].valor_encargo_funcionario =
-                  Number(somas[funcionarioId].valor_encargo_funcionario) +
-                  Number(obj.valor_encargo_funcionario);
-        somas[funcionarioId].percentual_empresa =
-                  Number(somas[funcionarioId].percentual_empresa) +
-                  Number(obj.percentual_empresa);
-        somas[funcionarioId].percentual_provisao =
-                  Number(somas[funcionarioId].percentual_provisao) +
-                  Number(obj.percentual_provisao);
-
-        somas[funcionarioId].valor_descontar_convenio =
-                  Number(somas[funcionarioId].valor_descontar_convenio) +
-                  Number(obj.valor_descontar_convenio);
-        somas[funcionarioId].valor_pagar_convenio =
-                  Number(somas[funcionarioId].valor_pagar_convenio) +
-                  Number(obj.valor_pagar_convenio);
-        somas[funcionarioId].percentual_descontar_convenio =
-                  Number(somas[funcionarioId].percentual_descontar_convenio) +
-                  Number(obj.percentual_descontar_convenio);
+            Number(obj.salario_base);
       }
     });
 
     const somasArray: Partial<ProcessarFolhaOutput>[] = Object.values(somas);
 
+    return somasArray;*/
 
-    return somasArray;
-*/
-    const folhaBaseResult = await this.folhaBaseRepository.getAtivo();
+    /*    const folhaBaseResult = await this.folhaBaseRepository.getAtivo();
     const teste = {
       ano: input.folha_pagamento.ano,
       data_fechamento: input.folha_pagamento.data_fechamento,
@@ -75,6 +53,6 @@ export default class FolhaPagamentoService {
       teste,
     );
 
-    //return somasArray;
+    //return somasArray;*/
   }
 }

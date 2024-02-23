@@ -30,7 +30,7 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
 
 
       for await (const data of input) {
-        console.log(data);
+
         const folhaPagamentoFuncionario = await conn.query(
           `INSERT INTO folhas_pagamento_funcionarios (
                                 folha_pagamento_id,
@@ -56,7 +56,7 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
         );
           //folhaPagamentoFuncionarioOutput.push(folhaPagamentoFuncionario.rows[0]);
 
-        for await (const encargo of input.data.encargos) {
+        for await (const encargo of data.encargos) {
           const folhaPagamentoEncargo = await conn.query(
             `INSERT INTO folha_pagamentos_encargos (
                     folha_pagamento_funcionario_id,
@@ -74,37 +74,41 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
         }
 
 
-        /*   const folhaPagamentoProvisao = await conn.query(
-          `INSERT INTO folha_pagamentos_provisoes (
+        for await (const provisao of data.provisoes) {
+          const folhaPagamentoProvisao = await conn.query(
+            `INSERT INTO folha_pagamentos_provisoes (
                     provisao_id,
                     folha_pagamento_funcionario_id,
                     valor
                 )VALUES (
-                    ${data.provisao_id},
+                    ${provisao.provisao_id},
                     ${folhaPagamentoFuncionario.rows[0].id},
-                    ${data.percentual_provisao}
+                    ${provisao.percentual_provisao}
                 ) RETURNING *`,
-        );
+          );
           //folhaPagamentoProvisaoOutput.push(folhaPagamentoProvisao.rows[0]);
+        }
 
+        for await (const convenio of data.convenios) {
 
-        const folhaPagamentoConvenio =
+          const folhaPagamentoConvenio =
                 await conn.query(`INSERT INTO folha_pagamentos_convenios_cidades (
                 folha_pagamento_funcionario_id,
-convenio_cidade_id,
-valor_pago,
-valor_descontado
+                convenio_cidade_id,
+                valor_pago,
+                valor_descontado
                 ) VALUES (
                     ${folhaPagamentoFuncionario.rows[0].id},
-                    ${data.convenio_cidade_id},
-                    ${data.valor_pagar_convenio},
-                    ${data.valor_descontar_convenio},
+                    ${convenio.convenio_cidade_id},
+                    ${convenio.valor_pagar_convenio},
+                    ${convenio.valor_descontar_convenio}
                 ) RETURNING *`);
         // folhaPagamentoConvenioOutput.push(folhaPagamentoConvenio.rows[0]);
-        */
+        }
+
       }
 
-      // await conn.query("COMMIT");
+      await conn.query("COMMIT");
 
       /*
 
