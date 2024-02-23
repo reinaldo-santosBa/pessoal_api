@@ -1,6 +1,7 @@
 import AppError from "../../application/errors/AppError";
 import * as status from "../../constraints/http.stauts";
-import { ParamsProcessarFolha, ProcessarFolhaOutput, ProcessarFolhaPagamentoRepository } from "../../domain/repository/processar.folha.pagamento.repository";
+import { IFolhaPagamentoFuncionario } from "../../domain/repository/folha/folha.pagamento.repository";
+import { ParamsProcessarFolha, ProcessarFolhaPagamentoRepository } from "../../domain/repository/processar.folha.pagamento.repository";
 import conn from "../config/database.config";
 
 export default class ProcessarFolhaPagamentoPostgresRepository
@@ -8,7 +9,7 @@ implements ProcessarFolhaPagamentoRepository
 {
   async getAll(
     params: ParamsProcessarFolha,
-  ): Promise<any> {
+  ): Promise<IFolhaPagamentoFuncionario[]> {
     try {
       let whereFuncionarioId: string = "";
       if (params.funcionario_id) {

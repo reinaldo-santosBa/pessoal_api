@@ -1,13 +1,23 @@
 import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
-import { FolhaPagamentoRepository } from "../../../domain/repository/folha/folha.pagamento.repository";
+import FolhaPagamentoFuncionarioEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.funcionario";
+import { FolhaPagamentoRepository, OutputCreateFolhaPagamento, OutputFolhaPagamentoFuncionario, inputFolhaPagamento } from "../../../domain/repository/folha/folha.pagamento.repository";
 import conn from "../../config/database.config";
+
 export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoRepository {
-
-  async insert(input: any, teste: any): Promise<any> {
-
+  async insert({folha_pagamento, funcionarios}: inputFolhaPagamento): Promise<OutputCreateFolhaPagamento> {
     try {
       await conn.query("BEGIN");
+      const funcionarioOutput: OutputFolhaPagamentoFuncionario = {
+        folha_pagamento_funcionario:
+                    {} as FolhaPagamentoFuncionarioEntity,
+        encargos: [],
+        provisoes: [],
+        convenios: [],
+      };
+
+      const funcionariosOutput: OutputFolhaPagamentoFuncionario[] = [];
+
       const folhaPagamento = await conn.query(`INSERT INTO folhas_pagamento (
                                 empresa_id,
                                 mes,
@@ -18,19 +28,17 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                                 folha_base_id,
                                 empresa
                             ) VALUES (
-                        ${teste.empresa_id},
-                        ${teste.mes},
-                        ${teste.ano},
-                        ${teste.dias_uteis},
-                        '${teste.data_fechamento}',
-                        ${5000},
-                        ${teste.folha_base_id},
-                        '${teste.empresa}'
+                        ${folha_pagamento.empresa_id},
+                        ${folha_pagamento.mes},
+                        ${folha_pagamento.ano},
+                        ${folha_pagamento.dias_uteis},
+                        '${folha_pagamento.data_fechamento}',
+                        ${folha_pagamento.valor_folha},
+                        ${folha_pagamento.folha_base_id},
+                        '${folha_pagamento.empresa}'
                                     ) RETURNING *`);
 
-
-      for await (const data of input) {
-
+      for await (const data of funcionarios) {
         const folhaPagamentoFuncionario = await conn.query(
           `INSERT INTO folhas_pagamento_funcionarios (
                                 folha_pagamento_id,
@@ -43,7 +51,7 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                                 atrasos,
                                 salario_liquido
                                 ) VALUES (
-                                 ${folhaPagamento.rows[0].id},
+                                ${1},
                                  ${data.centro_resultado_folha_id},
                                  ${data.item_pcg_id},
                                  ${data.funcionario_id},
@@ -54,7 +62,9 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                                  100
                                 ) RETURNING *`,
         );
-          //folhaPagamentoFuncionarioOutput.push(folhaPagamentoFuncionario.rows[0]);
+
+        funcionarioOutput.folha_pagamento_funcionario =
+                    folhaPagamentoFuncionario.rows[0];
 
         for await (const encargo of data.encargos) {
           const folhaPagamentoEncargo = await conn.query(
@@ -70,9 +80,10 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                     ${encargo.valor_encargo_funcionario}
                 ) RETURNING *`,
           );
-        //folhaPagamentoEncargoOutput.push(folhaPagamentoEncargo.rows[0]);
+          funcionarioOutput.encargos.push(
+            folhaPagamentoEncargo.rows[0],
+          );
         }
-
 
         for await (const provisao of data.provisoes) {
           const folhaPagamentoProvisao = await conn.query(
@@ -86,13 +97,14 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                     ${provisao.percentual_provisao}
                 ) RETURNING *`,
           );
-          //folhaPagamentoProvisaoOutput.push(folhaPagamentoProvisao.rows[0]);
+          funcionarioOutput.provisoes.push(
+            folhaPagamentoProvisao.rows[0],
+          );
         }
 
         for await (const convenio of data.convenios) {
-
           const folhaPagamentoConvenio =
-                await conn.query(`INSERT INTO folha_pagamentos_convenios_cidades (
+                        await conn.query(`INSERT INTO folha_pagamentos_convenios_cidades (
                 folha_pagamento_funcionario_id,
                 convenio_cidade_id,
                 valor_pago,
@@ -103,26 +115,22 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                     ${convenio.valor_pagar_convenio},
                     ${convenio.valor_descontar_convenio}
                 ) RETURNING *`);
-        // folhaPagamentoConvenioOutput.push(folhaPagamentoConvenio.rows[0]);
+          funcionarioOutput.convenios.push(
+            folhaPagamentoConvenio.rows[0],
+          );
         }
 
+        funcionariosOutput.push(funcionarioOutput);
       }
 
       await conn.query("COMMIT");
-
-      /*
-
       return {
-        folhas_pagamento: folhaPagamento.rows[0],
-        folha_pagamentos_funcionarios: folhaPagamentoFuncionarioOutput,
-        folha_pagamentos_encargo: folhaPagamentoEncargoOutput,
-        folha_pagamentos_convenios_cidades: folhaPagamentoConvenioOutput,
-        folha_pagamentos_provisoes: folhaPagamentoProvisaoOutput
-      };*/
+        folha_pagamento: folhaPagamento.rows[0],
+        funcionarios: funcionariosOutput,
+      };
     } catch (error) {
       await conn.query("ROLLBACK");
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }
   }
-
 }

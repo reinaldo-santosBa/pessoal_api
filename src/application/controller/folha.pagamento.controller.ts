@@ -1,4 +1,5 @@
-import FolhaPagamentoService, { FolhaPagamentoInput } from "../service/folha.pagamento.service";
+import { inputFolhaPagamento } from "../../domain/repository/folha/folha.pagamento.repository";
+import FolhaPagamentoService from "../service/folha.pagamento.service";
 import { Request, Response } from "express";
 
 export default class FolhaPagamentoController {
@@ -7,7 +8,7 @@ export default class FolhaPagamentoController {
   ) {}
 
   async create(request: Request, response: Response) {
-    const input = request.body as FolhaPagamentoInput;
+    const input = request.body as inputFolhaPagamento;
     const folhaPagamento = await this.folhaPagamentoService.create(input);
 
     return response.json(folhaPagamento);
