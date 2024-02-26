@@ -27,8 +27,7 @@ export default class CargoPostgresRepository implements CargoRepository {
         CARGO,
         REMUNERACAO,
         COMISSAO_DIRETA,
-        COMISSAO_INDIRETA,
-        JORNADA_TRABALHO_ID
+        COMISSAO_INDIRETA
       FROM CARGOS WHERE ID = ${id}`);
 
       const atividades_cargos = await conn.query(`
@@ -60,14 +59,12 @@ export default class CargoPostgresRepository implements CargoRepository {
         CARGO,
         REMUNERACAO,
         COMISSAO_DIRETA,
-        COMISSAO_INDIRETA,
-        JORNADA_TRABALHO_ID
+        COMISSAO_INDIRETA
       )VALUES (
         '${input.cargo.props.cargo}',
         ${input.cargo.props.remuneracao ?? null},
         ${input.cargo.props.comissao_direta ?? null},
-        ${input.cargo.props.comissao_indireta ?? null},
-        ${input.cargo.props.jornada_trabalho_id ?? null}
+        ${input.cargo.props.comissao_indireta ?? null}
       ) RETURNING *`);
 
       for await (const cargo_atividade of input.cargo_atividades) {
@@ -96,12 +93,8 @@ export default class CargoPostgresRepository implements CargoRepository {
         c.CARGO,
         c.REMUNERACAO,
         c.COMISSAO_DIRETA,
-        c.COMISSAO_INDIRETA,
-        c.JORNADA_TRABALHO_ID,
-        jt.jornada_trabalho
-      FROM CARGOS c
-      inner join jornadas_trabalho jt
-      on jt.id = c.jornada_trabalho_id`);
+        c.COMISSAO_INDIRETA
+      FROM CARGOS c`);
       await conn.query("COMMIT");
       return cargos.rows;
     } catch (error) {
@@ -126,8 +119,7 @@ export default class CargoPostgresRepository implements CargoRepository {
                 SET CARGO = '${input.props.cargo}',
                     REMUNERACAO = ${input.props.remuneracao},
                     COMISSAO_DIRETA = ${input.props.comissao_direta},
-                    COMISSAO_INDIRETA = ${input.props.comissao_indireta},
-                    JORNADA_TRABALHO_ID = ${input.props.jornada_trabalho_id}
+                    COMISSAO_INDIRETA = ${input.props.comissao_indireta}
               WHERE ID = ${id} RETURNING *`);
       await conn.query("COMMIT");
       return cargo.rows[0];

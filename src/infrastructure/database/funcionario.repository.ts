@@ -57,7 +57,7 @@ export interface FuncionarioOutput {
   periculosidade: boolean;
   receber_transporte: boolean;
   contribuicao_sindical: boolean;
-  jornada_trabalho_id: string;
+  //jornada_trabalho_id: string;
   registrado: boolean;
   cargo: string;
   remuneracao: string;
@@ -151,12 +151,11 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
               PERICULOSIDADE,
               RECEBER_TRANSPORTE,
               CONTRIBUICAO_SINDICAL,
-              JORNADA_TRABALHO_ID,
               REGISTRADO
           )VALUES(
             ${newPessoa.rows[0].id},
             ${funcionario.props.empresa_id},
-            '${funcionario.props.empresa}',
+            ${funcionario.props.empresa ?? null},
             ${funcionario.props.cargo_id},
             '${funcionario.props.data_admissao}',
             '${funcionario.props.data_demissao ?? null}',
@@ -164,7 +163,6 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             ${funcionario.props.periculosidade},
             ${funcionario.props.receber_transporte},
             ${funcionario.props.contribuicao_sindical},
-            ${funcionario.props.jornada_trabalho_id},
             ${funcionario.props.registrado}
             ) RETURNING * `);
 
@@ -494,7 +492,6 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
             periculosidade = ${input.funcionario.props.periculosidade},
             receber_transporte = ${input.funcionario.props.receber_transporte},
             contribuicao_sindical = ${input.funcionario.props.contribuicao_sindical},
-            jornada_trabalho_id = ${input.funcionario.props.jornada_trabalho_id},
             registrado = ${input.funcionario.props.registrado}
         WHERE ID = ${id}`);
 

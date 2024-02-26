@@ -3,7 +3,7 @@ export type CargoProps = {
   remuneracao: number;
   comissao_direta: number;
   comissao_indireta: number;
-  jornada_trabalho_id: number;
+  //jornada_trabalho_id: number;
 }
 
 

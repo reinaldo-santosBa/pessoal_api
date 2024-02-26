@@ -27,7 +27,7 @@ routesHoraExtra.get("/hora_extra/:id", (req, res) =>
 );
 
 routesHoraExtra.put("/hora_extra/:id", (req, res) =>
-  horaExtraController.create(req, res),
+  horaExtraController.update(req, res),
 );
 
 routesHoraExtra.delete("/hora_extra/:id", (req, res) =>

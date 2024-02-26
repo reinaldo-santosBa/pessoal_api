@@ -8,7 +8,7 @@ export type FuncionarioProps = {
     periculosidade: boolean;
     receber_transporte: boolean;
     contribuicao_sindical: boolean;
-    jornada_trabalho_id?: number;
+  //  jornada_trabalho_id?: number;
     registrado: boolean;
 
     [key: string]: string | number | boolean | Date;

@@ -92,7 +92,7 @@ const schemaValidation = Joi.object({
     periculosidade: Joi.boolean(),
     receber_transporte: Joi.boolean(),
     contribuicao_sindical: Joi.boolean(),
-    jornada_trabalho_id: Joi.number().required(),
+    //    jornada_trabalho_id: Joi.number().required(),
     registrado: Joi.boolean(),
   },
   pessoa_fisica: {

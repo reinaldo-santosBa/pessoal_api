@@ -11,19 +11,21 @@ export default class ParametroPostgresRepository implements ParametroRepository 
     try {
       await conn.query("BEGIN");
       const parametro = await conn.query(`INSERT INTO parametros (
-                centro_resultado,
+                empresa_id,
+                empresa,
                 limite_hora_extra_diario,
                 limite_hora_extra_mensal,
                 fornecedor_agrupador_id,
                 insumo_mao_de_obra_id,
                 servico_folha_pagamento_id
             ) VALUES (
-                ${input.props.centro_resultado},
+                ${input.props.empresa_id},
+                '${input.props.empresa}',
                 ${input.props.limite_hora_extra_diario},
                 ${input.props.limite_hora_extra_mensal},
                 ${input.props.fornecedor_agrupador_id},
                 ${input.props.insumo_mao_de_obra_id},
-                ${input.props.servico_folha_pagamento_id},
+                ${input.props.servico_folha_pagamento_id}
             ) RETURNING *`);
 
       await conn.query("COMMIT");
@@ -48,9 +50,9 @@ export default class ParametroPostgresRepository implements ParametroRepository 
   async update(id: number, input: ParametroEntity): Promise<ParametroEntity> {
     try {
       await conn.query("BEGIN");
-      const parametro =
-          await conn.query(`UPDATE parametros SET
-                centro_resultado = ${input.props.centro_resultado},
+      const parametro = await conn.query(`UPDATE parametros SET
+                empresa_id = ${input.props.empresa_id},
+                empresa = '${input.props.empresa}',
                 limite_hora_extra_diario = ${input.props.limite_hora_extra_diario},
                 limite_hora_extra_mensal = ${input.props.limite_hora_extra_mensal},
                 fornecedor_agrupador_id = ${input.props.fornecedor_agrupador_id},

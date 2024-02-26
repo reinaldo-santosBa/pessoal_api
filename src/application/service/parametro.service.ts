@@ -1,5 +1,7 @@
 import ParametroEntity, { ParametroProps } from "../../domain/entity/parametro";
 import { ParametroRepository } from "../../domain/repository/parametro.repository";
+import AppError from "../errors/AppError";
+import * as status from "../../constraints/http.stauts";
 
 export default class ParametroSevice {
   constructor(private readonly parametroRepository: ParametroRepository) {}
@@ -12,6 +14,10 @@ export default class ParametroSevice {
 
   async getAll(): Promise<ParametroEntity[]>{
     const parametros = await this.parametroRepository.getAll();
+
+    if (!parametros) {
+      throw new AppError("Não encontrado nenhum parametro", status.NOT_FOUND);
+    }
     return parametros;
   }
 

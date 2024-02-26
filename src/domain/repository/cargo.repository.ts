@@ -8,7 +8,7 @@ export interface AllCargo {
     remuneracao: string;
     comissao_direta: string;
     comissao_indireta: string;
-    jornada_trabalho_id: string;
+    //jornada_trabalho_id: string;
     jornada_trabalho: string;
 }
 
