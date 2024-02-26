@@ -12,7 +12,6 @@ import TelefoneEntity from "../entity/telefones";
 
 
 export type Dependentes = {
-    pessoa: PessoaEntity;
     pessoa_fisica: PessoaFisicaEntity;
     dependente?: {
         tipo_dependente_id: number;

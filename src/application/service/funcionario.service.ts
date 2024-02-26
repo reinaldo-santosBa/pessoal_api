@@ -14,7 +14,6 @@ import * as status from "../../constraints/http.stauts";
 import ConvenioCidadeFuncionarioEntity, { ConvenioCidadeFuncionarioProps } from "../../domain/entity/convenio.cidade.funcionario";
 
 export type Dependentes = {
-    pessoa: PessoaProps;
     pessoa_fisica: PessoaFisicaProps;
     dependente: {
         tipo_dependente_id: number;
@@ -106,7 +105,6 @@ export default class FuncionarioService {
           new ConvenioCidadeFuncionarioEntity(convenio_cidade),
       ) : [],
       dependentes: dependentes ? dependentes.map(dep => ({
-        pessoa: new PessoaEntity(dep.pessoa),
         pessoa_fisica: new PessoaFisicaEntity(dep.pessoa_fisica),
         dependente: {
           tipo_dependente_id: dep.dependente.tipo_dependente_id

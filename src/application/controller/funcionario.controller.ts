@@ -51,9 +51,6 @@ const convenios_cidades_funcionarios = Joi.object({
 });
 
 const dependentesSchema = Joi.object({
-  pessoa: {
-    ativo: Joi.boolean().required(),
-  },
   pessoa_fisica: {
     nome: Joi.string().required(),
     cpf: Joi.string().min(11).max(11).required(),

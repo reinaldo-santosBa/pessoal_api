@@ -348,7 +348,7 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
       if (dependentes) {
         for await (const dependente of dependentes) {
           const pessoa_dependente =  await conn.query(
-            `INSERT INTO PESSOAS(ATIVO) VALUES(${dependente.pessoa.props.ativo}) RETURNING *`,
+            "INSERT INTO PESSOAS(ATIVO) VALUES(true) RETURNING *",
           );
 
           await conn.query(`INSERT INTO PESSOAS_FISICA(
