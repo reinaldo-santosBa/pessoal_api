@@ -37,11 +37,9 @@ export default class ParametroPostgresRepository implements ParametroRepository 
   async getAll(): Promise<ParametroEntity[]> {
     try {
       const parametros = await conn.query(
-        `SELECT centro_resultado,
-limite_hora_extra_diario,
-limite_hora_extra_mensal FROM parametros`,
+        "SELECT * FROM parametros",
       );
-      return parametros.rows;
+      return parametros.rows[0];
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
     }

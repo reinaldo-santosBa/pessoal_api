@@ -1,7 +1,7 @@
 import { inputFolhaPagamento } from "../../domain/repository/folha/folha.pagamento.repository";
 import FolhaPagamentoService from "../service/folha.pagamento.service";
 import { Request, Response } from "express";
-
+import * as status from "../../constraints/http.stauts";
 export default class FolhaPagamentoController {
   constructor(
         private readonly folhaPagamentoService: FolhaPagamentoService,
@@ -11,6 +11,6 @@ export default class FolhaPagamentoController {
     const input = request.body as inputFolhaPagamento;
     const folhaPagamento = await this.folhaPagamentoService.create(input);
 
-    return response.json(folhaPagamento);
+    return response.status(status.CREATED).json(folhaPagamento);
   }
 }

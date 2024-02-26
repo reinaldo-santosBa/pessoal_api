@@ -50,6 +50,34 @@ const convenios_cidades_funcionarios = Joi.object({
   convenio_cidade_id: Joi.number().required(),
 });
 
+const dependentesSchema = Joi.object({
+  pessoa: {
+    ativo: Joi.boolean().required(),
+  },
+  pessoa_fisica: {
+    nome: Joi.string().required(),
+    cpf: Joi.string().min(11).max(11).required(),
+    carteira_trabalho: Joi.string().allow(null).optional(),
+    pis: Joi.number().allow(null).optional(),
+    titulo_eleitor: Joi.string().allow(null).optional(),
+    zona_titulo_eleitor: Joi.string().allow(null).optional(),
+    nascimento: Joi.date().allow(null).optional(),
+    nome_mae: Joi.string().allow(null).optional(),
+    orgao_expeditor: Joi.string().allow(null).optional(),
+    rg: Joi.string().allow(null).optional(),
+    nome_pai: Joi.string().allow(null).optional(),
+    naturalidade_id: Joi.number().allow(null).optional(),
+    nacionalidade_id: Joi.number().allow(null).optional(),
+    estado_civil_id: Joi.number().allow(null).optional(),
+    genero_id: Joi.number().allow(null).optional(),
+    pcd_id: Joi.number().allow(null).optional(),
+  },
+  dependente: {
+    tipo_dependente_id: Joi.number().required(),
+  },
+});
+
+
 const schemaValidation = Joi.object({
   pessoa: {
     ativo: Joi.boolean().required(),
@@ -95,6 +123,7 @@ const schemaValidation = Joi.object({
   convenios_cidades_funcionarios: Joi.array().items(
     convenios_cidades_funcionarios,
   ),
+  dependentes: Joi.array().items(dependentesSchema).optional(),
 });
 
 

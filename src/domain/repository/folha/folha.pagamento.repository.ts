@@ -1,21 +1,3 @@
-import FolhaPagamentoEntity from "../../entity/folha_pagamento/folha.pagamento";
-import FolhaPagamentoConvenioEntity from "../../entity/folha_pagamento/folha.pagamento.convenio";
-import FolhaPagamentoEncargoEntity from "../../entity/folha_pagamento/folha.pagamento.encargo";
-import FolhaPagamentoFuncionarioEntity from "../../entity/folha_pagamento/folha.pagamento.funcionario";
-import FolhaPagamentoProvisaoEntity from "../../entity/folha_pagamento/folha.pagamento.provisao";
-
-export interface OutputFolhaPagamentoFuncionario {
-    folha_pagamento_funcionario: FolhaPagamentoFuncionarioEntity;
-    encargos: FolhaPagamentoEncargoEntity[];
-    provisoes: FolhaPagamentoProvisaoEntity[];
-    convenios: FolhaPagamentoConvenioEntity[];
-}
-
-export type OutputCreateFolhaPagamento = {
-    folha_pagamento: FolhaPagamentoEntity;
-    funcionarios: OutputFolhaPagamentoFuncionario[];
-};
-
 export type InputFolhaPagamento = {
     empresa_id?: number;
     mes: number;
@@ -25,6 +7,8 @@ export type InputFolhaPagamento = {
     valor_folha?: number;
     folha_base_id?: number;
     empresa?: string;
+    registrado?: boolean;
+    centro_resultado_id?: number
 };
 
 export type inputFolhaPagamento = {
@@ -82,5 +66,5 @@ export interface FolhaPagamentoRepository {
     insert({
       folha_pagamento,
       funcionarios,
-    }: inputFolhaPagamento): Promise<OutputCreateFolhaPagamento>;
+    }: inputFolhaPagamento): Promise<void>;
 }

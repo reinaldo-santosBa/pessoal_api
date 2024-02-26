@@ -13,7 +13,7 @@ import FuncionarioEntity from "../../domain/entity/funcionario";
 import PessoaEntity from "../../domain/entity/pessoa";
 import PessoaFisicaEntity from "../../domain/entity/pessoa.fisica";
 import api from "../services/api";
-import { formatCPF } from "../../utils/formatCPF";
+import { formatDocument } from "../../utils/format-document";
 
 export interface AllFuncionariosOutput {
   id: number;
@@ -85,8 +85,10 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
     rateios,
     centro_resultado_id,
     convenios_cidades_funcionarios,
+    dependentes
   }: IInput): Promise<any> {
     try {
+
       await conn.query("BEGIN");
       const emailsOutput: EmailEntity[] = [];
       const telefonesOutput: TelefoneEntity[] = [];
@@ -121,13 +123,13 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
           )VALUES(
             ${newPessoa.rows[0].id},
             '${pessoa_fisica.props.nome}',
-            '${formatCPF(pessoa_fisica.props.cpf)}',
-            '${pessoa_fisica.props.rg}',
-            '${pessoa_fisica.props.orgao_expeditor}',
-            '${pessoa_fisica.props.carteira_trabalho}',
-            '${pessoa_fisica.props.pis}',
-            '${pessoa_fisica.props.titulo_eleitor}',
-            '${pessoa_fisica.props.zona_titulo_eleitor}',
+            '${formatDocument(pessoa_fisica.props.cpf)}',
+            '${formatDocument(pessoa_fisica.props.rg ?? null)}',
+            '${pessoa_fisica.props.orgao_expeditor ?? null}',
+            '${pessoa_fisica.props.carteira_trabalho ?? null}',
+            '${pessoa_fisica.props.pis ?? null}',
+            '${pessoa_fisica.props.titulo_eleitor ?? null}',
+            '${pessoa_fisica.props.zona_titulo_eleitor ?? null}',
             ${pessoa_fisica.props.nacionalidade_id ?? null},
             '${pessoa_fisica.props.nome_mae ?? null}',
             '${pessoa_fisica.props.nome_pai ?? null}',
@@ -345,8 +347,71 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         }
       }
 
+      if (dependentes) {
+        for await (const dependente of dependentes) {
+          const pessoa_dependente =  await conn.query(
+            `INSERT INTO PESSOAS(ATIVO) VALUES(${dependente.pessoa.props.ativo}) RETURNING *`,
+          );
+
+          await conn.query(`INSERT INTO PESSOAS_FISICA(
+          ID,
+          NOME,
+          CPF,
+          RG,
+          ORGAO_EXPEDITOR,
+          CARTEIRA_TRABALHO,
+          PIS,
+          TITULO_ELEITOR,
+          ZONA_TITULO_ELEITOR,
+          NACIONALIDADE_ID,
+          NOME_MAE,
+          NOME_PAI,
+          NATURALIDADE_ID,
+          NASCIMENTO,
+          ESTADO_CIVIL_ID,
+          GENERO_ID,
+          PCD_ID
+          )VALUES(
+            ${pessoa_dependente.rows[0].id},
+            '${dependente.pessoa_fisica.props.nome}',
+            '${formatDocument(dependente.pessoa_fisica.props.cpf)}',
+            '${formatDocument(dependente.pessoa_fisica.props.rg) ?? null}',
+            '${dependente.pessoa_fisica.props.orgao_expeditor ?? null}',
+            '${dependente.pessoa_fisica.props.carteira_trabalho ?? null}',
+            '${dependente.pessoa_fisica.props.pis ?? null}',
+            '${dependente.pessoa_fisica.props.titulo_eleitor ?? null}',
+            '${dependente.pessoa_fisica.props.zona_titulo_eleitor ?? null}',
+            ${dependente.pessoa_fisica.props.nacionalidade_id ?? null},
+            '${dependente.pessoa_fisica.props.nome_mae ?? null}',
+            '${dependente.pessoa_fisica.props.nome_pai ?? null}',
+            ${dependente.pessoa_fisica.props.naturalidade_id ?? null},
+            '${dependente.pessoa_fisica.props.nascimento ?? null}',
+            ${dependente.pessoa_fisica.props.estado_civil_id ?? null},
+            ${dependente.pessoa_fisica.props.genero_id ?? null},
+            ${dependente.pessoa_fisica.props.pcd_id ?? null}
+        ) RETURNING * `);
+          await conn.query(
+            `INSERT INTO dependentes (
+                id,
+                funcionario_id,
+                tipo_dependente_id
+                  ) VALUES (
+                        $1,
+                        $2,
+                        $3
+                  ) RETURNING *`,
+            [
+              pessoa_dependente.rows[0].id,
+              newFuncionario.rows[0].id,
+              dependente.dependente.tipo_dependente_id,
+            ],
+          );
+
+        }
+      }
+
       const funcionarioExisting = await api.get(
-        `/funcionario/${formatCPF(pessoa_fisica.props.cpf)}`,
+        `/funcionario/${formatDocument(pessoa_fisica.props.cpf)}`,
       );
 
       if (!funcionarioExisting.data) {
@@ -360,19 +425,13 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
                                                                             on c.estado_id  = e.id
                                                                             WHERE PESSOA_ID = ${newFuncionario.rows[0].id} and principal = true`);
 
-        /*      const sexo = await conn.query(`select g.genero from pessoas_fisica pf
-inner join generos g
-on pf.genero_id = g.id
-where pf.id  = ${newFuncionario.rows[0].id}`);
 
-        const teste = sexo.rows[0].genero.charAt(0) as string;
-*/
         const forn_cod = await api.post("/funcionario", {
           uf: enderecoPrincipal.rows[0].uf,
           cidade: enderecoPrincipal.rows[0].cidade,
           sexo: "M",
           nome: pessoa_fisica.props.nome,
-          cpf: formatCPF(pessoa_fisica.props.cpf)
+          cpf: formatDocument(pessoa_fisica.props.cpf),
         });
 
         await conn.query(

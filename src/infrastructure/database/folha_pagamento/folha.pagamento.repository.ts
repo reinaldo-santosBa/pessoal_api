@@ -1,22 +1,12 @@
 import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
-import FolhaPagamentoFuncionarioEntity from "../../../domain/entity/folha_pagamento/folha.pagamento.funcionario";
-import { FolhaPagamentoRepository, OutputCreateFolhaPagamento, OutputFolhaPagamentoFuncionario, inputFolhaPagamento } from "../../../domain/repository/folha/folha.pagamento.repository";
+import { FolhaPagamentoRepository, inputFolhaPagamento } from "../../../domain/repository/folha/folha.pagamento.repository";
 import conn from "../../config/database.config";
 
 export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoRepository {
-  async insert({folha_pagamento, funcionarios}: inputFolhaPagamento): Promise<OutputCreateFolhaPagamento> {
+  async insert({folha_pagamento, funcionarios}: inputFolhaPagamento): Promise<void> {
     try {
       await conn.query("BEGIN");
-      const funcionarioOutput: OutputFolhaPagamentoFuncionario = {
-        folha_pagamento_funcionario:
-                    {} as FolhaPagamentoFuncionarioEntity,
-        encargos: [],
-        provisoes: [],
-        convenios: [],
-      };
-
-      const funcionariosOutput: OutputFolhaPagamentoFuncionario[] = [];
 
       const folhaPagamento = await conn.query(`INSERT INTO folhas_pagamento (
                                 empresa_id,
@@ -51,7 +41,7 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                                 atrasos,
                                 salario_liquido
                                 ) VALUES (
-                                ${1},
+                                ${folhaPagamento.rows[0].id},
                                  ${data.centro_resultado_folha_id},
                                  ${data.item_pcg_id},
                                  ${data.funcionario_id},
@@ -63,12 +53,10 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                                 ) RETURNING *`,
         );
 
-        funcionarioOutput.folha_pagamento_funcionario =
-                    folhaPagamentoFuncionario.rows[0];
-
-        for await (const encargo of data.encargos) {
-          const folhaPagamentoEncargo = await conn.query(
-            `INSERT INTO folha_pagamentos_encargos (
+        if (data.encargos) {
+          for await (const encargo of data.encargos) {
+            await conn.query(
+              `INSERT INTO folha_pagamentos_encargos (
                     folha_pagamento_funcionario_id,
                     encargo_id,
                     valor_empresa,
@@ -79,15 +67,14 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                     ${encargo.valor_encargo_empresa},
                     ${encargo.valor_encargo_funcionario}
                 ) RETURNING *`,
-          );
-          funcionarioOutput.encargos.push(
-            folhaPagamentoEncargo.rows[0],
-          );
+            );
+          }
         }
 
-        for await (const provisao of data.provisoes) {
-          const folhaPagamentoProvisao = await conn.query(
-            `INSERT INTO folha_pagamentos_provisoes (
+        if (data.provisoes) {
+          for await (const provisao of data.provisoes) {
+            await conn.query(
+              `INSERT INTO folha_pagamentos_provisoes (
                     provisao_id,
                     folha_pagamento_funcionario_id,
                     valor
@@ -96,15 +83,14 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                     ${folhaPagamentoFuncionario.rows[0].id},
                     ${provisao.percentual_provisao}
                 ) RETURNING *`,
-          );
-          funcionarioOutput.provisoes.push(
-            folhaPagamentoProvisao.rows[0],
-          );
+            );
+          }
         }
 
-        for await (const convenio of data.convenios) {
-          const folhaPagamentoConvenio =
-                        await conn.query(`INSERT INTO folha_pagamentos_convenios_cidades (
+
+        if (data.convenios) {
+          for await (const convenio of data.convenios) {
+            await conn.query(`INSERT INTO folha_pagamentos_convenios_cidades (
                 folha_pagamento_funcionario_id,
                 convenio_cidade_id,
                 valor_pago,
@@ -115,19 +101,13 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                     ${convenio.valor_pagar_convenio},
                     ${convenio.valor_descontar_convenio}
                 ) RETURNING *`);
-          funcionarioOutput.convenios.push(
-            folhaPagamentoConvenio.rows[0],
-          );
+          }
         }
 
-        funcionariosOutput.push(funcionarioOutput);
       }
 
       await conn.query("COMMIT");
-      return {
-        folha_pagamento: folhaPagamento.rows[0],
-        funcionarios: funcionariosOutput,
-      };
+
     } catch (error) {
       await conn.query("ROLLBACK");
       throw new AppError(error.message, status.INTERNAL_SERVER);

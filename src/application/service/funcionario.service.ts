@@ -13,6 +13,14 @@ import AppError from "../errors/AppError";
 import * as status from "../../constraints/http.stauts";
 import ConvenioCidadeFuncionarioEntity, { ConvenioCidadeFuncionarioProps } from "../../domain/entity/convenio.cidade.funcionario";
 
+export type Dependentes = {
+    pessoa: PessoaProps;
+    pessoa_fisica: PessoaFisicaProps;
+    dependente: {
+        tipo_dependente_id: number;
+    }
+};
+
 export type IInputProps = {
     pessoa: PessoaProps;
     funcionario: FuncionarioProps;
@@ -24,7 +32,8 @@ export type IInputProps = {
     centro_resultado_id: number;
     rateios: RateioCentroResultadoProps[];
     atividades_funcionarios?: AtividadeFuncionarioProps[];
-    convenios_cidades_funcionarios?: ConvenioCidadeFuncionarioProps[]
+    convenios_cidades_funcionarios?: ConvenioCidadeFuncionarioProps[],
+    dependentes?: Dependentes[]
 };
 
 export type FuncionarioUpdateProps = {
@@ -52,6 +61,7 @@ export default class FuncionarioService {
     centro_resultado_id,
     atividades_funcionarios,
     convenios_cidades_funcionarios,
+    dependentes,
   }: IInputProps): Promise<IInput> {
     if (!centro_resultado_id) {
       throw new AppError(
@@ -80,23 +90,29 @@ export default class FuncionarioService {
       pessoa: new PessoaEntity(pessoa),
       funcionario: new FuncionarioEntity(funcionario),
       pessoa_fisica: new PessoaFisicaEntity(pessoa_fisica),
-      enderecos: enderecos.map(endereco => new EnderecoEntity(endereco)),
-      emails: emails.map(email => new EmailEntity(email)),
-      telefones: telefones.map(telefone => new TelefoneEntity(telefone)),
-      contas_bancarias: contas_bancarias.map(
+      enderecos: enderecos ? enderecos.map(endereco => new EnderecoEntity(endereco)) : [],
+      emails: emails ? emails.map(email => new EmailEntity(email)) : [],
+      telefones: telefones ? telefones.map(telefone => new TelefoneEntity(telefone)) : [],
+      contas_bancarias: contas_bancarias ? contas_bancarias.map(
         conta_bancaria => new ContaBancariaEntity(conta_bancaria),
-      ),
-      rateios: rateios.map(
-        rateio => new RateioCentroResultadoEntity(rateio),
-      ),
+      ) : [],
+      rateios: rateios ? rateios.map(rateio => new RateioCentroResultadoEntity(rateio)) : [],
       centro_resultado_id,
-      atividades_funcionarios: atividades_funcionarios.map(
+      atividades_funcionarios: atividades_funcionarios ? atividades_funcionarios.map(
         atividade => new AtividadeFuncionarioEntity(atividade),
-      ),
-      convenios_cidades_funcionarios: convenios_cidades_funcionarios.map(
+      ) : [],
+      convenios_cidades_funcionarios: convenios_cidades_funcionarios ? convenios_cidades_funcionarios.map(
         convenio_cidade =>
           new ConvenioCidadeFuncionarioEntity(convenio_cidade),
-      ),
+      ) : [],
+      dependentes: dependentes ? dependentes.map(dep => ({
+        pessoa: new PessoaEntity(dep.pessoa),
+        pessoa_fisica: new PessoaFisicaEntity(dep.pessoa_fisica),
+        dependente: {
+          tipo_dependente_id: dep.dependente.tipo_dependente_id
+        },
+      }))
+        : [],
     });
 
     return funcionarioResponse;
@@ -114,7 +130,7 @@ export default class FuncionarioService {
     centro_resultado_id?: number,
   ): Promise<AllFuncionariosOutput[]> {
     const funcionarios =
-        await this.funcionarioRepository.getAll(centro_resultado_id);
+            await this.funcionarioRepository.getAll(centro_resultado_id);
     return funcionarios;
   }
 
