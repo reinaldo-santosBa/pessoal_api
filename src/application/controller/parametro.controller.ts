@@ -20,16 +20,14 @@ export default class ParametroController {
 
 
   async update(request: Request, response: Response) {
-    const id = request.params.id;
     const input = request.body as ParametroProps;
 
-    const parametro = await this.parametroService.update(+id, input);
+    const parametro = await this.parametroService.update(input);
     return response.json(parametro);
   }
 
   async delete(request: Request, response: Response) {
-    const id = request.params.id;
-    await this.parametroService.delete(+id);
+    await this.parametroService.delete();
     return response.status(status.NO_CONTENT).json();
   }
 }

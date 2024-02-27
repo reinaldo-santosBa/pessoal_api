@@ -47,7 +47,7 @@ export default class ParametroPostgresRepository implements ParametroRepository 
     }
   }
 
-  async update(id: number, input: ParametroEntity): Promise<ParametroEntity> {
+  async update(input: ParametroEntity): Promise<ParametroEntity> {
     try {
       await conn.query("BEGIN");
       const parametro = await conn.query(`UPDATE parametros SET
@@ -57,8 +57,7 @@ export default class ParametroPostgresRepository implements ParametroRepository 
                 limite_hora_extra_mensal = ${input.props.limite_hora_extra_mensal},
                 fornecedor_agrupador_id = ${input.props.fornecedor_agrupador_id},
                 insumo_mao_de_obra_id = ${input.props.insumo_mao_de_obra_id},
-                servico_folha_pagamento_id = ${input.props.servico_folha_pagamento_id}
-            WHERE ID = ${id} RETURNING *`);
+                servico_folha_pagamento_id = ${input.props.servico_folha_pagamento_id} RETURNING *`);
 
       await conn.query("COMMIT");
       return parametro.rows[0];
@@ -68,10 +67,10 @@ export default class ParametroPostgresRepository implements ParametroRepository 
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(): Promise<void> {
     try {
       await conn.query("BEGIN");
-      await conn.query(`DELETE FROM PARAMETROS WHERE ID = ${id}`);
+      await conn.query("DELETE FROM PARAMETROS");
       await conn.query("COMMIT");
     } catch (error) {
       await conn.query("ROLLBACK");

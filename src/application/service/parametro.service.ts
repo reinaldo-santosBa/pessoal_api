@@ -21,13 +21,13 @@ export default class ParametroSevice {
     return parametros;
   }
 
-  async update(id: number, input: ParametroProps): Promise<ParametroEntity>{
+  async update(input: ParametroProps): Promise<ParametroEntity>{
     const parametroEntity = new ParametroEntity(input);
-    const parametro = await this.parametroRepository.update(id, parametroEntity);
+    const parametro = await this.parametroRepository.update(parametroEntity);
     return parametro;
   }
 
-  async delete(id: number): Promise<void> {
-    await this.parametroRepository.delete(id);
+  async delete(): Promise<void> {
+    await this.parametroRepository.delete();
   }
 }

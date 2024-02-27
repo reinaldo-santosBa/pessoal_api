@@ -21,6 +21,7 @@ const enderecoSchema = Joi.object({
   tipo_endereco_id: Joi.number().allow(null).optional(),
   tipo_logradouro_id: Joi.number().allow(null).optional(),
   bairro_id: Joi.number().allow(null).optional(),
+  bairro: Joi.string().required(),
   principal: Joi.boolean().optional(),
 });
 
@@ -37,7 +38,6 @@ const contasBancariasSchema = Joi.object({
 });
 
 const rateiosSchema = Joi.object({
-  //rateio_id: Joi.number().required(),
   centro_resultado_id: Joi.number().required(),
   centro_resultado: Joi.string().required(),
   percentual: Joi.number().required(),
@@ -90,7 +90,6 @@ const schemaValidation = Joi.object({
     periculosidade: Joi.boolean(),
     receber_transporte: Joi.boolean(),
     contribuicao_sindical: Joi.boolean(),
-    //    jornada_trabalho_id: Joi.number().required(),
     registrado: Joi.boolean(),
   },
   pessoa_fisica: {
