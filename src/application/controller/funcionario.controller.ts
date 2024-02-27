@@ -21,6 +21,7 @@ const enderecoSchema = Joi.object({
   tipo_endereco_id: Joi.number().allow(null).optional(),
   tipo_logradouro_id: Joi.number().allow(null).optional(),
   bairro_id: Joi.number().allow(null).optional(),
+  principal: Joi.boolean().optional(),
 });
 
 
@@ -36,7 +37,7 @@ const contasBancariasSchema = Joi.object({
 });
 
 const rateiosSchema = Joi.object({
-  rateio_id: Joi.number().required(),
+  //rateio_id: Joi.number().required(),
   centro_resultado_id: Joi.number().required(),
   centro_resultado: Joi.string().required(),
   percentual: Joi.number().required(),

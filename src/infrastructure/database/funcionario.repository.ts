@@ -182,8 +182,8 @@ export default class FuncionarioPostgresRepository implements FuncionarioReposit
         `INSERT INTO RATEIOS (funcionario_id) VALUES (${newPessoa.rows[0].id}) RETURNING *`,
       );
 
-      const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] =
-                [];
+      const rateioCentroResultadoOutput: RateioCentroResultadoEntity[] = [];
+
       for await (const rateio of rateios) {
         const rateioResult =
                     await conn.query(`INSERT INTO rateios_centros_resultado (
