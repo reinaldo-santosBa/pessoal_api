@@ -15,8 +15,26 @@ funcionarioCentroResultadoRoutes.post(
 );
 
 funcionarioCentroResultadoRoutes.get(
-  "/funcionario_centro_resultado/:funcionario_id",
+  "/funcionario_centro_resultado/funcionario/:funcionario_id",
   (req, res) => funcionarioCentroResultadoController.getAllByFuncionarioId(req, res),
+);
+
+funcionarioCentroResultadoRoutes.get(
+  "/funcionario_centro_resultado/centro_resultado/:funcionario_id",
+  (req, res) =>
+    funcionarioCentroResultadoController.getAllByCentroResultadoId(req, res),
+);
+
+funcionarioCentroResultadoRoutes.get(
+  "/funcionario_centro_resultado/:id",
+  (req, res) =>
+    funcionarioCentroResultadoController.getById(req, res),
+);
+
+funcionarioCentroResultadoRoutes.get(
+  "/funcionario_centro_resultado",
+  (req, res) =>
+    funcionarioCentroResultadoController.getAll(req, res),
 );
 
 funcionarioCentroResultadoRoutes.delete(
