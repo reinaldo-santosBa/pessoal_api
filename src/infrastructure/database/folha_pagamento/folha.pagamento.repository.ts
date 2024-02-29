@@ -103,7 +103,6 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
                 ) RETURNING *`);
           }
         }
-
       }
 
       await conn.query("COMMIT");
