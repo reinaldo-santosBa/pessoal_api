@@ -1,8 +1,8 @@
 export type HoraExtraProps = {
   funcionario_id: number;
   solicitante_id: number;
-  data_solicitacao: Date;
-  data_extra: Date;
+  data_solicitacao: string;
+  data_extra: string;
   horas_extras: number;
   observacao: string;
   autorizado_por: number;

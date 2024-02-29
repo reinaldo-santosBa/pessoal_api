@@ -23,6 +23,9 @@ export default class AdvertenciaController {
   async update(request: Request, response: Response) {
     const input = request.body as AdvertenciaProps;
     const id = request.params.id;
+    console.log("====================================");
+    console.log({ input ,id});
+    console.log("====================================");
 
     const updateAdvertencia = await this.advertenciaService.update(+id, input);
     return response.json(updateAdvertencia);
