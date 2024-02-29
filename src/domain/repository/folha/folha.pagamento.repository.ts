@@ -62,6 +62,37 @@ export interface IConvenio {
     percentual_descontar_convenio: number;
 }
 
+export type TransacaoContasPagar = {
+    TRPG_EMPR_COD: number;
+    TRPG_FORN_COD: number;
+    TRPG_DTEMIS: number;
+    TRPG_VALBRUTO: number;
+    TRPG_DTORIGEM: number;
+    TRPG_FOME_COD: number;
+};
+
+export type TransacaoParcelasContasPagar = {
+    TRPP_VALPREV: number;
+    TRPP_ITPC_COD: number;
+    TRPP_OBS: string;
+    TRPP_DTVENC: Date;
+    TRPP_DTEMIS: Date;
+    TRPP_CERE_COD: number;
+    TRPP_SIGLA: string;
+    TRPP_DTPREV: Date;
+};
+
+export type TransacaoLog = {
+    LOTP_USUA_COD: number;
+};
+
+export type InputGerarContasPagar = {
+    transacao?: TransacaoContasPagar;
+    transacao_parcelas?: TransacaoParcelasContasPagar[];
+    log_transacao?: TransacaoLog;
+};
+
+
 export interface FolhaPagamentoRepository {
     insert({
       folha_pagamento,

@@ -2,7 +2,6 @@ import AppError from "../../../application/errors/AppError";
 import * as status from "../../../constraints/http.stauts";
 import { FolhaPagamentoRepository, inputFolhaPagamento } from "../../../domain/repository/folha/folha.pagamento.repository";
 import conn from "../../config/database.config";
-
 export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoRepository {
   async insert({folha_pagamento, funcionarios}: inputFolhaPagamento): Promise<void> {
     try {
@@ -104,6 +103,24 @@ export default class FolhaPagamentoPostgresRepository implements FolhaPagamentoR
           }
         }
       }
+      /* const transacao_parcelas_dados: TransacaoParcelasContasPagar[] = [];
+
+      const contas_pagar_dados: InputGerarContasPagar = {
+        transacao: {
+              TRPG_DTEMIS: ,
+              TRPG_DTORIGEM: ,
+              TRPG_EMPR_COD: ,
+              TRPG_FOME_COD: ,
+              TRPG_FORN_COD: ,
+              TRPG_VALBRUTO: ,
+        },
+        transacao_parcelas: transacao_parcelas_dados,
+        log_transacao: {
+          LOTP_USUA_COD: 1
+        }
+      };
+      await api.post("/gerar_contas_pagar", contas_pagar_dados);
+*/
 
       await conn.query("COMMIT");
 
