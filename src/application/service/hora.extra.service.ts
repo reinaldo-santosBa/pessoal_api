@@ -27,9 +27,10 @@ export default class HoraExtraService {
       }
     }
 
-    const limiteHoraExtra = await this.horaExtraRepository.getLimiteHoras(
-      input.funcionario_id,
-    );
+    const limiteHoraExtra = await this.horaExtraRepository.getLimiteHoras();
+    if (!limiteHoraExtra) {
+      throw new AppError("preencha a tabela de parametros gerais", status.BAD_REQUEST);
+    }
 
     if (input.horas_extras > limiteHoraExtra.limite_hora_extra_diario) {
       throw new AppError(

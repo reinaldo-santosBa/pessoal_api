@@ -21,9 +21,10 @@ he.autorizado_por,
 he.data_autorizacao,
 he.status_solicitacao_id,
 ss.status_solicitacao ,
-pf.nome
+pf.nome,
+he.id as id_hora_extra
 from horas_extras he inner join pessoas_fisica pf on pf.id  = he.funcionario_id
-inner join status_solicitacoes ss on ss.id = he.status_solicitacao_id `);
+inner join status_solicitacoes ss on ss.id = he.status_solicitacao_id`);
       return statusSolicitacao.rows;
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);
@@ -42,7 +43,7 @@ inner join status_solicitacoes ss on ss.id = he.status_solicitacao_id `);
 from status_solicitacoes ss
 inner join horas_extras she
 on ss.id = she.status_solicitacao_id
-where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Aprovado' and she.data_extra = '${data_extra}'`,
+where she.funcionario_id =  ${funcionario_id} and ss.id  = 2  and she.data_extra = '${data_extra}'`,
       );
 
       return statusSolicitacao.rows[0];
@@ -54,6 +55,7 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
   async insert(input: HoraExtraEntity): Promise<HoraExtraEntity> {
     try {
       await conn.query("BEGIN");
+
       const solicitacaoHoraExtra = await conn.query(
         `INSERT INTO horas_extras (
                         funcionario_id,
@@ -69,12 +71,12 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
                   ${input.props.funcionario_id},
                   ${input.props.solicitante_id},
                   '${input.props.data_solicitacao}',
-                  '${input.props.data_extra}',
+                  '${input.props.data_extra ?? null}',
                   ${input.props.horas_extras},
-                  '${input.props.observacao}',
-                  ${input.props.autorizado_por},
-                  '${input.props.data_autorizacao ?? new Date()}',
-                  ${input.props.status_solicitacao_id}
+                  '${input.props.observacao ?? null}',
+                  ${input.props.autorizado_por ?? null},
+                  '${input.props.data_autorizacao ?? null}',
+                  ${input.props.status_solicitacao_id ?? 1}
                 ) RETURNING *`,
       );
 
@@ -123,15 +125,20 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
   async update(id: number, input: HoraExtraEntity): Promise<HoraExtraEntity> {
     try {
       await conn.query("BEGIN");
+
       const solicitacaoHoraExtra = await conn.query(
         `UPDATE horas_extras
-                  SET solicitante_id = ${input.props.solicitante_id},
-                      data_solicitacao = '${input.props.data_solicitacao}',
-                      data_extra = '${input.props.data_extra}',
-                      horas_extras = '${input.props.horas_extras},
-                      observacao = '${input.props.observacao}',
-                      autorizado_por = ${input.props.autorizado_por},
-                      data_autorizacao = '${input.props.data_autorizacao}'
+                  SET
+                    funcionario_id = ${input.props.funcionario_id},
+                    status_solicitacao_id = ${input.props.status_solicitacao_id},
+                    solicitante_id = ${input.props.solicitante_id},
+                    data_solicitacao = '${input.props.data_solicitacao}',
+                    data_extra = '${input.props.data_extra}',
+                    horas_extras = ${input.props.horas_extras},
+                    observacao = '${input.props.observacao}',
+                    autorizado_por = ${input.props.autorizado_por},
+                    data_autorizacao = '${input.props.data_autorizacao}'
+                WHERE ID = ${id}
             RETURNING *`,
       );
       await conn.query("COMMIT");
@@ -155,14 +162,10 @@ where she.funcionario_id =  ${funcionario_id} and ss.status_solicitacao  = 'Apro
     }
   }
 
-  async getLimiteHoras(funcionario_id: number): Promise<LimiteHorasOutput> {
+  async getLimiteHoras(): Promise<LimiteHorasOutput> {
     try {
-      const limiteHoras =
-                await conn.query(`select p.limite_hora_extra_diario , p.limite_hora_extra_mensal
-from parametros as p
-inner join funcionarios_centros_resultado as fcr
-on p.centro_resultado  = fcr.centro_resultado_id
-where fcr.funcionario_id  = ${funcionario_id} and fcr.data_fim_trabalho  is null`);
+      const limiteHoras = await conn.query(`select p.limite_hora_extra_diario , p.limite_hora_extra_mensal
+from parametros as p`);
       return limiteHoras.rows[0];
     } catch (error) {
       throw new AppError(error.message, status.INTERNAL_SERVER);

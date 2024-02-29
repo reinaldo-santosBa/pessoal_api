@@ -5,12 +5,13 @@ import { FuncionarioCentroResultadoProps } from "../../domain/entity/funcionario
 
 export default class FuncionarioCentroResultadoController {
   constructor(
-    private readonly funcionarioCentroResultadoService: FuncionarioCentroResultadoService,
+        private readonly funcionarioCentroResultadoService: FuncionarioCentroResultadoService,
   ) {}
 
   async create(request: Request, response: Response) {
     const input = request.body as FuncionarioCentroResultadoProps;
-    const newfuncionarioCentroResult = await this.funcionarioCentroResultadoService.create(input);
+    const newfuncionarioCentroResult =
+            await this.funcionarioCentroResultadoService.create(input);
     return response.status(status.CREATED).json(newfuncionarioCentroResult);
   }
 
@@ -23,13 +24,35 @@ export default class FuncionarioCentroResultadoController {
   async getAllByFuncionarioId(request: Request, response: Response) {
     const funcionario_id = request.params.funcionario_id;
     const funcionarioCentroResult =
-      await this.funcionarioCentroResultadoService.getAllByFuncionarioId(+funcionario_id);
+            await this.funcionarioCentroResultadoService.getAllByFuncionarioId(
+              +funcionario_id,
+            );
     return response.json(funcionarioCentroResult);
   }
 
   async getAllByCentroResultadoId(request: Request, response: Response) {
     const centro_resultado_id = request.params.centro_resultado_id;
-    const funcionarioCentroResult = await this.funcionarioCentroResultadoService.getAllByCentroResultadoId(+centro_resultado_id);
+    const funcionarioCentroResult =
+            await this.funcionarioCentroResultadoService.getAllByCentroResultadoId(
+              +centro_resultado_id,
+            );
+    return response.json(funcionarioCentroResult);
+  }
+
+  async getAll(
+    request: Request,
+    response: Response,
+  ) {
+    const funcionarioCentroResult = await this.funcionarioCentroResultadoService.getAll();
+    return response.json(funcionarioCentroResult);
+  }
+
+  async getById(
+    request: Request,
+    response: Response,
+  ) {
+    const id = request.params.id;
+    const funcionarioCentroResult = await this.funcionarioCentroResultadoService.getById(+id);
     return response.json(funcionarioCentroResult);
   }
 }

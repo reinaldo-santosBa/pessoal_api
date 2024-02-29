@@ -8,6 +8,29 @@ export default class FuncionarioCentroResultadoPostgresRepository
 implements FuncionarioCentroResultadoRepository
 {
 
+  async getAll(): Promise<FuncionarioCentroResultadoEntity[]> {
+    try {
+      const funcionarioCentroResultado =
+          await conn.query(`SELECT *
+                    FROM funcionarios_centros_resultado`);
+      return funcionarioCentroResultado.rows;
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
+  async getById(id: number): Promise<FuncionarioCentroResultadoEntity> {
+    try {
+      const funcionarioCentroResultado =
+            await conn.query(`SELECT *
+                    FROM funcionarios_centros_resultado WHERE id = ${id}`);
+      return funcionarioCentroResultado.rows[0];
+    } catch (error) {
+      throw new AppError(error.message, status.INTERNAL_SERVER);
+    }
+  }
+
+
   async insert(input: FuncionarioCentroResultadoEntity): Promise<FuncionarioCentroResultadoEntity> {
     try {
       await conn.query("BEGIN");

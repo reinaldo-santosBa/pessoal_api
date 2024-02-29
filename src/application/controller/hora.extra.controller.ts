@@ -44,7 +44,7 @@ export default class HoraExtraController {
 
   async getById(request: Request, response: Response) {
     const id = request.params.id;
-    await this.horaExtraService.getById(+id);
-    return response.status(status.NO_CONTENT).json();
+    const horaExtra = await this.horaExtraService.getById(+id);
+    return response.json(horaExtra);
   }
 }

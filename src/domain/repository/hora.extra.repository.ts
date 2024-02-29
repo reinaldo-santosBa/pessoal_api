@@ -16,6 +16,6 @@ export interface HoraExtraRepository {
         funcionario_id: number,
         data_extra: Date,
     ): Promise<StatusOutput>;
-    getLimiteHoras(funcionario_id: number): Promise<LimiteHorasOutput>;
+    getLimiteHoras(): Promise<LimiteHorasOutput>;
     getAll(): Promise<HoraExtraEntity[]>;
 }

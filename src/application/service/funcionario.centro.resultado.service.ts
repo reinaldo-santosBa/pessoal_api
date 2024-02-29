@@ -5,7 +5,7 @@ import { FuncionarioCentroResultadoRepository } from "../../domain/repository/fu
 
 export default class FuncionarioCentroResultadoService {
   constructor(
-    private readonly funcionarioCentroResultadoRepository: FuncionarioCentroResultadoRepository,
+        private readonly funcionarioCentroResultadoRepository: FuncionarioCentroResultadoRepository,
   ) {}
 
   async create(
@@ -13,8 +13,12 @@ export default class FuncionarioCentroResultadoService {
   ): Promise<FuncionarioCentroResultadoEntity> {
     await this.funcionarioCentroResultadoRepository.update(input.id);
 
-    const funcionarioCentroResultadoEntity = new FuncionarioCentroResultadoEntity(input);
-    const newfuncionarioCentroResult = await this.funcionarioCentroResultadoRepository.insert(funcionarioCentroResultadoEntity);
+    const funcionarioCentroResultadoEntity =
+            new FuncionarioCentroResultadoEntity(input);
+    const newfuncionarioCentroResult =
+            await this.funcionarioCentroResultadoRepository.insert(
+              funcionarioCentroResultadoEntity,
+            );
     return newfuncionarioCentroResult;
   }
 
@@ -25,14 +29,31 @@ export default class FuncionarioCentroResultadoService {
   async getAllByFuncionarioId(
     funcionario_id: number,
   ): Promise<FuncionarioCentroResultadoEntity[]> {
-    const funcionarioCentroResult = await this.funcionarioCentroResultadoRepository.getAllByFuncionarioId(funcionario_id);
+    const funcionarioCentroResult =
+            await this.funcionarioCentroResultadoRepository.getAllByFuncionarioId(
+              funcionario_id,
+            );
     return funcionarioCentroResult;
   }
 
   async getAllByCentroResultadoId(
     centro_resultado_id: number,
   ): Promise<FuncionarioCentroResultadoEntity[]> {
-    const funcionarioCentroResult = await this.funcionarioCentroResultadoRepository.getAllByCentroResultadoId(centro_resultado_id);
+    const funcionarioCentroResult =
+            await this.funcionarioCentroResultadoRepository.getAllByCentroResultadoId(
+              centro_resultado_id,
+            );
     return funcionarioCentroResult;
+  }
+
+  async getAll(): Promise<FuncionarioCentroResultadoEntity[]>{
+    const funcionarioCentroResultado = await this.funcionarioCentroResultadoRepository.getAll();
+    return funcionarioCentroResultado;
+  }
+
+  async getById(id: number): Promise<FuncionarioCentroResultadoEntity>{
+    const funcionarioCentroResultado =
+        await this.funcionarioCentroResultadoRepository.getById(id);
+    return funcionarioCentroResultado;
   }
 }

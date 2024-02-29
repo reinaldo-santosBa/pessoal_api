@@ -28,7 +28,8 @@ export type EnderecoProps = {
   tipo_endereco_id: number;
   complemento?: string;
   numero?: string;
-  tipo_logradouro_id?: number;
+    tipo_logradouro_id?: number;
+    bairro?: string;
   bairro_id?: number;
 
   [key: string]: string | number;
